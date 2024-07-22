@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>자바스크립트 객체 사용하기</h1>
+    
+    <script>
+
+        // Ex1) 기본적인 객체 구조 정의하고 사용하기
+        let noteBook = {
+            productId: "1",
+            productName: "LG 그램",
+            price: 1000,
+            brand: "LG 전자"
+        };
+        console.log("1. 노트북 정보:", noteBook);
+
+        noteBook.price = 3000;
+        console.log("2. 노트북 정보:", noteBook);
+
+        // < 자바스크립트의 데이터 타입 >
+        // 원시 타입: string, integer, boolean -> 값이 바뀌면 새로운 값을 할당
+        // 참조 타입: 객체, 배열 -> 같은 메모리 공간을 다시 사용
+        // => 그래서 noteBook의 price를 3000으로 바꾸면, 2.도 함께 3000으로 출력된다.
+
+        
+        // 자바스크립트 객체는 이미 한 번 정의된 객체 구조에 동적으로 속성 추가 기능
+        // 동적 속성 추가 방법 2가지:
+        // 1. 객체["신규 속성 명"] = 값
+        // 2. 객체.신규 속성 명 = 값
+
+        // 동적 속성 추가 1
+        noteBook["stoke"] = 200;
+        console.log("3. 노트북 정보:", noteBook);
+
+        // 동적 속성 추가 2
+        noteBook.spec = { CPU:"i7", Memory:"16GB", SSD:"512GB"};
+        console.log("4. 노트북 정보:", noteBook);
+
+
+        var ScalesCenter = "Center";
+        for(let i=0; i<10; i++) {
+            noteBook[`${ScalesCenter}-${i.toString()}`] = i;
+        }
+        console.log("5. 노트북 정보:", noteBook);
+
+    </script>
+</body>
+</html>

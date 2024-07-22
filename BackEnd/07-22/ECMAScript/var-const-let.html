@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    
+    <h1>ECMAScript - 신규 변수 사용법(const/let)</h1>
+
+    <script>
+        // var는 전통적인(올드한) 변수선언 예약어
+        var userName = '박유경';
+        var age = 22;
+
+        // 기본 상품 가격
+        var price = 1000;
+        var isMale = false;
+
+        // 기본 배송비 설정
+        // 비즈니스 규칙: 기본 배송비는 한 번 값이 할당되면 변경이 안되어야 한다.(상수)
+        var baseDelayFee = 3000;
+        console.log('기본 배송비 var:', baseDelayFee);
+        baseDelayFee = 5000;
+
+        // console은 웹 브라우저 개발자 도구 내 콘솔 탭에 로그를 찍는 기능입니다.
+        console.log('기본 배송비 var:', baseDelayFee);
+
+
+        // var로 선언된 변수는 상수 개념이 없어서 언제든지 값을 변경할 수 있습니다.
+        // 그래서 2015년도 (ES6=ES2015 신규 자바스크립트 문법) 상수 개념 도입(const 상수 도입)
+
+        // const 상수를 이용해 값을 할당해봅시다.
+        const newBaseDelayFee = 3000;
+
+        // const 정의된 상수는 한 번 값이 할당되면 변경이 불가하고 변경 시 에러를 발생시킨다.
+        // newBaseDelayFee = 5000;
+
+
+        // 총 결제 금액
+        // var로 해도 되지만, 변경 가능한 변수는 let으로 하는 것이 좋다.
+        let totalPayPrice = 0;
+        console.log('최초 총 결제 금액 let:', totalPayPrice);
+
+        // 총 결제 금액에 기본 배송비 추가
+        totalPayPrice += newBaseDelayFee;
+        // 총 결제 금액에 기본 상품 가격 추가
+        totalPayPrice = totalPayPrice + price;
+
+        console.log('현재 총 결제 금액 let:', totalPayPrice);
+
+
+        // var와 let/const와의 큰 차이는 블록 스코프를 준수합니다.
+        // 블록스코프는 if/for 구문 블럭 내에서 변수/상수가 선언되면 그 안에서만 사용되어야 하는데,
+        // var는 밖에서도 사용이 가능한 문제점을 개선하는 방법
+        const region = '제주도';
+
+        // if 구문 { 여기가 블록스코프 -> 가정문 범위 }
+        // 프로그래밍 시 if/for 등 특정 영역 내에서 선언된 변수는 그 범위 내에서만 사용이 되어야 정상이지만,
+        // var는 해당 범위 밖에서도 호출 및 사용이 가능하다.(에러 발생 원인 제공)
+        if(region == '제주도') {
+            // 원래가 if/for { 블럭 내에서 선언된 변수는 그 안에서만 사용하기 위해 선언한 것이다. }
+            // 선언된 블럭 외부에서 사용하면 에러를 발생시킬 여지가 커진다.(안좋아...)
+            // var 써도 되지만, 위험성을 알고 써야 한다. 되도록 신규 문법을 쓰자.
+            var alertMsg = '도서 지역';
+        }
+        // var는 블럭 스코프 밖에서도 사용이 가능하다.
+        console.log('alertMsg =', alertMsg); // alertMsg는 블럭스코프를 벗어났기 때문에, 원래는 에러
+
+        // 이 점을 개선하기 위해 const/let은 블럭스코프 밖에서 사용하면 자동으로 에러를 발생시킨다.
+        if(region == '제주도') {
+            // 도서 지역 추가 배송비 상수 정의값 할당
+            const addDelayFee = 2000;
+            let alertMsg2 = '도서 지역';
+
+            console.log("상수/변수가 선언된 블록스코프 내에서는 사용 가능:", addDelayFee, alertMsg2);
+        }
+
+        // console.log('블럭스코프 밖에서 const 사용 -> 에러 발생:', addDelayFee);
+        // console.log('블럭스코프 밖에서 let 사용 -> 에러 발생:', alertMsg2);
+
+    </script>
+</body>
+
+</html>
