@@ -3,6 +3,8 @@ const even = "짝수";
 
 function test() {
     console.log("base1 모듈에서 실행되는 test 함수입니다.");
+    // base2.js에서 test()의 값을 console에 출력하는데,
+    // return 값이 없기 때문에 undefined로 출력된다.
 }
 
 // 자바스크립트 객체의 속성명과 속성에 할당되는 변수/상수명이 같으면 변수/상수명을 생략 가능
