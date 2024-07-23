@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>신규 게시글 작성 웹페이지</title>
+    <style>
+        textarea {
+            width: 500px;
+        }
+    </style>
+</head>
+<body>
+    <h1>신규 게시글 작성</h1>
+
+
+    <!-- http://localhost:3000/article/create 주소로 POST 방식으로 form 태그 내 사용자 입력/선텍 form 데이터를 전송한다.
+    submit은 클라이언트에서 서버로 데이터를 전송한다는 의미이고, submit 버튼이 클릭되면 서버로 데이터가 전송되기 바로 전에 form태그와 submit 이벤트가 발생한다. -->
+    <form method="post" action="/article/create" onsubmit="return checkFrom();">
+
+    <!-- method: 요청 방식(데이터 전달 방식)
+    action: 보내는 주소
+    => route의 article/create로 POST 요청을 보낸다. -->    
+
+        제목: <input type="text" id="title" name="title"/><br/>
+        내용: <br/>
+        <textarea id="contents" name="contents" rows="20"></textarea><br/>
+        게시 여부:
+        <select id="display" name="display">
+            <option value="9">선택</option>
+            <option value="1">게시</option>
+            <option value="0">게시 안함</option>
+        </select>
+        <br/>
+        <input type="submit" value="저장"/>
+
+    </form>
+
+    <script>
+        // 클라이언트 폼 유효성 검사 함수 기능 정의
+        function checkFrom() {
+            if(document.getElementById("title").value == "") { // title이 비어있으면
+                alert("게시글 제목을 입력해주세요.");
+                // focus: 더 이상 서버로 데이터를 보내지 말고 진행상황을 멈춰라.
+                document.getElementById("title").focus();
+
+                return false;
+            }
+
+            // 서버로 폼데이터를 전송해라.
+            return true;
+        }
+    </script>
+</body>
+</html>
