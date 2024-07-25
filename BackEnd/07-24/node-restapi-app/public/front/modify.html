@@ -97,7 +97,7 @@
                             <a>게시글 정보 관리</a> >
                         </li>
                         <li class="active">
-                            <strong>신규 게시글 작성</strong>
+                            <strong>해당 게시글 정보 확인</strong>
                         </li>
                     </ol>
                 </div>
@@ -109,7 +109,7 @@
             <!--우측 콘텐츠 영역 -->
             <div class="wrapper wrapper-content">
 
-                <form id="createForm">
+                <form id="modifyForm">
                     <div class="ibox-content m-b-sm border-bottom">
 
                         <!-- 제목 영역 -->
@@ -150,7 +150,8 @@
 
                         <!-- 버튼 영역 -->
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary">저장</button>
+                            <button type="submit" class="btn btn-primary">수정</button>
+                            <button type="button" id = "btnDelete" class="btn btn-danger">삭제</button>
                             <a href="/front/list.html" class="btn btn-info">목록</a>
                         </div>
 
@@ -189,13 +190,62 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <script>
+        // list.html에서 전달해주는 게시글 고유번호 추출
+        // front/modify.html?id=1 호출되는 주소에서 id 값을 클라이언트 환경에서 추출한다.
+
+        // 현재 URL에서(/front/modify.html?id=1) 쿼리스트링 키명으로 값을 추출하는 클라이언트 자바스크립트 함수
+        // 정규식 문법을 이용한 키값 추출하기
+
+        /* 자바스크립트 정규식을 이용해 현재페이지 URL에서 전달받은 키값에 대한 쿼리스트링 값을 추출한다.
+        모든 개발언어는 정규식을 지원합니다.
+        정규식의 목적은 특정코딩 패턴을 통해서 원하는 결과값을 쉽고 빠르게 해결한다. */
+        function getQueryString(keyName) {
+
+            var results = new RegExp('[\?&]' + keyName + '=([^&#]*)').exec(window.location.href);
+            console.log("====================>", results);
+            if (results != null) {
+                return results[1] || 0;
+            }
+            return results;
+        }
+
+        // URL에서 id 값을 추출하여 게시글 고유번호 추출
+        var articleIdx = getQueryString("id");
+
+        console.log("현재 게시글 고유번호:", articleIdx);
+
+
+        // 현재 웹페이지가 웹브라우저에 모두 로딩(렌더링)이 완료되면 실행되는 ready(콜백함수);
+        // document는 현재 문서
+        $(document).ready(function() {
+            // 렌더링이 완료되면 실행
+            // 백엔드 REST API에서 단일 게시글 정보를 조회해온다.
+            // JQuery AJAX GET 방식으로 특정 RESTAPI 주소를 호출해서 데이터를 조회해온다.
+            // get('백엔드 api 주소', 호출 결과 콜백험수(호출 결과 값){});
+            $.get(`http://localhost:3000/api/articles/${articleIdx}`, function(result) { // articleIdx를 매핑하기 위해서 백틱문자로 쓴다.
+                console.log("백엔드 API에서 제공해준 JSON 데이터 확인:", result);
+                
+                if(result.code == 200) {
+                    // 백엔드에서 저장해준 data를 기반으로 UI HTML 태그 요소에 값으로 바인딩한다.
+                    $("#title").val(result.data.title); // id 값이 title인 value를 찾는다.
+                    $("#contents").val(result.data.contents);
+                    $("#display").val(result.data.display);
+
+                } else {
+                    alert("RESTful API 데이터 호출에 실패했습니다.\n관리자에게 문의해주세요.")
+                }
+            });
+        });
+
+
         // 웹페이지가 로딩 완료되면, 마우스 포커스를 제목 입력 박스에 가져다 준다.(UX 향상 기능)
         $('#title').focus();
 
+
         // 입력 폼 유효성 검사 실시
-        // createForm form 태그에 onSubmit 이벤트가 발생하면 실행할 기능(유효성 검사)를 정의한다.
+        // modifyForm form 태그에 onSubmit 이벤트가 발생하면 실행할 기능(유효성 검사)를 정의한다.
         // #은 JQuery에서 id 값을 의미
-        $("#createForm").submit(function (e) {
+        $("#modifyForm").submit(function (e) {
 
             // 더 이상 서버로 데이터를 전송하는 submit 이벤트를 취소한다.
             // 똑같은 페이지를 한 번 더 불러와 화면이 깜빡거리는 것을 방지
@@ -228,8 +278,9 @@
             }
 
 
-            // Step1: 서버로 전송할 데이터 소스 준비하기(JSON 데이터)
+            // Step1: 서버로 전송할 수정 데이터 소스 준비하기(JSON 데이터)
             var article = {
+                "article_id": articleIdx,
                 "title": $("#title").val(),
                 "contents": $("#contents").val(),
                 "display": $("display").val()
@@ -237,13 +288,13 @@
 
             // JQuery AJAX Post 방식으로 클라이언트에서 서버 REST API로 데이터를 전송하는 메소드
             //post('API 호출 주소',전달 데이터).done(콜백함수(처리 결과 데이터){});
-            $.post('http://localhost:3000/api/articles/create', article).done(function (result) {
+            $.post('http://localhost:3000/api/articles/modify', article).done(function (result) {
+                // 완료 되면 함수 실행
+                console.log("기존 게시글 수정 처리 결과 값 확인하기 :", result);
 
-                console.log("신규 게시글 등록 처리 결과 값 확인하기 :", result);
-
-                //정상적으로 처리된경우 
+                //정상적으로 처리된 경우 
                 if (result.code == 200) {
-                    alert("등록 완료");
+                    alert("수정 완료");
                     location.href = "/front/list.html";
                 } else {
                     //서버 에러난 경우
@@ -254,6 +305,26 @@
             // e.preventDefault();와 같은 기능
             return false;
         })
+        
+
+        // 삭제 버튼 클릭 이벤트 핸들러
+        $("#btnDelete").click(function(req, res) {
+
+            // confirm: alert와 유사한 자바스크립트 함수
+            if(confirm('정말로 삭제하시겠습니까?')) {
+                // jQuery AJAX로 백엔드 삭제 API를 호출한다.
+                $.get(`http://localhost:3000/api/articles/delete?aid=${articleIdx}`, function(result) {
+                    console.log("삭제 RESTful API 호출 결과 값 출력:", result);
+
+                    if(result.code == 200) {
+                        alert("삭제 완료");
+                        location.href = "/front/list.html";
+                    } else {
+                        alert("백엔드 API 호출 에러 발생" + result.result);
+                    }
+                });
+            }
+        });
     </script>
 
 </body>
