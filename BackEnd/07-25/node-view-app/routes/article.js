@@ -130,7 +130,7 @@ router.post('/modify', async(req, res) => {
     
     // Step2: DB 게시글 테이블에 특정 게시글 번호를 기준으로 게시글 정보를 수정 처리
     // SQL문
-    // Update article Set title='수정한 제목', contents='수정한 내용', display='게시 여부 값', modify_id='1', modify_date='2024-07-25', WHERE article_id=1
+    // Update article Set title='수정한제목',contents='수정한내용',display='게시여부값',modify_id=1,modify_date='2024-07-25 18:08:12' WHERE article_id=1;
     // 수정이 완료되면 DB 서버에서 수정 처리 건수가 반환된다.
     
     // Step3: 게시글 목록 페이지로 이동 처리
