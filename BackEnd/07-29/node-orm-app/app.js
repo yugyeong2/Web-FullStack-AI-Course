@@ -10,8 +10,13 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 // 개발자 정의 라우터 파일 참조 - 게시글 정보 관리
 var articleRouter = require('./routes/article');
+// ORM Model 영역의 sequelize 속성(DB 연결 객체)을 참조한다.
+var sequelize = require('./models/index.js').sequelize;
 
 var app = express();
+
+// mysql과 자동 연결처리 및 모델기반 물리 테이블 생성처리 제공
+sequelize.sync(); // DB 서버와 연결하고, Model 파일로 테이블을 만든다.
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
