@@ -1,11 +1,70 @@
+<!-- 고정된 left, header, footer를 관리 -->
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
+
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>관리자 메인 페이지</title>
+    
+    <%- meta %>
+
+    <title>관리자 대시보드</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/css/animate.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+
+    <!--추가 스타일-->
+    <%- style %>
 </head>
+
 <body>
-    <h1>관리자 메인 대시보드</h1>
+
+    <div id="wrapper">
+
+        <!--좌측 메뉴 영역-->
+        <% include common/left-menu.ejs %>  
+
+        <!--우측 영역-->
+        <div id="page-wrapper" class="gray-bg">
+
+            <!--우측 상단 영역 -->
+            <% include common/header.ejs %>  
+
+            <!-- 실제 콘텐츠 웹페이지 영역이 통합되는 영역 -->
+            <%- body %>
+
+            <!--우측 하단 풋터 영역-->
+            <% include common/footer.ejs %>  
+
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="/js/jquery-3.1.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="/js/inspinia.js"></script>
+    <script src="/js/plugins/pace/pace.min.js"></script>
+
+
+    <!--추가 스크립트-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <%- script %>
+
+    <script>
+
+    </script>
+
 </body>
+
 </html>

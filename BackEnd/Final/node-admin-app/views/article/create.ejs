@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 계정 등록 페이지</title>
+</head>
+<body>
+    <h1>관리자 계정 등록</h1>
+
+    <form method="post" action="/admin/create" onsubmit="return checkForm();">
+
+        이름: <input type="text" id="name" name="name"/><br/>
+        나이: <input type="number" id="age" name="age"/> <br/>
+        <button type="submit" value="등록"></button>
+
+    </form>
+
+    <script>
+        function checkForm() {
+            if(document.getElementById("name").value == "") {
+                alert("이름을 입력해주세요.");
+                document.getElementById("name").focus();
+
+                return false;
+            }
+
+            if(document.getElementById("age").value == "") {
+                alert("나이를 입력해주세요.");
+                document.getElementById("age").focus();
+
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</body>
+</html>
