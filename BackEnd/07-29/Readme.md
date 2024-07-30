@@ -37,3 +37,13 @@
 - ORM
 모델과 물리적인 TABLE을 1대1 매핑해 모델을 통해 관리한다.
 ORM 프레임워크에서 동적으로 SQL 쿼리를 만들어준다.
+
+- Code First & Model First
+코드로 모델을 만들고, DB를 적용
+새로운 프로젝트를 만들 때 사용한다.
+- Database First
+만들어진 DB를 바탕으로 코드에 적용
+이미 운영 중인 시스템에 사용한다.
+
+- /model/index.js
+index.js는 물리적인 데이터베이스 그 자체를 가리킨다.
