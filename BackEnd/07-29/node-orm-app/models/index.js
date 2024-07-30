@@ -25,7 +25,10 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 db.sequelize = sequelize; // DB 연결 정보를 포함한 DB제어 객체속성(CRUD)
 db.Sequelize = Sequelize; // Sequelize 페키지에서 제공하는 각종 데이터 타입 및 관련 객체 정보를 제공함
 
-// 회원 모델 모듈 파일을 참조하고, db속성 정의
-// db.Member = require('./member.js')(sequelize, Sequelize);
+// 회원 모델 모듈파일을 참조하고, db속성 정의
+db.Member = require('./member.js')(sequelize, Sequelize);
+// 게시글 모델 모듈파일을 참조하고, db객체에 Article 동적 속성을 추가
+db.Article = require('./article.js')(sequelize, Sequelize);
+
 // db객체 외부로 노출
 module.exports = db;
