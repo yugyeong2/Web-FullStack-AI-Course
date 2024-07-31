@@ -12,7 +12,7 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '5001');
+var port = normalizePort(process.env.PORT || '5001'); // .env에 PORT가 없으면 5001 포트 사용
 app.set('port', port);
 
 /**
