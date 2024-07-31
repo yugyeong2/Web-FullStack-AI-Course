@@ -4,6 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var expressLayouts = require('express-ejs-layouts');
+// ORM DB 연결 객체인 sequelize 참조
+var sequelize = require('./models/index.js').sequelize;
+
+// 환경설정 파일 구성
+require('dotenv').config();
 
 var indexRouter = require('./routes/index.js');
 var adminRouter = require('./routes/admin');
@@ -13,6 +18,9 @@ var memberRouter = require('./routes/member');
 var messageRouter = require('./routes/message');
 
 var app = express();
+
+// mysql과 자동 연결처리 및 모델기반 물리 테이블 생성처리 제공
+sequelize.sync(); // Code first, Model first
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
