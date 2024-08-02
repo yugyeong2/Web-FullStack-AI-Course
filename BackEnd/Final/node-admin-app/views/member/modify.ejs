@@ -1,0 +1,133 @@
+<!--우측 콘텐츠 헤더영역 -->
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>기존 사용자 정보 수정/삭제</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="/Home/Index">Home</a> >
+            </li>
+            <li>
+                <a>사용자 정보 관리</a> >
+            </li>
+            <li class="active">
+                <strong>기존 사용자 정보 수정/삭제</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<!--우측 콘텐츠 영역 -->
+<div class="wrapper wrapper-content">
+
+    <!-- form 태그에 입력한 내용을 /member/modify 경로로 POST 방식으로 보낸다. -->
+    <form id="modifyForm" action="/member/modify" method="post">
+        <!-- html hidden 태그에 사용자 고유번호를 저장하고 name 속성을 지정해 post로 전달 시 사용자 고유번호를 전달 -->
+        <input type="hidden" name="member_id" value="<%= member.member_id %>"/>
+        
+        <div class="ibox-content m-b-sm border-bottom">
+
+            <!-- 사용자 이메일/암호/회원명 UI 제공 -->
+            <div class="row">
+                <!-- 사용자 이메일 영역 -->
+                <!-- bootstrap에서 row는 12칸으로 이루어지는데(col), 그 중 4칸을 차지한다. -->
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">사용자 이메일</label>
+                        <!-- member_id 속성으로 백엔드에서 데이터를 가져온다. -->
+                        <!-- 이메일 값을 바꿀 수 없도록 readonly로 설정 -->
+                        <input type="email" id="member_id" name="member_id" class="form-control" readonly value="<%= member.member_id %>"/>
+                    </div>
+                </div>
+
+                <!-- 암호 영역 -->
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">사용자 암호</label>
+                        <input type="password" id="member_password" name="member_password" class="form-control"/>
+                    </div>
+                </div>
+
+                <!-- 회원명 영역 -->
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">회원명</label>
+                        <input type="text" id="name" name="name" class="form-control"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 회원 프로필 이미지 경로/전화번호/가입 유형 UI 제공 -->
+            <div class="row">
+                <!-- 회원 프로필 이미지 경로 영역 -->
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">회원 프로필 이미지 경로</label>
+                        <input type="text" id="profile_img_path" name="profile_img_path" class="form-control" value="<% member.profile_img_path %>"/>
+                    </div>
+                </div>
+
+                <!-- 전화번호 영역 -->
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">전화번호</label>
+                        <input type="text" id="telephone" name="telephone" class="form-control" value="<% member.telephone %>"/>
+                    </div>>
+                </div>
+
+                <!-- 가입 유형 영역 -->
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">가입 유형</label>
+                        <select id="entry_type_code" name="entry_type_code" class="form-control">
+                            <option value="0" <% if(member.entry_type_code == "0") { %> selected <% } %> >직접 가입</option>
+                            <option value="1" <% if(member.entry_type_code == "1") { %> selected <% } %> >페이스북 SNS</option>
+                        </select>
+                    </div>>
+                </div>
+            </div>
+
+            <!-- 이용 상태/생년월일 UI 제공 -->
+            <div class="row">
+                <!-- 이용 상태 영역 -->
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">이용 상태</label>
+                        <input type="text" id="telephone" name="telephone" class="form-control" value="<% member.telephone %>"/>
+                    </div>>
+                </div>
+
+                <!-- 생년월일 영역 -->
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">생년월일</label>
+                        <input type="text" id="birth_date" name="birth_date" class="form-control" value="<% member.birth_date %>"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 버튼 영역 -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">수정</button>
+                <button type="button" id="btnDelete" class="btn btn-danger">삭제</button>
+                <a href="/member/list" class="btn btn-info">목록</a>
+            </div>
+
+        </div>
+    </form>
+
+</div>
+
+<script>
+
+    // 웹브라우저에서 삭제 버튼이 클릭되면 서버의 특정 주소를 호출 전에 정말 삭제할 지 한 번 물어보고,
+    // 삭제한다고 하면 서버 삭제 처리 주소를 호출한다.
+    $("#btnDelete").click(function() {
+        if(confirm('정말 삭제하시겠습니까?')) {
+            location.href="/member/delete?id=<%= mbmer.member_id %>";
+        }
+    });
+
+</script>

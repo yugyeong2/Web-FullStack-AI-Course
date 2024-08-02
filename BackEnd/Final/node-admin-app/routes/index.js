@@ -28,13 +28,14 @@ router.get('/', async(req, res, next) => {
 router.get('/login', async(req, res) => {
   // 아이디/암호가 일치하지 않는 경우, 다시 로그인 view를 전달하고,
   // 로그인 view에 결과 메시지를 전달한다.
-  let resultMsg = { // 변경이 가능한 let
-    code: 400,
-    msg: "",
+  let apiResult = { // 변경이 가능한 let
+    code: 500,
+    data: null,
+    msg: "ServerERR: 자세한 내용은 백엔드에 문의해주세요.",
   }
 
   // {layout:false}: login.ejs view 파일 렌더링 시 레이아웃 페이지를 적용하지 않는다.
-  res.render('login', {layout:false, resultMsg});
+  res.render('login', {layout:false, apiResult});
 });
 
 
@@ -48,45 +49,59 @@ router.post('/login', async(req, res, next) => {
 
   // 아이디/암호가 일치하지 않는 경우, 다시 로그인 view를 전달하고,
   // 로그인 view에 결과 메시지를 전달한다.
-  let resultMsg = { // 변경이 가능한 let
-    code: 400,
-    msg: "",
+  let apiResult = { // 변경이 가능한 let
+    code: 500,
+    data: null,
+    msg: "ServerERR: 자세한 내용은 백엔드에 문의해주세요.",
   }
 
+  try {
   // Step1: 관리자 아이디/암호를 추출한다.
-  const admin_id = req.body.admin_id;
-  const admin_password = req.body.admin_password;
+    const admin_id = req.body.admin_id;
+    const admin_password = req.body.admin_password;
 
-  // Step2: 동일한 괸리자 아이디 정보를 조회한다.
-  const admin = await db.Admin.findOne({
-    where:{admin_id:admin_id}
-  })
+    // Step2: 동일한 괸리자 아이디 정보를 조회한다.
+    const admin = await db.Admin.findOne({
+      where:{admin_id:admin_id}
+    })
 
-  // Step3: DB에 저장된 암호와 관리자 입력 암호를 체크한다.
-  // 동일한 아이디가 존재하는 경우
-  if(admin) {
-    // DB에 저장된 암호와 관리자가 로그인 화면에서 입력한 암호와 일치하는지 체크
-    // Step4: 아이디/암호가 일치하면 메인 페이지로 이동하고, 그렇지 않으면 처리결과 data를 login.ejs에 연결한다.
-    if(await bcrypt.compare(admin_password, admin.admin_password)) { // bcrypt.compare('로그인 화면에서 전달된 암호', db에서 저장된 암호화된 문자열) 메소드는 암호가 같으면 true 반환, 다르면 false 반환
-      resultMsg.code = 200;
-      resultMsg.msg = "로그인 성공! 환영합니다."
+    // Step3: DB에 저장된 암호와 관리자 입력 암호를 체크한다.
+    // 동일한 아이디가 존재하는 경우
+    if(admin) {
+      // DB에 저장된 암호와 관리자가 로그인 화면에서 입력한 암호와 일치하는지 체크
+      // bcrypt.compare('로그인 화면에서 전달된 암호', db에서 저장된 암호화된 문자열) 메소드는 암호가 같으면 true 반환, 다르면 false 반환
+      const comparePassword = await bcrypt.compare(admin_password, admin.admin_password)
+      
+      if(comparePassword) { // 암호가 일치하는 경우
+        apiResult.code = 200;
+        apiResult.data = null;
+        apiResult.msg = "OK: 로그인 성공";
 
-      res.render('home');
+        res.render('home', apiResult);
 
+      } else {
+        // 암호가 일치하지 않는 경우
+        apiResult.code = 402;
+        apiResult.data = null;
+        apiResult.msg = "IncorrectPassword: 암호가 일치하지 않습니다."
+
+        res.render('login', {layout:false, apiResult});
+      }
     } else {
-      // 암호가 일치하지 않는 경우
-      resultMsg.code = 402;
-      resultMsg.msg = "암호가 일치하지 않습니다."
+      // 동일한 아이디가 없는 경우
+      apiResult.code = 401;
+      apiResult.data = null;
+      apiResult.msg = "NotExistId: 동일한 아이디가 존재하지 않습니다.";
+      
+      res.render('login', {layout:false, apiResult});
+    }    
+  } catch(error) {
+    console.log("/login 호출 중 에러 발생:", error.msg);
 
-      res.render('login', {layout:false, resultMsg});
-    }
-  } else {
-    // 동일한 아이디가 없는 경우
-    resultMsg.code = 401;
-    resultMsg.msg = "동일한 아이디가 존재하지 않습니다."
-    
-    res.render('login', {layout:false, resultMsg});
-  }
+    apiResult.code = 500;
+    apiResult.data = null;
+    apiResult.msg = "ServerERR: 자세한 내용은 백엔드에 문의해주세요.";
+};
 });
 
 
@@ -97,7 +112,8 @@ router.post('/login', async(req, res, next) => {
 - 응답 결과: main.ejs view 페이지 반환
 */
 router.get('/home', async(req, res) => {
-  res.render('home.ejs');
+
+    res.render('home');
 });
 
 
