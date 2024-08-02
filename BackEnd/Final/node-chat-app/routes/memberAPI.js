@@ -15,8 +15,24 @@ var db = require('../models/index');
 // JWT 토큰 발급 참조
 const jwt = require('jsonwebtoken');
 
+// 파일업로드를 위한 multer객체 참조
+var multer = require('multer');
+
+// 파일 저장 위치 지정
+var storage  = multer.diskStorage({ 
+    destination(req, file, cb) {
+        cb(null, 'public/upload/');
+    },
+    filename(req, file, cb) {
+        cb(null, `${Date.now()}__${file.originalname}`);
+    },
+});
+
+// 일반 업로드처리 객체 생성
+var upload = multer({ storage: storage });
+
 /*
- * 신규 회원정보 등록처리 요청과 응답 라우팅 메소드
+ * 신규 회원정보 등록처리 요청과 응답    ㅜ   라우팅 메소드
  * 요청 주소: http://localhost:5000/api/member/entry
  * 요청 방식: POST
  * 응답 결과: 신규 회원정보 등록처리 후 DB에 저장된 회원정보 반환
@@ -90,7 +106,7 @@ router.post('/login', async(req, res) => {
     // 백엔드 API를 호출하면, 반드시 아래 형식으로 백엔드에서 데이터를 반환한다.
     let apiResult = {
         // 요청 상태코드 - 200:OK, 400:요청 리스소가 없음, 500:백엔드 개발자의 실수/데이터를 잘못 전달
-        code: 400,
+        code: 500,
         data: null, // 백엔드에서 프론트엔드로 전달한 데이터
         message: "ServerERR: 자세한 내용은 백엔드에 문의해주세요." // 처리결과 코멘트(백엔드 개발자가 프론트 개발자에게 알려주는 코멘트 메시지)
     };
@@ -169,7 +185,7 @@ router.get('/profile', async(req, res) => {
     // 백엔드 API를 호출하면, 반드시 아래 형식으로 백엔드에서 데이터를 반환한다.
     let apiResult = {
         // 요청 상태코드 - 200:OK, 400:요청 리스소가 없음, 500:백엔드 개발자의 실수/데이터를 잘못 전달
-        code: 400,
+        code: 500,
         data: null, // 백엔드에서 프론트엔드로 전달한 데이터
         message: "ServerERR: 자세한 내용은 백엔드에 문의해주세요." // 처리결과 코멘트(백엔드 개발자가 프론트 개발자에게 알려주는 코멘트 메시지)
     };
@@ -203,6 +219,57 @@ router.get('/profile', async(req, res) => {
         apiResult.data = null;
         apiResult.message = "ServerERR: 자세한 내용은 백엔드에 문의해주세요.";
     };
+
+    res.json(apiResult);
+});
+
+
+/*
+ * 사용자 프로필 사진 업로드 및 정보 처리 라우팅 메소드
+ * 요청 주소: http://localhost:5000/api/member/profile/upload
+ * 요청 방식: POST
+ * 응답 결과: 프론트엔드에서 첨부한 이미지 파일을 업로드 처리하고, 업로드된 정보를 반환한다.
+*/
+router.post('/profile/upload', upload.single('file'), async(req, res) => {
+
+    let apiResult = {
+        code: 500,
+        data: null,
+        message: ""
+    };
+
+
+    try{
+        // Step1: 업로드된 파일 정보 추출하기 
+        const uploadFile = req.file;
+
+        // 실제 서버에 업로드된 파일경로 
+        const filePath = `/upload/${uploadFile.filename}`;
+        const fileName = uploadFile.originalname;// 서버에 업로드된 파일명(32243143422_a.png)
+        const fileSize = uploadFile.size;// 파일 크기
+        const mimeType = uploadFile.mimetype;// 파일의 MIME타입
+
+        // 파일정보를 DB에 저장하기
+        const file = {
+            filePath,
+            fileName,
+            fileSize,
+            mimeType
+        };
+
+        // Step2: 업로드된 파일정보 반환하기 
+        apiResult.code = 200;
+        apiResult.data = file;
+        apiResult.message = "Ok";
+
+    }catch(error){
+        console.log("/api/member/profile/upload 호출 중 에러 발생:", error.message);
+
+        apiResult.code = 500;
+        apiResult.data = null;
+        apiResult.message = "ServerERR: 자세한 내용은 백엔드에 문의해주세요.";
+    }
+
 
     res.json(apiResult);
 });
