@@ -6,7 +6,7 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true,
-            allowNull: false,
+            allowNull: false, // NotNull
             comment: "회원 고유번호",
         },
         email: {

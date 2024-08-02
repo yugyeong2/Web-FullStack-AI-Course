@@ -4,14 +4,18 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// 환경 설정 정보 구성
+require('dotenv').config();
+
 // ORM DB 연결 객체인 sequelize 참조
 var sequelize = require('./models/index.js').sequelize;
 
 // RESTful API 서비스 CORS 이슈 해결을 위한 CORS 패키지 참조하기
-const cors = require("cors");
+const cors = require("cors"); 
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+// 회원 정보 관리 RESTful API 라우터 파일 참조
 var memberRouter = require('./routes/memberAPI');
 
 var app = express();
@@ -26,7 +30,7 @@ sequelize.sync(); // Code first, Model first
 app.use(
   cors({
     methods: ["GET", "POST", "DELETE", "OPTIONS"],
-    origin: ["http://localhost:5000", "https://naver.com"],
+    origin: ["http://localhost:5000", "http://127.0.0.1:5500"], // ! CORS 설정 주의
   })
 );
 
@@ -42,6 +46,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+// memberAPIRouter의 기본 호출주소 체계 정의
 app.use('/api/member', memberRouter);
 
 // catch 404 and forward to error handler
