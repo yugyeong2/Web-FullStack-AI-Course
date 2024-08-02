@@ -41,12 +41,12 @@
 				<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
 					<div class="login-about">
 						<div class="slogan">
-							<span>Design</span>
-							<span>Made</span>
-							<span>Simple.</span>
+							<span>Yugyeong's</span>
+							<span>Chat</span>
+							<span>App</span>
 						</div>
 						<div class="about-desc">
-							Quick Chat is an intelligent and communications tool, built for teams. It provides an integrated platform that makes team communication easy and efficient.
+							2024 Summer Web-FullStack-AI-Course
 						</div>
 						<a href="index.html" class="know-more">Know More <img src="img/right-arrow.svg"></a>
 
@@ -54,34 +54,53 @@
 				</div>
 				<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
 					<div class="login-wrapper">
-						<form action="index.html">
+
+						<!-- 회원가입 입력 form 영역 -->
+						<form id="entryForm">
 							<div class="login-screen">
 								<div class="login-body">
 									<a href="index.html" class="login-logo">
 										<img src="img/logo.svg" alt="Quick Chat">
 									</a>
-									<h6>Welcome to Quick Chat App,<br>Create your account.</h6>
+
+									<h6>Welcome to Yugyeong's Chat App,<br>Create your account.</h6>
+									
+									<!-- 이메일 입력 영역 -->
 									<div class="field-wrapper">
-										<input type="email" autofocus>
+										<input type="email" id = "email" autofocus>
 										<div class="field-placeholder">Email ID</div>
 									</div>
+
+									<!-- 닉네임 입력 영억 -->
 									<div class="field-wrapper">
-										<input type="password">
+										<input type="text" id="nickname">
+										<div class="field-placeholder">Nickname</div>
+									</div>
+
+									<!-- 비밀번호 입력 영역 -->
+									<div class="field-wrapper">
+										<input type="password" id="password">
 										<div class="field-placeholder">Password</div>
 									</div>
+
+									<!-- 비밀번호 확인 입력 영역 -->
 									<div class="field-wrapper mb-3">
-										<input type="password">
+										<input type="password" id="password-confirm">
 										<div class="field-placeholder">Confirm Password</div>
 									</div>
+
 									<div class="actions">
 										<button type="submit" class="btn btn-primary ml-auto">Sign Up</button>
 									</div>
 								</div>
+
 								<div class="login-footer">
 									<span class="additional-link">Have an account? <a href="login.html" class="btn btn-secondary">Login</a></span>
 								</div>
+
 							</div>
 						</form>
+
 					</div>
 				</div>
 			</div>
@@ -91,6 +110,75 @@
 		<!-- *************
 			************ Login container end *************
 		************* -->
+
+
+		<!-- 회원가입 프론트엔드 로직 -->
+		<!-- Required jQuery first, then Bootstrap Bundle JS -->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.bundle.min.js"></script>
+
+		<script>
+
+			// entryForm에서 onSubmit 이벤트가 발생하면 처리할 업무로직 구현
+			$("#entryForm").submit(function(e) {
+				// onSubmit 이벤트 발생을 취소해서 화면 깜빡거림을 사전에 방지한다.
+				e.preventDefault(); // 현재 발생한 이벤트를 취소한다. -> 취소안하면 화면을 다시 불러와서 깜빡거리게 된다.
+				
+				// Step1: 사용자 입력값의 유효성 검증
+				if($("#email").val() == "") { // 이메일 값이 비어있으면
+					alert("이메일 아이디를 입력해주세요.");
+					$("#email").focus();
+					return false; // 로직 흐름 stop
+				}
+				if($("#nickname").val() == "") { // 닉네임 값이 비어있으면
+					alert("닉네임을 입력해주세요.");
+					$("#nickname").focus();
+					return false;
+				}
+				if($("#password").val() == "") { // 비밀번호 값이 비어있으면
+					alert("비밀번호를 입력해주세요.");
+					$("#password").focus();
+					return false;
+				}
+				if($("#password-confirm").val() == "") { // 비밀번호 확인 값이 비어있으면
+					alert("비밀번호 확인을 입력해주세요.");
+					$("#password-confirm").focus();
+					return false;
+				}
+				if($("#password").val() != $("#password-confirm").val()) { // 비밀번호와 비밀번호 확인 값이 다르면
+					alert("비밀번호 확인이 일치하지 않습니다.");
+					$("#password-confirm").val("");
+					$("#password-confirm").focus();
+					return false;
+				}
+
+				// Step2: 사용자 입력값을 UI 요소에서 추출하여 JSON 데이터를 생성한다.
+				// 백엔드에 전달할 신규회원 정보 정의
+				var member = {
+					email: $("#email").val(),
+					nickname: $("#nickname").val(),
+					password: $("#password").val()
+				}
+
+				// Step3: UI 요소에서 추출한 JSON 데이터를 백엔드 RESTful API에 전달해서, 회원가입을 처리한다.
+				// Jquery의 AJAX를 이용해 post 방식으로 백엔드 API 주소에 데이터를 전달한다.
+				 // 백엔드와 프론트엔드의 도메인 주소가 다르기 때문에, 전달할 백엔드 도메인 주소를 작성해야 한다.
+				$.post('http://localhost:5000/api/member/entry', member).done(function(result) { // 실행이 완료되면(member가 전달되면), 함수를 실행한다.
+					// 백엔드에서의 처리 결과 값 확인
+					console.log("백엔드에서의 처리 결과 값 확인:", result);
+
+					//Step4: 백엔드 데이터 처리 결과에 따른 추가 정보를 사용자에게 전달한다.
+					if(result.code == 200) {
+						location.href = "./login.html";
+					} else {
+						alert("회원가입에 실패했습니다.\n관리자에게 문의하세요.");
+					}
+				});
+			});
+
+
+
+		</script>
 
 	</body>
 </html>

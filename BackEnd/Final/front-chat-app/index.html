@@ -501,7 +501,7 @@
 											<a class="dropdown-item offline" href="#">Offline</a>
 										</div>
 									</div>
-									<h5>Jennifer Lopezx</h5>
+									<h5 id="profile-name"></h5>
 									<h6>Bern, Switzerland</h6>
 								</div>
 								<!-- User profile end -->
@@ -1815,6 +1815,34 @@
 
 
 		<script>
+			// 웹페이지가 웹브라우저에 완전 로깅완료되는 시점에, 백엔드 API를 호출해 현재 로그인한 사용자의 프로필 정보를 조회해온다.
+			$(document).ready(function() {
+				// 웹브라우저에 저장된 토큰값을 추출한다.
+				var jwtToken = localStorage.getItem('chatMemberToken');
+
+				// index.html 페이지는 반드시 로그인 후 접속이 가능하다.
+				// 로그인을 했으면 토큰값이 웹브라우저의 스토리지에 저장되었을 것이므로, 체크하여 토큰값이 없으면 로그인 페이지로 안내한다.
+				if(jwtToken == undefined) {
+					location.href = "./login.html";
+				}
+
+				// 토큰이 있으면, get방식으로 API를 호출한다.
+				$.ajax({
+					type:'Get',
+					url:'http://localhost:5000/api/member/profile',
+					headers:{ Authorization:`Bearer ${jwtToken}`},
+					dataType:"json",
+					success:function(result){
+						console.log("프로필 정보 확인하기:",result);
+						// 동적으로 프로필 이름 조회
+						$("#profile-name").text(result.data.name);
+					},
+					error:function(err){
+						console.error("백엔드 API 호출에러 발생....");
+					}
+				});
+			});
+
 
 			/* 자바스크립트 정규식을 이용해 현재페이지 URL에서 전달받은 키값에 대한 쿼리스트링 값을 추출한다.
 			모든 개발언어는 정규식을 지원합니다.
