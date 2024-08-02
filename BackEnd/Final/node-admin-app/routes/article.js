@@ -4,7 +4,22 @@ var router = express.Router();
 
 // DB 프로그래밍을 위한 ORM DB 객체 참조
 var db = require('../models/index'); // index.js의 db 객체가 반환되어 db에 저장
-const article = require('../models/article');
+
+// 파일 업로드를 위한 multer 객체 참조
+var multer = require('multer');
+
+// 파일 저장 위치 지정
+var storage  = multer.diskStorage({ 
+    destination(req, file, cb) { // 파일이 업로드되는 위치
+        cb(null, 'public/upload/'); // /public/upload에 저장된다.
+    },
+    filename(req, file, cb) { // 파일 이름 -> 파일명을 바꾸는 것이 보안상 좋다.
+        cb(null, `${Date.now()}__${file.originalname}`);
+    },
+});
+
+// 일반 업로드 처리 객체 생성
+var upload = multer({ storage: storage });
 
 /*
  * 게시글 전체 목록 조회 웹페이지 요청과 응답처리 라우팅 메소드
@@ -36,12 +51,16 @@ router.get('/create', async(req, res) => {
  * 호출 주소: http://localhost:3000/article/create
  * 호출 방식: POST
 */
-router.post('/create', async(req, res) => {
+router.post('/create', upload.single('file'), async(req, res) => { // 파일 업로드 미들웨어 설정(서버에 파일을 업로드)
     // 신규 게시글 DB 등록 처리
     // Step1: 신규 게시글 등록 폼에서 사용자가 입력/선택한 값을 추출
     const title = req.body.title;
     const contents = req.body.contents;
     const is_display_code = req.body.display;
+
+    // 첨부파일이 있는 경우, 파일 정보 추출하기
+    // 첨부파일을 첨부하면, form에서 file 태그의 req.file이라는 속성으로 서버에 업로드 된 파일 정보를 추출할 수 있다.
+    const uploadFile = req.file;
 
     // Step2: article 테이블에 등록할 json 데이터 생성하기
     // 주의! 반드시 JSON 데이터 속성명은 article.js 모델의 속성명과 일치해야 한다.
@@ -62,6 +81,35 @@ router.post('/create', async(req, res) => {
     // DB 서버에 전송되어 DB 서버에서 실행되고, 실제 저장된 단일 게시글 Data를 DB 서버에 반환한다.
     const registeredArticle = await db.Article.create(article);
     console.log("실제 DB article 테이블에 저장된 데이터 확인:", registeredArticle);
+
+    // Step4: 신규 등록된 게시글의 고유번호를 기반으로 첨부파일 정보를 등록 처리한다.
+    // 업로드한 파일이 있는 경우만 파일 정보를 등록 처리한다.
+    if(uploadFile) {
+        // 실제 서버에 업로드된 파일 경로
+        const filePath = `/upload.${uploadFile.filename}`;
+        // 서버에 업로드된 파일명 Ex) 23124523_a.png
+        const fileName = uploadFile.filename;
+        // 사용자가 업로드한 파일명 Ex) a.png
+        const originalFileName = uploadFile.originalname;
+        // 파일 크기
+        const fileSize = uploadFile.size;
+        // 파일의 MIME 타입
+        const mimeType = uploadFile.mimetype;
+
+        // 파일 정보를 DB에 저장
+        const file = {
+            article_id: registeredArticle.article_id,
+            file_name: fileName,
+            file_size: fileSize,
+            file_path: filePath,
+            file_type: mimeType,
+            reg_date: Date.now(),
+            reg_member_id: 1
+        }
+
+        // file 첨부 데이터를 article_file 테이블에 저장
+        await db.ArticleFile.create(file);
+    }
 
     // 목록 페이지로 이동
     res.redirect('/article/list');
@@ -132,8 +180,13 @@ router.get('/modify/:id', async(req, res) => {
     // -> SQL 구문이 백엔드에서 만들어져서, DB 서버로 전송되어 실행되고, 그 결과를 백엔드에서 반환받는다.
     const article = await db.Article.findOne({where:{article_id:articleIdx}}); // where 조건을 건다.
 
+    // 해당 게시글 첨부파일 정보 조회
+    const articleFile = await db.ArticleFile.findOne({
+        where: {article_id:articleIdx}
+    });
+    
     // db에서 해당 게시글 번호와 일치하는 단일 게시글 정보 조회
-    res.render('article/modify', {article});
+    res.render('article/modify', {article, articleFile});
 });
 
 module.exports = router;

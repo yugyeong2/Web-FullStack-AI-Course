@@ -50,8 +50,8 @@
                 </div>
             </div>
 
-            <!-- 게시 여부 영역 -->
             <div class="row">
+                <!-- 게시 여부 영역 -->
                 <!-- row는 12칸으로 이루어지는데, 그 중 4칸을 차지한다. -->
                 <div class="col-sm-4">
                     <div class="form-group">
@@ -64,6 +64,23 @@
                         </select>
                     </div>
                 </div>
+
+                <!-- 첨부 파일 영역 -->
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">첨부파일</label>
+                        <input type="file" id="file" name="file" class="form-control"/>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <% if(articleFile != null) { %>
+                            <a href="<%=articleFile.file_path%>" target="_blank"><%=articleFile.file_name%></a>
+                        <% } %>
+                    </div>
+                </div>
+
             </div>
 
             <!-- 버튼 영역 -->
