@@ -15,13 +15,16 @@ var db = require('../models/index');
 var sequelize = db.sequelize;
 const {QueryTypes} = sequelize;
 
+// 관리자 로그인 여부 체크 미들웨어 함수 참조
+const {isLoggedIn} = require('./sessionMiddleware.js'); // isLoggedIn 권한 체크 미들웨어를 통해 먼저 로그인을 했는지 체크한다.
+
 /*
  * 관리자 계정 목록 조회 웹페이지 요청/응답 라우팅 메소드
  * 요청 주소: http://localhost:5001/admin/list
  * 요청 방식: GET
  * 응답 결과: 관리자 계정 목록 조회 웹페이지(view + data) 반환
 */
-router.get('/list', async(req, res) => {
+router.get('/list', isLoggedIn, async(req, res) => {
 
     // 관리자 목록조회 옵션 데이터 정의 = ViewModel
     const searchOption = { // 기본 검색 옵션 설정
@@ -74,7 +77,7 @@ router.get('/list', async(req, res) => {
  * 요청 방식: POST
  * 응답 결과: 관리자 계정 조회 옵션 결과 웹페이지(view + data) 반환
 */
-router.post('/list', async(req, res) => {
+router.post('/list', isLoggedIn, async(req, res) => {
 
     // Step1: 조회 옵션 정보 추출하기
     const company_code = req.body.company_code;
@@ -134,7 +137,7 @@ router.post('/list', async(req, res) => {
 * 요청 방식: GET
 * 응답 결과: 신규 관리자 계정 등록 웹페이지(view) 반환
 */
-router.get('/create', async(req, res) => {
+router.get('/create', isLoggedIn, async(req, res) => {
     res.render('admin/create');
 });
 
@@ -145,7 +148,7 @@ router.get('/create', async(req, res) => {
 * 요청 방식: POST
 * 응답 결과: 신규 관리자 계정 JSON 데이터 반환 후 list로 이동
 */
-router.post('/create', async(req, res) => {
+router.post('/create', isLoggedIn, async(req, res) => {
 
     // Step1: 신규 관리자가 입력한 form 태그 내 입력/선택 데이터 추출
     // req.body.전달된 form 태그 내 HTML 입력/선택 요소의 name 속성명으로 지정
@@ -165,6 +168,10 @@ router.post('/create', async(req, res) => {
     // Step2: 신규 관리자 정보 DB에 저장 처리
     // 주의 ! DB에 저장할 데이터 구조는 반드시 해당 모델의 속성명과 동일해야 한다.
     // 주의 ! 신규 데이터 등록 시 모델의 속성 중 NotNull(allowNull:false)인 속성은 반드시 값을 등록해야 한다.
+    
+    //세션을 이용하여 현재 로그인한 사용자의 관리자 고유번호 추출
+    const loginAdminId = req.session.loginUser.admin_member_id;
+
     const admin = {
         company_code,
         admin_id,
@@ -175,7 +182,7 @@ router.post('/create', async(req, res) => {
         dept_name,
         used_yn_code,
         reg_date: Date.now(),
-        reg_member_id: 1
+        reg_member_id: loginAdminId
     }
 
     // Step3: DB 게시글 테이블에 상기 admin 데이터 등록 처리(Insert Into Table명...)
@@ -196,7 +203,7 @@ router.post('/create', async(req, res) => {
 * 요청 방식: POST
 * 응답 결과: 기존 관리자 계정의 수정된 JSON 데이터 반환 후 list로 이동
 */
-router.post('/modify', async(req, res) => {
+router.post('/modify', isLoggedIn, async(req, res) => {
 
     // Step1: 사용자 수정 데이터를 추출
     const admin_member_id = req.body.admin_member_id; // 수정할 대상이 되는 관리자 고유번호(hidden 태그의 name 속성 값)
@@ -218,7 +225,7 @@ router.post('/modify', async(req, res) => {
         dept_name,
         used_yn_code,
         edit_date: Date.now(),
-        edit_member_id: 1
+        edit_member_id: req.session.loginUser.admin_member_id
     }
 
     // Step3: DB 서버에 해당 관리자 계정 정보를 수정하고, 수정이 완료되면 DB 서버에서 실제 수정된 건 수가 반환된다.
@@ -238,7 +245,7 @@ router.post('/modify', async(req, res) => {
 * 요청 방식: GET
 * 응답 결과: 기존 관리자 계정의 id JSON 데이터 반환 후 list로 이동
 */
-router.get('/delete', async(req, res) => {
+router.get('/delete', isLoggedIn, async(req, res) => {
 
     // Step1: req.query.키명으로 쿼리스트링 방식으로 전달된 데이터 추출
     const admin_member_id = req.query.id;
@@ -259,7 +266,7 @@ router.get('/delete', async(req, res) => {
 * 요청 방식: GET
 * 응답 결과: 기존 관리자 계정 정보가 포함된 웹페이지(view) 제공
 */
-router.get('/modify/:id', async(req, res) => {
+router.get('/modify/:id', isLoggedIn, async(req, res) => {
 
     // Step1: URL 주소에서 관리자 고유번호를 추출
     const admin_member_id = req.params.id;

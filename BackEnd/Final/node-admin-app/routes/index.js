@@ -73,11 +73,30 @@ router.post('/login', async(req, res, next) => {
       const comparePassword = await bcrypt.compare(admin_password, admin.admin_password)
       
       if(comparePassword) { // 암호가 일치하는 경우
-        apiResult.code = 200;
-        apiResult.data = null;
-        apiResult.msg = "OK: 로그인 성공";
+        // Step4: 아이디/암호가 일치하면, home 페이지로 이동시키고, 그렇지 않으면 처리결과 data를 login.ejs에 전달한다.
 
-        res.render('home', apiResult);
+        // Step5: 서버 세션에 저장할 로그인 사용자의 주요 정보 설정
+        var sessionLoginData = {
+          admin_member_id: admin.admin_member_id,
+          company_code: admin.company_code,
+          admin_id:admin.admin_id,
+          admin_name: admin.admin_name
+        }
+
+        // express-session 패키지를 설치하고 app.js에 설정하면, req 객체에 session 속성이 추가된다.
+        // req.session 속성에 loginUser 동적 속성을 정의하고, 값으로 현재 로그인한 사용자의 주요데이터를 저장한다.
+        req.session.loginUser = sessionLoginData;
+
+        // 현재 사용자의 로그인 여부를 동적속성 isLoggedIn을 정의하고 값으로 true를 설정한다.
+        req.session.isLoggedIn = true;
+
+        // 서버 세션을 최종 저장하고, 메인페이지로 이동시킨다.
+        req.session.save(function() {
+          console.log('세션 저장 완료');
+
+          res.redirect('/home');
+        });
+
 
       } else {
         // 암호가 일치하지 않는 경우

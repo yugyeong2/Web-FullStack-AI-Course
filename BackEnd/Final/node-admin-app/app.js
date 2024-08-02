@@ -6,6 +6,7 @@ var logger = require('morgan');
 var expressLayouts = require('express-ejs-layouts');
 // ORM DB 연결 객체인 sequelize 참조
 var sequelize = require('./models/index.js').sequelize;
+var session = require('express-session');
 
 // 환경설정 파일 구성
 require('dotenv').config();
@@ -21,6 +22,20 @@ var app = express();
 
 // mysql과 자동 연결처리 및 모델기반 물리 테이블 생성처리 제공
 sequelize.sync(); // Code first, Model first
+
+// 백엔드 앱에서 세션을 사용할 수 있게 설정
+app.use(
+  session({
+    resave: false, // 매번 세션을 강제 저장하는 옵션 -> 로그인 시마다 세션값의 변경이 없어도 강제로 저장할 지 여부
+    saveUninitialized: true, // 빈 세션도 저장할 지 여부
+    secret: "testsecret", // 세션 아이디를 만들 때 사용한 암호화 키값
+    cookie: {
+      httpOnly: true, // http 지원 여부
+      secure: false, // http 환경에서만 세션 정보를 주고받도록 처리할지 여부
+      maxAge:1000 * 60 * 5 //5분동안 서버세션을 유지하겠다.(1000은 1초)
+      },
+  }),
+);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
