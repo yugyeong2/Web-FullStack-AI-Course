@@ -382,11 +382,12 @@ RESTful은 REST의 설계 규칙을 잘 지켜서 설계된 API를 RESTful한 AP
 
 ---
 
-# 2024-08-02
+# 2024-08-05
 
 ## 클라우드 기반 서비스하기(IaaS)
 
 ### VPC(Virtual Private Cloud)
+
 가상 서버를 배치시킬 수 있는 가상의 네트워크
 
 - 논리적으로 분리된 가상의 사설 네트워크 공간
@@ -394,26 +395,30 @@ RESTful은 REST의 설계 규칙을 잘 지켜서 설계된 API를 RESTful한 AP
   또한 사설 IP 주소와 Subnet 생성, 네트워크 게이트웨이, 접근 제어 등을 지원함으로서, 손쉽게 전용 네트워크를 확보하실 수 있습니다.
 
 ### Subnet
+
 VPC 내에 세분화된 격리 공간을 제공
 
 ### 서버 OS 업데이트
+
 sudo apt update
 sudo apt upgrade
 sudo apt autoremove
 
 ### Q. 왜 WAS 서버와 웹 서버를 나누는가?
+
 실제 서비스에는 물리적인 서버가 최소한 3대가 필요하다.  
 -> 로드 밸런서를 두어 서버를 확장한다.  
-![alt text](image.png)  
+![alt text](image.png)
 
 항상 웹서버는 public IP로 80포트로 접속되며, 항상 열려있다.  
--> 보안적으로 취약하다.  
+-> 보안적으로 취약하다.
 
 항상 웹서버의 80포트는 열려있기 때문에, 백엔드 서버는 WAS 서버로 개별 포트를 두고 서비스를 한다.  
 설령 80포트가 뚫려도, 외부에서는 직접적으로 들어오지 못하기 때문에 WAS와 DB 서버는 뚫리기 어렵다.
--> 프락시 환경(공개된 public IP를 통해 들어오는것이 아닌, public IP를 통해 내부의 private IP로 접근한다.)  
+-> 프락시 환경(공개된 public IP를 통해 들어오는것이 아닌, public IP를 통해 내부의 private IP로 접근한다.)
 
 ### ACG
+
 - Inbound
   0.0.0.0/0로 설정하면, 아무나 서버에 접근할 수 있다.
 - outbound
@@ -422,5 +427,174 @@ http://~ 는 80 port로 통신한다.
 https://~ 는 443 port로 통신한다.
 
 ### DNS
-도메인 주소를 관리하는 서버  
-도메인 주소를 입력하면, 해당하는 도메인을 관리하는 DNS 서버를 찾아서, 호스트명과 도메인 주소를 서비스하는 IP 주소를 찾아와서, IP 주소로 직접적으로 서버와 통신한다.  
+
+도메인 주소를 관리하는 서버
+
+1. 사용자가 도메인 주소를 입력한다.
+2. 통신사로 사용자가 입력한 호스트, 도메인 주소, IP 주소를 전달한다.
+3. 해당하는 도메인을 관리하는 DNS 서버를 찾는다.
+4. DNS는 호스트명과 도메인 주소로 서비스하는 서버의 IP 주소를 찾는다.
+5. IP 주소로 직접적으로 서버와 통신한다.
+
+Ex) www.naver.com
+호스트명: www
+도메인: naver.com
+
+---
+
+# 2024-08-06
+
+## AWS
+
+클라우드는 사용한 만큼만 후불
+
+- IAM 계정: Identity and Access Management
+
+- 클라우드 서비스명: EC2(가상서버-IaaS)
+  -> 서비스 관리단위: 인스턴스
+
+- 클라우드 서비스명: S3(스토리지)
+  -> 서비스 관리단위: 버킷
+
+- 클라우드 서비스명: Lambda(가상서버-FaaS)
+  -> 서비스 관리단위: 함수
+
+### AWS EC2
+
+1. 인스턴스 시작
+2. 탄력적 IP(고정 IP) 주소 할당 후 연결
+   -> 고정 IP를 통해 원격 서버 연결
+3. putty로 연결
+
+- 사용자 계정 root: ec2-user
+- sudo su
+  -> root 권한 위임 후 설정
+- 리눅스 명령어
+  - rpm -qa \*-release
+  - cat /proc/version
+
+4. Node Framework 설치
+
+- sudo dnf install nodejs
+
+5. pm2 기반 WAS 서비스
+
+- pm2 설치
+  - npm install pm2 -g
+- 서비스 폴더 만들고 접근 권한 주기
+  - sudo mkdir-p -- /var/www /var/www/nodechatapp
+  - sudo mkdir-p -- /var/www /var/www/nodechatadmin
+- WinSCP로 서비스 폴더에 개발 소스 업로드하기
+- 패키지 설치
+  - npm i
+- pm2로 시작 모듈을 app.js로 하여 노드 애플리케이션 시작하고 관리
+  - 단일 스레드 기반 서비스
+    - pm2 start app.js --name nodechatadmin
+  - 멀티코어 클러스터링 기반 분산환경 제공
+    - pm2 start app.js --name nodechatadmin -i 0
+    - 주요 pm2 명령어
+      pm2 list
+      pm2 start www--name nodechatapp
+      pm2 stop nodechatapp
+      pm2 restart nodechatapp
+      pm2 delete nodechatapp
+      pm2 monit
+
+6. NginX 웹서버 설치
+
+- dnf install nginx
+  -> 넌 지금부터 웹서버야
+- nginX 서비스 관리 명령어
+  - sudo systemctl enable nginx
+  - sudo systemctl start nginx
+  - sudo systemctl status nginx
+  - sudo systemctl stop nginx
+
+7. 도메인 주소 기반 가상 호스팅
+
+- nginx 설정 파일 수정
+
+  - sudo vi /etc/nginx/nginx.conf
+    server {
+      listen 80;
+      server_name 3.37.185.159 cbnu13.wechatmaker.com;
+
+      location / {
+        proxy_pass http://172.31.9.22:5001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $http_connection;
+        proxy_set_header Host $http_host;
+        proxy_cache_bypass $http_upgrade;
+        }
+    }
+
+- 모든 nginx 설정 변경 후에는 반드시 설정파일 구문 검사 후 재시작해줘야 한다.
+  - sudo nginx -t
+    설정 파일이 잘 수정되었는지 확인하는 테스트/문법 검사 실행
+    문제가 없다면, test is successful
+  - sudo nginx -s reload
+    nginx 재시작
+
+8. 서비스를 종료하고 삭제
+- 인스턴스
+  - 인스턴스 중지: 잠시동안 중지한다.(돈은 계속 빠져나간다.)
+  - 인스턴스 시작/재부팅: 시작한다.(탄력적 IP를 설정하지 않았다면, public IP가 바뀔 수 있다.)
+- 탄력적 IP
+- 보안 그룹(default는 삭제하지 않는다.)
+
+
+- Q. 웹 서버를 통해 도메인 주소를 세팅하는 이유
+
+  1. 도메인을 사용하지 않으면, 사용자가 IP와 port를 외워야 한다.
+     도메인을 이용하면 기본 80포트로 연결된다.
+     관리해 줄 필요 x, IP와 port를 외울 필요 x
+  2. 보안적 문제
+     ! 백엔드가 돌아가는 WAS 서버의 port를 개방하면 보안적으로 좋지 않다.
+     http: 80 port
+     https: 443 port
+     -> Ex) 사용자가 WAS 서버의 3000번 port로 직접 들어올 수 있으면, 공격해서 소스를 가져오면, 털린다.
+     사용자가 웹 서버는 털려도 된다.
+     웹 서버로 들어오는 것을 프록시라고 한다.
+
+- ! WAS는 일반적으로 private IP로 통신한다.
+  -> Why? 외부에서 직접적으로 들어오는 경우만 public IP를 사용한다.
+  private IP로 통신할 때는 기본적으로는 port 규칙/제약이 없다.(-> 리눅스 방화벽 프로그램으로 port를 제한한다.)
+  웹서버만 public IP로 통신하고, 내부적인 서버와 통신할 때는 private IP로 통신한다.
+
+- ! nginx를 사용하면, 서버를 여러 개 뒀을 때 지가 알아서 로드밸런싱을 한다.
+
+## Maria DB Server
+
+- 설치
+  sudo yum install -y mariadb105-server
+- 접속
+  mysql -u root -p
+  암호는 설정되어 있지 않기 때문에, 엔터
+- DB 선택
+  use mysql
+- 외부에서 Maria DB 접속 설정
+  select host, user, password from user;
+  grant all privileges on*.* to 'root'@'%' identified by 'yugyeong';
+  flush privileges;
+
+## Redis
+
+서버를 한 대 이상 사용할 때 사용할 수 있다.
+분산 메시징 시스템에 사용할 수 있다.
+
+## SSL(Secure Sockets Layer)
+
+보안 소켓 계층
+
+- 사용자와 서버간의 통신을 하는 안전한 통로를 개설한다.
+- 통로 안에서 데이터를 주고 받는다.
+  -> SSL 기반으로 http 통신을 하는 방법이 https로 통신하는 것이다.
+
+Q. SSL을 어떻게 적용할까?
+웹서버에 SSL 인증서를 설치한다.
+인증서를 서버에 바인딩(설치)한다.
+인증서 파일이 만들어지면, nginx에 추가한다.
+사용자가 요청할 때마다 먼저 인증서를 통해 통로를 만들고 안전하게 데이터를 주고 받는다.
+
+무료 SSL 비영리 단체: Let's Encrypt
