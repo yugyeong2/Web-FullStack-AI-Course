@@ -1828,7 +1828,7 @@
 				// 토큰이 있으면, get방식으로 API를 호출한다.
 				$.ajax({
 					type:'Get',
-					url:'http://localhost:5000/api/member/profile',
+					url:'http://cbnu13.wechatmaker.com/api/member/profile',
 					headers:{ Authorization:`Bearer ${jwtToken}`},
 					dataType:"json",
 					success:function(result){
@@ -1862,7 +1862,7 @@
 			// 클라이언트(웹브라우저)와 서버 연결 소켓 객체 정의
 			// 서버 소켓과 연결을 시도하고, 연결이 완료되면 연결이 지속된다.
 			// io.connect('http://localhost:5000/')를 통해 서버소켓과 연결을 완료하고, 서버로 메시지를 보낼 socket객체가 반환된다.
-			var socket = io.connect('http://localhost:5000/');
+			var socket = io.connect('http://cbnu13.wechatmaker.com/');
 	
 			// Jquery에서 html 요소의 id값으로 html요소를 찾는다. -> $("#html요소의 id값")
 			$("#btnSend").click(function() {
@@ -1931,7 +1931,7 @@
 				$.ajax({
 					data:data,
 					type:'POST',
-					url:'http://localhost:5000/api/member/profile/upload',
+					url:'http://cbnu13.wechatmaker.com/api/member/profile/upload',
 					cache:false,
 					contentType:false,
 					processData:false,
