@@ -1,9 +1,9 @@
 {
   "development": {
     "username": "root",
-    "password": "1234",
+    "password": "Yugyeong123@",
     "database": "edu_community",
-    "host": "127.0.0.1",
+    "host": "223.130.131.72",
     "dialect": "mysql",
     "timezone": "+09:00"
   },
@@ -17,9 +17,9 @@
   },
   "production": {
     "username": "root",
-    "password": "1234",
+    "password": "Yugyeong123@",
     "database": "edu_community",
-    "host": "127.0.0.1",
+    "host": "223.130.131.72",
     "dialect": "mysql",
     "timezone": "+09:00"
   }
