@@ -7,6 +7,9 @@ var logger = require('morgan');
 // 환경 설정 정보 구성
 require('dotenv').config();
 
+// 웹소켓 모듈 추가
+const webSocket = require("./socket");
+
 // ORM DB 연결 객체인 sequelize 참조
 var sequelize = require('./models/index.js').sequelize;
 
@@ -65,4 +68,16 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+// module.exports = app;
+
+
+// 노드앱의 기본 WAS 서비스 포트
+app.set("port", process.env.PORT || 5000);
+
+// 노드앱이 작동되는 서버 객체 생성
+var server = app.listen(app.get("port"), function () {});
+
+// 웹소켓 express서버와 연결처리
+// webSocket모듈에 nodeapp이 실행되는 서버객체를 전달합니다.
+// socket.io 소켓모듈과 node express앱을 통합해줍니다.
+webSocket(server);
