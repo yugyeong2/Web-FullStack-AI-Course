@@ -5,15 +5,14 @@
 # 2024-07-24
 
 ## AJAX(Asynchronous Javascript And XML)
-
 - AJAX란, JavaScript의 라이브러리중 하나이며, HTML, CSS, 자바스크립트, DOM, XML 등 기존에 사용되던 여러 기술을 함께 사용하는 새로운 개발 기법입니다.
 - 브라우저가 가지고있는 XMLHttpRequest 객체를 이용해서 전체 페이지를 새로 고치지 않고도 페이지의 일부만을 위한 데이터를 로드하는 기법이며, JavaScript를 사용한 비동기 통신, 클라이언트와 서버간에 XML 데이터를 주고받는 기술입니다.
 - 즉, 쉽게 말하자면 자바스크립트를 통해서 서버에 데이터를 요청하는 것입니다.
-- 참고: https://daegwonkim.tistory.com/445  
-   https://hstory0208.tistory.com/entry/%EB%B9%84%EB%8F%99%EA%B8%B0-%ED%86%B5%EC%8B%A0-Ajax%EC%99%80-Axios%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90
+- 참고: [AJAX란?](https://daegwonkim.tistory.com/445)
+        [[비동기 통신] Ajax와 Axios의 차이점?](https://hstory0208.tistory.com/entry/%EB%B9%84%EB%8F%99%EA%B8%B0-%ED%86%B5%EC%8B%A0-Ajax%EC%99%80-Axios%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90)
+
 
 ## PUT & PATCH 메소드
-
 PUT과 PATCH 모두 데이터를 수정할 때 사용한다.  
 하지만 꼭 수정할 때 PUT 또는 PATCH를 사용할 필요는 없다.  
 일반적으로 POST를 등록/수정에 주로 사용한다.
@@ -21,32 +20,33 @@ PUT과 PATCH 모두 데이터를 수정할 때 사용한다.
 - PUT: 기존의 모든 것을 수정
 - PATCH: 일부 부분적인 수정
 
-## 와일드카드
 
+## 와일드카드
 와일드카드를 사용한 라우팅 메서드는 가장 아래에 선언해야 한다.  
 그렇지 않으면 aid = 1 = delete?aid=1 이들 모두 같다고 인식한다.
 
 Ex)
-
 - http://localhost:3000/api/articles/1
 - http://localhost:3000/api/articles/delete?aid=1
 
 와일드 카드는 주소체계가 같으면 뒤쪽을 값으로 인식한다.
 
-## 미들웨어
 
+## 미들웨어
 응답 전에 미들웨어를 먼저 실행하게 하여 특정 로직을 태운다.  
 라우팅 메소드를 호출할 때, 호출 주소와 콜백함수 사이에 미들웨어를 추가한다.  
 -> 미들웨어를 통해 로그인 여부를 체크할 수 있다.
 
-참고: https://velog.io/@unyoi/%EC%9D%B8%ED%94%84%EB%9D%BC-%EB%BF%8C%EC%8B%9C%EA%B8%B01-%EB%AF%B8%EB%93%A4%EC%9B%A8%EC%96%B4-%EA%B0%9C%EB%85%90%EC%9D%84-%EC%95%8C%EC%95%84%EB%B3%B4%EC%9E%90
+참고: [[인프라 뿌시기 #1] 미들웨어, 개념을 알아보자](https://velog.io/@unyoi/%EC%9D%B8%ED%94%84%EB%9D%BC-%EB%BF%8C%EC%8B%9C%EA%B8%B01-%EB%AF%B8%EB%93%A4%EC%9B%A8%EC%96%B4-%EA%B0%9C%EB%85%90%EC%9D%84-%EC%95%8C%EC%95%84%EB%B3%B4%EC%9E%90)
+
 
 ## EJS
-
 - 라우팅 메소드에서 view에 전달된 데이터 출력하려면 =을 쓴다.  
   -> <%=데이터 속성명%>
 
+
 ---
+
 
 # 2024-07-25
 
@@ -55,20 +55,15 @@ views/.ejs 파일의 <%%> 구문은 백엔드 코드
 routes/.js 파일의 <script> 구문은 프론트엔드 코드
 
 ## 시맨틱 태그(Semantic Tag)
-
 - html에서 페이지가 어떤 내용의 영역인지 유추할 수 있도록 태그 이름에 의미를 부여한다.
   사실 div 태그로 해도 상관없다.
-
 - 똑같은 div로 하는 것보다 시맨틱 태그를 사용하는 것이 검색 엔진을 최적화할 수 있다.
   Ex) nav, main, article
 
 ## view 화면 컴포넌트 재사용
-
 - Include 방식
-
   - 각각 물리적인 파일로 존재한다.
   - html 태그 영역, script 태그 영역, css 영역은 여전히 중복된다.
-
 - 레이아웃
   - 레이아웃에는 실제 컨텐츠를 제외한 공통 부분만 포함한다.
   - 레이아웃에서 <%- %> 태그를 이용해 통합한다.
@@ -76,16 +71,16 @@ routes/.js 파일의 <script> 구문은 프론트엔드 코드
 
 -> 기본적으로는 레이아웃 기술을 사용하고, 레이아웃을 적용해도 중복되는 부분은 부분적으로 Include 파일로 따로 뺀다.
 
+
 ---
+
 
 # 2024-07-26
 
 ## DBMS
-
 데이터 관리 SW 시스템
 
 ### RDBMS
-
 - RDBMS 특징
   - 결함이 없는 데이터를 안정적으로 영구적으로 관리하는 것이 주요 목적
   - 데이터 수가 많으면 RDBMS는 속도가 떨어진다.
@@ -99,7 +94,6 @@ routes/.js 파일의 <script> 구문은 프론트엔드 코드
   - TABLE의 관리 항목은 사용자 관리 항목(제목, 내용 등)과 시스템 관리 항목(ID, 등록일시, IP 등)으로 나뉜다.
 
 ### NoSQL
-
 - 관계형 데이터베이스의 한계를 극복
 - 빠른 응답 속도, 높은 가용성(사용자가 늘어남에 따라 자원(DB 서버)을 늘렸다 줄였다 가능), 확장성(DB 서버를 실시간으로 복제해서 확장하는 것이 자유롭다.
   -> Scale-Up:단일 서버 CPU/메모리 추가, Scale-Out:서버를 추가), 가용성(백업(스탠바이)서버 없이 사용 중에 실시간으로 DB 서버가 늘릴 수 있다.)
@@ -113,18 +107,18 @@ routes/.js 파일의 <script> 구문은 프론트엔드 코드
 - KEY-VALUE DB
   Ex) REDIS
 
+
 ---
+
 
 # 2024-07-29
 
 ## MySQL
-
 - Schema(=Database)
 - Character Set은 utf8mb4(utf8에 이모지를 포함한 최신 버전)
 - collation은 unicode_ci를 선택하면 정렬을 할 수 있다.
 
 ### MySQL 데이터 유형
-
 - 문자형
   - CHAT(고정길이형)
     - 문자열 고정길이는 해당 길이만큼 사이즈를 사용한다.
@@ -137,7 +131,6 @@ routes/.js 파일의 <script> 구문은 프론트엔드 코드
     - 1000자리 이상의 긴 문자열
 
 ### MySQL TABLE 제약조건
-
     - PK(Primary Key)
     - NN(Not Null)
         NULL은 Data가 입력 안된 초기 상태, 공백 문자는 값이 들어가 있다.
@@ -148,8 +141,8 @@ routes/.js 파일의 <script> 구문은 프론트엔드 코드
     - AI(Auto Increment)
         자동 증가
 
-## Model
 
+## Model
 데이터의 구조를 프로그래밍 언어로 표현한 클래스  
 물리적인 테이블을 백엔드에서 제어하기 위함
 
@@ -157,13 +150,13 @@ routes/.js 파일의 <script> 구문은 프론트엔드 코드
 - View Model: 화면의 구조가 기준
 - DTO Model: 여러 모델의 데이터를 하나의 모델로 준다.
 
-## ORM
 
+## ORM
 모델과 물리적인 TABLE을 1대1 매핑해 모델을 통해 관리한다.  
 ORM 프레임워크에서 동적으로 SQL 쿼리를 만들어준다.
 
-## Code First & Model First
 
+## Code First & Model First
 코드로 모델을 만들고, DB를 적용한다.  
 새로운 프로젝트를 만들 때 사용한다.
 
@@ -171,11 +164,13 @@ ORM 프레임워크에서 동적으로 SQL 쿼리를 만들어준다.
   - 만들어진 DB를 바탕으로 코드에 적용한다.
   - 이미 운영 중인 시스템에 사용한다.
 
-## /model/index.js
 
+## /model/index.js
 index.js는 물리적인 데이터베이스 그 자체를 가리킨다.
 
+
 ---
+
 
 # 2024-07-31
 
@@ -185,12 +180,13 @@ index.js는 물리적인 데이터베이스 그 자체를 가리킨다.
 ## Socket.io 모듈
 
 ### 클라이언트 -> 서버로 전송한 메시지 수신
-
 - on 메소드
-  현재 접속되어 있는 클라이언트로부터 메시지를 수신하려면 on 메소드 사용 - io.on - 'connection' : socket.io의 기본 이벤트, 사용자가 웹사이트에 접속하면 자동으로 발생하는 이벤트 - socket.on - 해당 클라이언트에서 메세지를 보낸다.
+  현재 접속되어 있는 클라이언트로부터 메시지를 수신하려면 on 메소드를 사용한다.
+  - io.on
+    - 'connection' : socket.io의 기본 이벤트, 사용자가 웹사이트에 접속하면 자동으로 발생하는 이벤트
+  - socket.on - 해당 클라이언트에서 메세지를 보낸다.
 
 ### 서버 -> 클라이언트로 메시지 전송
-
 - emit 메소드
   - io.emit
     - 서버가 현재 접속해있는 모든 클라이언트에게 이벤트 전달
@@ -202,11 +198,11 @@ index.js는 물리적인 데이터베이스 그 자체를 가리킨다.
     - 해당 소켓을 통해 클라이언트에게 메시지 전송
     - sender인 socket의 클라이언트는 제외한다.
 
-참고: https://velog.io/@rzee/Node.js-Socket.io-%EB%AA%A8%EB%93%88-.emit-.on  
-https://velog.io/@nittre/NodeJS-io.emitio.sockets.emit%EA%B3%BC-socket.broadcast.emit%EC%9D%98-%EC%B0%A8%EC%9D%B4
+참고: [[Node.js] Socket.io 모듈 (.emit .on)](https://velog.io/@rzee/Node.js-Socket.io-%EB%AA%A8%EB%93%88-.emit-.on)
+      [Socket.io - io.emit(io.sockets.emit)과 socket.broadcast.emit의 차이](https://velog.io/@nittre/NodeJS-io.emitio.sockets.emit%EA%B3%BC-socket.broadcast.emit%EC%9D%98-%EC%B0%A8%EC%9D%B4)
+
 
 ## CORS
-
 - 같은 서버 도메인이 아닌 다른 도메인에서 데이터를 호출할 때, 차단되어 CORS 이슈가 생긴다.
   -> 동일 출처 원칙을 위반
 - 허용된 도메인에 대해서 데이터/소캣 기능을 제공할 수 있도록 CORS 설정이 필요하다.
@@ -214,8 +210,8 @@ https://velog.io/@nittre/NodeJS-io.emitio.sockets.emit%EA%B3%BC-socket.broadcast
 - 도메인을 등록하면 사용할 수 있다.
 - restful, 채팅 서버에서 CORS 이슈가 많이 발생한다.
 
-## JWT
 
+## JWT
 JSON 형식의 데이터를 암호화해 놓은 토큰
 
 - 토큰을 까보면 JSON 데이터가 들어있다.
@@ -229,53 +225,53 @@ JSON 형식의 데이터를 암호화해 놓은 토큰
 - 토큰을 만들 때도 인증키가 필요하고, 까볼 때 만들때 사용했던 인증키가 필요하다.(양방향 암호화)
 
 ### Q, JWT 토큰을 왜 쓰는가?
-
 - 용도
   이기종 시스템 간의 데이터 상호교환을 통한 시스템 통합수단으로 사용
 - 오리지널 데이터를 변조없이 주고 받을 수 있다.
 - JWT토큰은 기본적으로 변조 불가능하다.
 - 난독화/복호화 사용이 간편해 각종 시스템간 데이터 교환 표준 포맷으로 사용된다.
 
+
 ---
+
 
 # 2024-08-01
 
 ## RESTful
-
 Q. REST API와 RESTful API의 차이는 뭘까?
-RESTful은 REST의 설계 규칙을 잘 지켜서 설계된 API를 RESTful한 API라고 합니다.  
- 즉, REST의 원리를 잘 따르는 시스템을 RESTful이란 용어로 지칭됩니다.
+  RESTful은 REST의 설계 규칙을 잘 지켜서 설계된 API를 RESTful한 API라고 합니다.  
+  즉, REST의 원리를 잘 따르는 시스템을 RESTful이란 용어로 지칭됩니다.
 
-참고: https://dev-coco.tistory.com/97
+참고: [REST란? REST API 와 RESTful API의 차이점](https://dev-coco.tistory.com/97)
 
 라우터 파일은 업무 단위로 나누는 것이 좋다.
 
-## JWT
 
+## JWT
 로그인 한 사용자의 정보를 유지한다.  
-로그인을 했는지 안했는지 확인
+로그인을 했는지 안했는지 확인한다.
 
 - 랜덤한 JWT 토큰 시크릿 키 만들기
-  참고: https://velog.io/@5w31892p/JWT-Secret-Key-%EC%83%9D%EC%84%B1
+  참고: [JWT Secret Key 생성하기](https://velog.io/@5w31892p/JWT-Secret-Key-%EC%83%9D%EC%84%B1)
 
 - JWT 까보기
   https://jwt.io/
-  JWT 토큰에는 공개되도 괜찮은 데이터만 담아야 한다.
-  JWT 토큰이 localStorage에 담겼을 때, 그걸 저 사이트를 통해 까볼 수 있다.
-  JWT를 까봤을 때 중요한 개인정보가 담겼으면, 유출될 수 있다.
-  -> JWT 토큰에 개인정보를 담을 경우, 암호화해서 담아야한다.
+  JWT 토큰에는 공개되도 괜찮은 데이터만 담아야 한다.  
+  JWT 토큰이 localStorage에 담겼을 때, 그걸 저 사이트를 통해 까볼 수 있다.  
+  JWT를 까봤을 때 중요한 개인정보가 담겼으면, 유출될 수 있다.  
+  -> JWT 토큰에 개인정보를 담을 경우, 암호화해서 담아야한다.  
+
 
 ---
+
 
 # 2024-08-02
 
 ## 서버 세션
-
 세션(서버 메모리)을 만들어 특정 도메인에셔 발급해준 쿠키를 갖는다.  
 브라우저의 헤더에 쿠키가 들어있어, 서버에서는 브라우저에서 요청을 할 때, 토큰을 가져와서 읽어본다.
 
 ### 쿠키
-
 - 텍스트 파일
 - 서버에서 발급한다.
 - 세션을 만들 때 쿠키를 같이 굽는다.
@@ -285,7 +281,6 @@ RESTful은 REST의 설계 규칙을 잘 지켜서 설계된 API를 RESTful한 AP
 - 서버에 요청할 때마다, 쿠키 값을 추출한다.
 
 ### 분산 서버
-
 사용자가 적으면 한 대의 서버로도 충분하다.  
 동접자가 많아지면 서버를 더 두고, 로드밸런서를 통해 관리한다.  
 여러 대의 서버를 두는 것을 분산 서버라고 한다.
@@ -298,14 +293,13 @@ RESTful은 REST의 설계 규칙을 잘 지켜서 설계된 API를 RESTful한 AP
 - 해결
   세션을 메모리에 저장하는 것이 아니라, DB에 저장한다.(주로 Redis)
 
-## 클라우드 컴퓨팅
 
+## 클라우드 컴퓨팅
 물리적인 컴퓨터를 보다 더 효율적으로 사용할 수 있도록 사용방법을 바꾼다.  
 빅데이터를 저장하고 관리할 수 있다.  
 하드웨어는 같다. 물리적인 서버는 변화가 없다.
 
 ### 하드웨어 가상화 기술
-
 - 호스트 가상화 기술 환경
   - Host OS를 설치하고, 그 위에 가상화 소프트웨어를 설치하고, 그 위에 어플리케이션을 설치한다.
   - 사용자 환경에서 가상화 기술 시용
@@ -318,7 +312,6 @@ RESTful은 REST의 설계 규칙을 잘 지켜서 설계된 API를 RESTful한 AP
 -> 클라우드는 하드웨어 가상화 기술이라고 할 수 있다 !
 
 ### 클라우드 기반 서비스
-
 - On-Promise
   - 1 하트웨어, 1 OS
   - 문제: 오래 걸림
@@ -336,7 +329,6 @@ RESTful은 REST의 설계 규칙을 잘 지켜서 설계된 API를 RESTful한 AP
   - 효율적이다.
 
 ### 클라우드 컴퓨팅 서비스
-
 - IaaS
   - 내 입맛에 맞게 구성 가능
   - OS 만들어야 함.
@@ -359,53 +351,50 @@ RESTful은 REST의 설계 규칙을 잘 지켜서 설계된 API를 RESTful한 AP
   - 회원가입을 하고 결제해서 빌려쓴다.
   - Ex) Notion
 
-참고: https://velog.io/@choidazzi/IaaS-vs-PaaS-vs-SaaS-vs-FaaS-vs-CaaS
+참고: [IaaS vs PaaS vs SaaS vs FaaS vs CaaS](https://velog.io/@choidazzi/IaaS-vs-PaaS-vs-SaaS-vs-FaaS-vs-CaaS)
 
 ### 아키텍처
+  - 모놀리식(Monolithic Architecture)
+    - 모든 기능이 유기적으로 연결되어 있기 때문에, 올릴 때 통째로 배포해야 한다.
+    - 단점: 사용자가 있든 없든 항상 서버를 올려놔야 한다. -> 고정 비용이 많이 든다.
+  - MSA(MicroService Architecture)
+    - 기능단위로 각각의 기술로 개발되고, 각자 독립적으로 배포/서비스된된다.
+    - 하나의 기능을 수정하면 다 올릴 필요없이 그것만 배포하면 된다. -> 유지보수가 쉽다.
+    - 사용자 트래픽을 예측할 수 없을 때 좋다.
+      -> 사용자 요청이 늘어나면, 서버를 자동으로 늘린다. 사용자가 없어지면 서버가 다시 줄어든다.
+    - 사용자가 요청했을 때만 작동하기 때문에, 사용한 만큼만 비용을 내면 된다.
+      -> MSA를 사용하면서 클라우드 환경에서 서비스하는 기술을 "서버리스"라고 한다.
+      -> FaaS는 서버리스의 하위집합
+    - 어려움
+  -> 보통 섞어서 개발한다. 모든 기능을 MSA로 개발하는 것이 좋은 게 아니다.
+    유기적이어야 하는 기능/트래픽이 정적인 기능은 모놀리식으로, 사용자 요청이 많은 기능만 MSA로 개발하면 된다. 특정 기간에 갑자기 몰리면 MSA로 개발한다.
 
-    - 모놀리식(Monolithic Architecture)
-        - 모든 기능이 유기적으로 연결되어 있기 때문에, 올릴 때 통째로 배포해야 한다.
-        - 단점: 사용자가 있든 없든 항상 서버를 올려놔야 한다. -> 고정 비용이 많이 든다.
-    - MSA(MicroService Architecture)
-        - 기능단위로 각각의 기술로 개발되고, 각자 독립적으로 배포/서비스된된다.
-        - 하나의 기능을 수정하면 다 올릴 필요없이 그것만 배포하면 된다. -> 유지보수가 쉽다.
-        - 사용자 트래픽을 예측할 수 없을 때 좋다.
-            -> 사용자 요청이 늘어나면, 서버를 자동으로 늘린다. 사용자가 없어지면 서버가 다시 줄어든다.
-        - 사용자가 요청했을 때만 작동하기 때문에, 사용한 만큼만 비용을 내면 된다.
-            -> MSA를 사용하면서 클라우드 환경에서 서비스하는 기술을 "서버리스"라고 한다.
-            -> FaaS는 서버리스의 하위집합
-        - 어려움
-    -> 보통 섞어서 개발한다. 모든 기능을 MSA로 개발하는 것이 좋은 게 아니다.
-        유기적이어야 하는 기능/트래픽이 정적인 기능은 모놀리식으로, 사용자 요청이 많은 기능만 MSA로 개발하면 된다. 특정 기간에 갑자기 몰리면 MSA로 개발한다.
+참고: [[MSA] 마이크로서비스 코딩 공작소 - 1장](https://velog.io/@jeongbeom4693/MSA-%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%BD%94%EB%94%A9-%EA%B3%B5%EC%9E%91%EC%86%8C-1%EC%9E%A5)
 
-참고: https://velog.io/@jeongbeom4693/MSA-%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%BD%94%EB%94%A9-%EA%B3%B5%EC%9E%91%EC%86%8C-1%EC%9E%A5
 
 ---
+
 
 # 2024-08-05
 
 ## 클라우드 기반 서비스하기(IaaS)
 
 ### VPC(Virtual Private Cloud)
-
 가상 서버를 배치시킬 수 있는 가상의 네트워크
 
 - 논리적으로 분리된 가상의 사설 네트워크 공간
-  업무의 목적에 따라 네트워크를 나누어 사용하실 수 있도록 논리적으로 격리된 네트워크를 제공합니다.
-  또한 사설 IP 주소와 Subnet 생성, 네트워크 게이트웨이, 접근 제어 등을 지원함으로서, 손쉽게 전용 네트워크를 확보하실 수 있습니다.
+  업무의 목적에 따라 네트워크를 나누어 사용하실 수 있도록 논리적으로 격리된 네트워크를 제공합니다.  
+  또한 사설 IP 주소와 Subnet 생성, 네트워크 게이트웨이, 접근 제어 등을 지원함으로서, 손쉽게 전용 네트워크를 확보하실 수 있습니다.  
 
 ### Subnet
-
 VPC 내에 세분화된 격리 공간을 제공
 
 ### 서버 OS 업데이트
-
 sudo apt update
 sudo apt upgrade
 sudo apt autoremove
 
 ### Q. 왜 WAS 서버와 웹 서버를 나누는가?
-
 실제 서비스에는 물리적인 서버가 최소한 3대가 필요하다.  
 -> 로드 밸런서를 두어 서버를 확장한다.  
 ![alt text](image.png)
@@ -418,7 +407,6 @@ sudo apt autoremove
 -> 프락시 환경(공개된 public IP를 통해 들어오는것이 아닌, public IP를 통해 내부의 private IP로 접근한다.)
 
 ### ACG
-
 - Inbound
   0.0.0.0/0로 설정하면, 아무나 서버에 접근할 수 있다.
 - outbound
@@ -427,7 +415,6 @@ http://~ 는 80 port로 통신한다.
 https://~ 는 443 port로 통신한다.
 
 ### DNS
-
 도메인 주소를 관리하는 서버
 
 1. 사용자가 도메인 주소를 입력한다.
@@ -440,12 +427,13 @@ Ex) www.naver.com
 호스트명: www
 도메인: naver.com
 
+
 ---
+
 
 # 2024-08-06
 
 ## AWS
-
 클라우드는 사용한 만큼만 후불
 
 - IAM 계정: Identity and Access Management
@@ -460,7 +448,6 @@ Ex) www.naver.com
   -> 서비스 관리단위: 함수
 
 ### AWS EC2
-
 1. 인스턴스 시작
 2. 탄력적 IP(고정 IP) 주소 할당 후 연결
    -> 고정 IP를 통해 원격 서버 연결
@@ -474,11 +461,9 @@ Ex) www.naver.com
   - cat /proc/version
 
 4. Node Framework 설치
-
 - sudo dnf install nodejs
 
 5. pm2 기반 WAS 서비스
-
 - pm2 설치
   - npm install pm2 -g
 - 서비스 폴더 만들고 접근 권한 주기
@@ -501,7 +486,6 @@ Ex) www.naver.com
       pm2 monit
 
 6. NginX 웹서버 설치
-
 - dnf install nginx
   -> 넌 지금부터 웹서버야
 - nginX 서비스 관리 명령어
@@ -511,7 +495,6 @@ Ex) www.naver.com
   - sudo systemctl stop nginx
 
 7. 도메인 주소 기반 가상 호스팅
-
 - nginx 설정 파일 수정
 
   - sudo vi /etc/nginx/nginx.conf
@@ -545,7 +528,6 @@ Ex) www.naver.com
 
 
 - Q. 웹 서버를 통해 도메인 주소를 세팅하는 이유
-
   1. 도메인을 사용하지 않으면, 사용자가 IP와 port를 외워야 한다.
      도메인을 이용하면 기본 80포트로 연결된다.
      관리해 줄 필요 x, IP와 port를 외울 필요 x
@@ -564,8 +546,8 @@ Ex) www.naver.com
 
 - ! nginx를 사용하면, 서버를 여러 개 뒀을 때 지가 알아서 로드밸런싱을 한다.
 
-## Maria DB Server
 
+## Maria DB Server
 - 설치
   sudo yum install -y mariadb105-server
 - 접속
@@ -578,13 +560,13 @@ Ex) www.naver.com
   grant all privileges on*.* to 'root'@'%' identified by 'yugyeong';
   flush privileges;
 
-## Redis
 
+## Redis
 서버를 한 대 이상 사용할 때 사용할 수 있다.
 분산 메시징 시스템에 사용할 수 있다.
 
-## SSL(Secure Sockets Layer)
 
+## SSL(Secure Sockets Layer)
 보안 소켓 계층
 
 - 사용자와 서버간의 통신을 하는 안전한 통로를 개설한다.
