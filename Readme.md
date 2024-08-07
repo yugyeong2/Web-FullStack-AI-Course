@@ -8,7 +8,7 @@
 - AJAX란, JavaScript의 라이브러리중 하나이며, HTML, CSS, 자바스크립트, DOM, XML 등 기존에 사용되던 여러 기술을 함께 사용하는 새로운 개발 기법입니다.
 - 브라우저가 가지고있는 XMLHttpRequest 객체를 이용해서 전체 페이지를 새로 고치지 않고도 페이지의 일부만을 위한 데이터를 로드하는 기법이며, JavaScript를 사용한 비동기 통신, 클라이언트와 서버간에 XML 데이터를 주고받는 기술입니다.
 - 즉, 쉽게 말하자면 자바스크립트를 통해서 서버에 데이터를 요청하는 것입니다.
-- 참고: [AJAX란?](https://daegwonkim.tistory.com/445)
+- 참고: [AJAX란?](https://daegwonkim.tistory.com/445)  
         [[비동기 통신] Ajax와 Axios의 차이점?](https://hstory0208.tistory.com/entry/%EB%B9%84%EB%8F%99%EA%B8%B0-%ED%86%B5%EC%8B%A0-Ajax%EC%99%80-Axios%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90)
 
 
@@ -50,9 +50,9 @@ Ex)
 
 # 2024-07-25
 
-주의 !  
-views/.ejs 파일의 <%%> 구문은 백엔드 코드  
-routes/.js 파일의 <script> 구문은 프론트엔드 코드
+    주의 !  
+    views/.ejs 파일의 <%%> 구문은 백엔드 코드  
+    routes/.js 파일의 <script> 구문은 프론트엔드 코드
 
 ## 시맨틱 태그(Semantic Tag)
 - html에서 페이지가 어떤 내용의 영역인지 유추할 수 있도록 태그 이름에 의미를 부여한다.
@@ -131,15 +131,15 @@ routes/.js 파일의 <script> 구문은 프론트엔드 코드
     - 1000자리 이상의 긴 문자열
 
 ### MySQL TABLE 제약조건
-    - PK(Primary Key)
-    - NN(Not Null)
-        NULL은 Data가 입력 안된 초기 상태, 공백 문자는 값이 들어가 있다.
-    - UQ(Unique Key)
-        Primary Key는 Unique Key
-    - ZF(Zero Fill)
-        남는 공간은 0으로 채운다.
-    - AI(Auto Increment)
-        자동 증가
+- PK(Primary Key)
+- NN(Not Null)
+    NULL은 Data가 입력 안된 초기 상태, 공백 문자는 값이 들어가 있다.
+- UQ(Unique Key)
+    Primary Key는 Unique Key
+- ZF(Zero Fill)
+    남는 공간은 0으로 채운다.
+- AI(Auto Increment)
+    자동 증가
 
 
 ## Model
@@ -198,7 +198,7 @@ index.js는 물리적인 데이터베이스 그 자체를 가리킨다.
     - 해당 소켓을 통해 클라이언트에게 메시지 전송
     - sender인 socket의 클라이언트는 제외한다.
 
-참고: [[Node.js] Socket.io 모듈 (.emit .on)](https://velog.io/@rzee/Node.js-Socket.io-%EB%AA%A8%EB%93%88-.emit-.on)
+참고: [[Node.js] Socket.io 모듈 (.emit .on)](https://velog.io/@rzee/Node.js-Socket.io-%EB%AA%A8%EB%93%88-.emit-.on)  
       [Socket.io - io.emit(io.sockets.emit)과 socket.broadcast.emit의 차이](https://velog.io/@nittre/NodeJS-io.emitio.sockets.emit%EA%B3%BC-socket.broadcast.emit%EC%9D%98-%EC%B0%A8%EC%9D%B4)
 
 
@@ -238,7 +238,7 @@ JSON 형식의 데이터를 암호화해 놓은 토큰
 # 2024-08-01
 
 ## RESTful
-Q. REST API와 RESTful API의 차이는 뭘까?
+Q. REST API와 RESTful API의 차이는 뭘까?  
   RESTful은 REST의 설계 규칙을 잘 지켜서 설계된 API를 RESTful한 API라고 합니다.  
   즉, REST의 원리를 잘 따르는 시스템을 RESTful이란 용어로 지칭됩니다.
 
@@ -496,7 +496,6 @@ Ex) www.naver.com
 
 7. 도메인 주소 기반 가상 호스팅
 - nginx 설정 파일 수정
-
   - sudo vi /etc/nginx/nginx.conf
     server {
       listen 80;
@@ -511,7 +510,6 @@ Ex) www.naver.com
         proxy_cache_bypass $http_upgrade;
         }
     }
-
 - 모든 nginx 설정 변경 후에는 반드시 설정파일 구문 검사 후 재시작해줘야 한다.
   - sudo nginx -t
     설정 파일이 잘 수정되었는지 확인하는 테스트/문법 검사 실행
@@ -527,24 +525,24 @@ Ex) www.naver.com
 - 보안 그룹(default는 삭제하지 않는다.)
 
 
-- Q. 웹 서버를 통해 도메인 주소를 세팅하는 이유
-  1. 도메인을 사용하지 않으면, 사용자가 IP와 port를 외워야 한다.
-     도메인을 이용하면 기본 80포트로 연결된다.
-     관리해 줄 필요 x, IP와 port를 외울 필요 x
-  2. 보안적 문제
-     ! 백엔드가 돌아가는 WAS 서버의 port를 개방하면 보안적으로 좋지 않다.
-     http: 80 port
-     https: 443 port
-     -> Ex) 사용자가 WAS 서버의 3000번 port로 직접 들어올 수 있으면, 공격해서 소스를 가져오면, 털린다.
-     사용자가 웹 서버는 털려도 된다.
-     웹 서버로 들어오는 것을 프록시라고 한다.
+    Q. 웹 서버를 통해 도메인 주소를 세팅하는 이유
+      1. 도메인을 사용하지 않으면, 사용자가 IP와 port를 외워야 한다.
+        도메인을 이용하면 기본 80포트로 연결된다.
+        관리해 줄 필요 x, IP와 port를 외울 필요 x
+      2. 보안적 문제
+        ! 백엔드가 돌아가는 WAS 서버의 port를 개방하면 보안적으로 좋지 않다.
+        http: 80 port
+        https: 443 port
+        -> Ex) 사용자가 WAS 서버의 3000번 port로 직접 들어올 수 있으면, 공격해서 소스를 가져오면, 털린다.
+        사용자가 웹 서버는 털려도 된다.
+        웹 서버로 들어오는 것을 프록시라고 한다.
 
-- ! WAS는 일반적으로 private IP로 통신한다.
-  -> Why? 외부에서 직접적으로 들어오는 경우만 public IP를 사용한다.
-  private IP로 통신할 때는 기본적으로는 port 규칙/제약이 없다.(-> 리눅스 방화벽 프로그램으로 port를 제한한다.)
-  웹서버만 public IP로 통신하고, 내부적인 서버와 통신할 때는 private IP로 통신한다.
+    ! WAS는 일반적으로 private IP로 통신한다.
+      -> Why? 외부에서 직접적으로 들어오는 경우만 public IP를 사용한다.
+      private IP로 통신할 때는 기본적으로는 port 규칙/제약이 없다.(-> 리눅스 방화벽 프로그램으로 port를 제한한다.)
+      웹서버만 public IP로 통신하고, 내부적인 서버와 통신할 때는 private IP로 통신한다.
 
-- ! nginx를 사용하면, 서버를 여러 개 뒀을 때 지가 알아서 로드밸런싱을 한다.
+    ! nginx를 사용하면, 서버를 여러 개 뒀을 때 지가 알아서 로드밸런싱을 한다.
 
 
 ## Maria DB Server
@@ -562,7 +560,7 @@ Ex) www.naver.com
 
 
 ## Redis
-서버를 한 대 이상 사용할 때 사용할 수 있다.
+서버를 한 대 이상 사용할 때 사용할 수 있다.  
 분산 메시징 시스템에 사용할 수 있다.
 
 
@@ -572,11 +570,43 @@ Ex) www.naver.com
 - 사용자와 서버간의 통신을 하는 안전한 통로를 개설한다.
 - 통로 안에서 데이터를 주고 받는다.
   -> SSL 기반으로 http 통신을 하는 방법이 https로 통신하는 것이다.
+- 무료 SSL 비영리 단체: Let's Encrypt
 
 Q. SSL을 어떻게 적용할까?
-웹서버에 SSL 인증서를 설치한다.
-인증서를 서버에 바인딩(설치)한다.
-인증서 파일이 만들어지면, nginx에 추가한다.
-사용자가 요청할 때마다 먼저 인증서를 통해 통로를 만들고 안전하게 데이터를 주고 받는다.
+  웹서버에 SSL 인증서를 설치한다.
+  인증서를 서버에 바인딩(설치)한다.
+  인증서 파일이 만들어지면, nginx에 추가한다.
+  사용자가 요청할 때마다 먼저 인증서를 통해 통로를 만들고 안전하게 데이터를 주고 받는다.
 
-무료 SSL 비영리 단체: Let's Encrypt
+
+---
+
+
+# 2024-08-06
+
+웹브라우저: 웹브라우저에 전달된 웹페이지 소스를 해석한다.
+프론트엔드: HTML을 변조하여, 웹사이트에 동적으로 보여준다.
+
+
+## JavaScript
+  -> 타입 지정이 불가하다.
+  -> 불안정
+
+
+## AltJS
+순수 JavaScript의 대안으로 개발된 또 다른 언어
+AltJS로 개발된 언어는 컴파일 과정을 통해 순수 JavaScript로 변환된다.
+JavaScript와 함깨 사용할 수 있다.
+
+
+## TypeScript
+- 컴파일 과정
+  타입스크립트 -> 컴파일 -> 자바스크립트 -> 실행
+- 자바스크립트 문법을 확장한 상위 호완성 제공(SuperSet)을 통해 순수 자바스크립트와 혼용하여 사용 가능
+- 정적 타입 검사 기능
+- 단점: 대규모 어플리케이션이나 소스가 큰 경우, 컴파일 타임이 길어질 수 있다.(자바스크립트로 변환하기 때문에)
+
+### TypeScript Annotation
+타입스크립트에서 변수, 함수, 객체 속성의 데이터 타입을 지정하는 것
+Type 검사를 수행하여 잠재적 에러를 확인할 수 있다.
+팀 협업을 할 때 동일 타입을 공유함으로써, 코딩컴벤션(코딩규칙)을 통한 팀 협업을  제공한다.
