@@ -6,6 +6,8 @@ var logger = require('morgan');
 
 var expressLayouts = require('express-ejs-layouts'); // Layout
 
+require('dotenv').config(); // env
+
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
 var articleRouter = require('./routes/article');
@@ -13,11 +15,16 @@ var channelRouter = require('./routes/channel');
 var memberRouter = require('./routes/member');
 var messageRouter = require('./routes/message');
 
+var sequelize = require('./models/index.js').sequelize; // sequelize
+
 var app = express();
+
+sequelize.sync(); // sequelize
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
 app.set('layout', 'layout'); // layout
 app.set('layout extractScripts', true);
 app.set('layout extractStyles', true);
