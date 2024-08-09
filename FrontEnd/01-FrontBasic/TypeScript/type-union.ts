@@ -18,3 +18,23 @@ function getCode(code: number | string):string {
 console.log("getCode:", getCode(1000));
 // 문자 전달
 console.log("getCode:", getCode("P-1000"));
+
+// -------------------------------------------------------------
+
+// 배열내의 값들에 대한 타입을 다양하게 지정하고 제한할 수 있다.
+const userData: (string | number | boolean)[] = ["박유경", 22, false];
+
+// type선언자를 이용해 개발자가 원하는 타입을 정의하고 사용할수 있다.
+// 특정값으로 데이터 값을 제한할 수 있다.
+type ProcessStates = "open" | "closed";
+
+let state: ProcessStates = "open";
+
+// 특정값만 설정할수 있는 type변수에 할당할 수 없는 값을 지정하면 에러 발생
+// let state1:ProcessStates = "open1";
+
+type OddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
+let oddNumber: OddNumbersUnderTen = 3;
+
+// 할당할수 없는 값을 지정하면 에러 발생
+// let oddNumber2:OddNumbersUnderTen = 2;

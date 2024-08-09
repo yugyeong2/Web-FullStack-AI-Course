@@ -13,5 +13,12 @@ function getCode(code) {
 }
 // 숫자 전달
 console.log("getCode:", getCode(1000));
-//  문자 전달
+// 문자 전달
 console.log("getCode:", getCode("P-1000"));
+// -------------------------------------------------------------
+// 배열내의 값들에 대한 타입을 다양하게 지정하고 제한할 수 있다.
+var userData = ["박유경", 22, false];
+var state = "open";
+var oddNumber = 3;
+// 할당할수 없는 값을 지정하면 에러 발생
+// let oddNumber2:OddNumbersUnderTen = 2;
