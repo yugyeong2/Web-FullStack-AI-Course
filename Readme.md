@@ -2,17 +2,18 @@
 
 ---
 
-# 2024-07-24
+## 2024-07-24
 
-## AJAX(Asynchronous Javascript And XML)
+### AJAX(Asynchronous Javascript And XML)
+
 - AJAX란, JavaScript의 라이브러리중 하나이며, HTML, CSS, 자바스크립트, DOM, XML 등 기존에 사용되던 여러 기술을 함께 사용하는 새로운 개발 기법입니다.
 - 브라우저가 가지고있는 XMLHttpRequest 객체를 이용해서 전체 페이지를 새로 고치지 않고도 페이지의 일부만을 위한 데이터를 로드하는 기법이며, JavaScript를 사용한 비동기 통신, 클라이언트와 서버간에 XML 데이터를 주고받는 기술입니다.
 - 즉, 쉽게 말하자면 자바스크립트를 통해서 서버에 데이터를 요청하는 것입니다.
 - 참고: [AJAX란?](https://daegwonkim.tistory.com/445)  
         [[비동기 통신] Ajax와 Axios의 차이점?](https://hstory0208.tistory.com/entry/%EB%B9%84%EB%8F%99%EA%B8%B0-%ED%86%B5%EC%8B%A0-Ajax%EC%99%80-Axios%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90)
 
+### PUT & PATCH 메소드
 
-## PUT & PATCH 메소드
 PUT과 PATCH 모두 데이터를 수정할 때 사용한다.  
 하지만 꼭 수정할 때 PUT 또는 PATCH를 사용할 필요는 없다.  
 일반적으로 POST를 등록/수정에 주로 사용한다.
@@ -20,12 +21,13 @@ PUT과 PATCH 모두 데이터를 수정할 때 사용한다.
 - PUT: 기존의 모든 것을 수정
 - PATCH: 일부 부분적인 수정
 
+### 와일드카드
 
-## 와일드카드
 와일드카드를 사용한 라우팅 메서드는 가장 아래에 선언해야 한다.  
 그렇지 않으면 aid = 1 = delete?aid=1 이들 모두 같다고 인식한다.
 
 Ex)
+
 - http://localhost:3000/api/articles/1
 - http://localhost:3000/api/articles/delete?aid=1
 
@@ -607,7 +609,7 @@ JavaScript와 함깨 사용할 수 있다.
 - 단점: 대규모 어플리케이션이나 소스가 큰 경우, 컴파일 타임이 길어질 수 있다.(자바스크립트로 변환하기 때문에)
 
 ### TypeScript Annotation
-타입스크립트에서  , 함수, 객체 속성의 데이터 타입을 지정하는 것
+타입스크립트에서 변수/함수, 객체 속성의 데이터 타입을 지정하는 것
 Type 검사를 수행하여 잠재적 에러를 확인할 수 있다.
 팀 협업을 할 때 동일 타입을 공유함으로써, 코딩컴벤션(코딩규칙)을 통한 팀 협업을  제공한다.
 
@@ -658,3 +660,86 @@ NEXT.js는 두 가지의 라우팅 방식을 지원한다.
   - V14버전부터 App Router 방식이 Default로 적용되었다.
   - /pages에 화면 컴포넌트 파일들이 위치한다.
   - /api에서 백엔드를 개발할 수 있다.
+
+
+---
+
+
+# 2024-08-09
+
+## NextJS
+
+### React & NextJS 프로젝트 구조
+  물리적인 html 페이지는 바뀌지 않고, 그 안의 컴포넌트만 바뀐다.  
+  웹페이지의 특정 영역을 그때그때 바꾸기 때문에, 화면 깜빡거림 없이 구현할 수 있다.  
+  웹페이지 단위의 "페이지 컴포넌트(/pages/...)"와 "재사용 가능한 화면 컴포넌트(/components/...)"를 구성하여 유지보수를 쉽게 할 수 있다.  
+  
+  ![alt text](image-1.png)
+  
+  - app.tsx: 전체 레이아웃 구성
+  - index.tsx: 메인 페이지 컴포넌트(최초로 보여질 기본 페이지)
+  - next-env.d.ts: 설치된 패키지가 타입스크립트를 지원하지 않는지 알려준다.
+  - package.json
+    dependencies: 실제 서비스와 관련된 패키지
+    devDependencies: 개발할 때 사용하는 패키지
+  - postcss.config.mjs
+      css 후처리기 관련 config 설정 파일
+      -> css는 전처리기(css를 자동으로 만들어준다)와 후처리기(만들어진 css를 브라우저에서 실행할 수 있도록 해준다)
+  - tsconfig.json
+    타입스크립트 관련 config 설정 파일
+  - _(언더스코어)로 시작되는 파일과 폴더
+    - 특별한 용도(대부분 애플리케이션의 전반적인 구조와 동작을 정의하는 시스템 파일이나 설정 파일)로 사용된다.(NextJS에서 제공하는 컨벤션)
+    - 라우팅 규칙에서 빠진다.(자동 라우팅 메커니즘에서 제외한다.)
+    - 프라이빗으로 간주한다.
+  - @/
+    최상위에서 경로를 나타낸다.
+
+### Next Page Router 프로젝트 실행 순서
+1. 사용자 웹브라우저 NextApp 최초 호출(도메인주소) 
+2. _app.tsx(서버에서 실행) 
+3. _app.tsx내 메인 페이지 컴포넌트 호출(서버에서 실행) 
+4. _document.tsx 호출(서버에서 실행) 
+5. Single Web HTML Page 생성(서버에서 실행) 
+6. 클라이언트로 Single Web HTML Page 전송
+7. 메인 페이지 기능 작동
+
+### JSX
+JavaScript 언어에 XML 표기문법을 추가한 자바스크립트 확장문법  
+리액트에서 HTML 태그와 유사하게 태그방식으로 UI를 표현하는 방식 제공  
+JSX는 HTML 태그처럼 보이지만 HTML태그는 아니며, 자바스크립트 +XML 문법을 이용
+
+- 최상위 태그는 하나이어야 한다.
+  Ex) <div></div><div></div>와 같이 최상위 태그가 여러 개이면 안된다.
+      <></> 또는 <Fragment></Fragment> 스타일이 없는 <div></div>로 감싸준다.
+- 컴파일 과정
+  JSX Code -> Client JavaScript 파일 -> 자바스크립트에 의해 HTML 태그 생성
+- 닫는 태그가 반드시 필요하다.
+
+
+## React
+대문자로 시작하는 파스칼식으로 사용한다.
+리액트에서는 참조할 때, require 대신 표준 문법인 import를 사용한다.
+
+### 컴포넌트
+- 페이지 컴포넌트는 사용자가 라우팅주소를 통해 호출하는 기본단위로 작동된다.
+- 리액트 컴포넌트는 props(속성값)를 통해 부모 컴포넌트로부터 입력값들을 전달(읽기전용)받고,
+  컴포넌트의 실행결과는 리액트 JSX요소를 반환한다.
+- 부모 컴포넌트에서 자식 컴포넌트로 값을 전달할 떄는 읽기전용 데이터 속성인 props을 통해 전달하고,
+  해당 컴포넌트의 자체 상태 값(수정가능한 데이터) 관리는 state란 개념을 이용한다.
+  -> state 데이터는 백엔드에서 가져오기도 한다.
+
+![alt text](image-2.png)
+
+- props: 부모 컴포넌트가 자식 컴포넌트로 전달하는 읽기전용 데이터
+- state: 컴포넌트에서 상태값을 저장하고, 변경하는 데이터(해당 컴포넌트 안에서만 사용 가능)
+- context: 전역 상태관리 공간
+
+- 함수형 컴포넌트
+  - React v16 이후부터 클래스 컴포넌트에서 함수형 컴포넌트가 기본으로 변경
+  - Hooks를 통한 state 및 LifeCycle 관리 기능 제공
+  - Pages폴더 내에 존재하는 페이지 컴포넌트 파일명은 라우팅주소 체계로 사용된다.
+    -> 파일명을 신중히 정해야 한다.
+
+- 재사용하기 위해 페이지를 컴포넌트로 쪼갠다.
+
+- [케이스 스타일(Case Styles): 카멜식, 케밥식, 파스칼식, 스네이크식](https://htc-refactor.tistory.com/entry/%EC%BC%80%EC%9D%B4%EC%8A%A4-%EC%8A%A4%ED%83%80%EC%9D%BCCase-Styles-%EC%B9%B4%EB%A9%9C%EC%8B%9D-%EC%BC%80%EB%B0%A5%EC%8B%9D-%ED%8C%8C%EC%8A%A4%EC%B9%BC%EC%8B%9D-%EC%8A%A4%EB%84%A4%EC%9D%B4%ED%81%AC%EC%8B%9D)
