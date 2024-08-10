@@ -14,7 +14,7 @@ router.get('/list', async(req, res) => {
 
 // 신규 admin 게시글 등록 페이지
 router.get('/create', async(req, res) => {
-    res.render('/admin/create');
+    res.render('admin/create');
 });
 
 // 신규 admin 게시글 등록
@@ -68,10 +68,10 @@ router.post('/delete', async(req, res) => {
 // 와일드카드
 // 기존 admin 게시글 수정 페이지
 router.get('/modify/:id', async(req, res) => {
-    admin_member_id = req.params.id;
-    const admin = await db.Admin.findOne(admin_member_id);
+    const admin_member_id = req.params.id;
+    const admin = await db.Admin.findOne({where:{admin_member_id:admin_member_id}});
 
-    res.render('article/modify');
+    res.render('admin/modify');
 });
 
 
