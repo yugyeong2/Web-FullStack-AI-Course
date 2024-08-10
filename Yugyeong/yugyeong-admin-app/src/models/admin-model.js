@@ -2,59 +2,64 @@ module.exports = function (sequelize, DataTypes) {
     return sequelize.define(
         "admin",
         {
-        admin_member_id: {
+        index_id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true,
             allowNull: false,
-            comment: "관리자 웹사이트 관리자 계정 고유번호",
-        },
-        company_code: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            comment: "소속 회사 코드 - 기준정보테이블참조,1-자회사,2-협력업체",
+            comment: "관리자 계정 인덱스 아이디",
         },
         admin_id: {
             type: DataTypes.STRING(100),
             allowNull: false,
-            comment: "관리자계정아이디-메일주소아님,eddy",
+            comment: "관리자 아이디",
         },
         admin_password: {
             type: DataTypes.STRING(200),
             allowNull: false,
-            comment: "관리자계정 난독화된 단방향 암호화된 텍스트값",
+            comment: "관리자 비밀번호 - 난독화된 단방향 암호화된 텍스트값",
         },
         admin_name: {
             type: DataTypes.STRING(200),
             allowNull: false,
-            comment: "관리자명",
+            comment: "관리자 이름",
         },
-        email: {
+        admin_email: {
             type: DataTypes.STRING(100),
             allowNull: true,
-            comment: "메일주소",
+            comment: "관리자 이메일",
         },
-        telephone: {
+        admin_birth: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            comment: "관리자 생년월일",
+        },
+        admin_telephone: {
             type: DataTypes.STRING(50),
             allowNull: true,
-            comment: "전화번호",
+            comment: "관리자 전화번호",
         },
-        dept_name: {
+        admin_gender: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            comment: "관리자 성별 - 1:남성,2:여성",
+        },
+        company_department: {
             type: DataTypes.STRING(100),
             allowNull: true,
-            comment: "부서명",
+            comment: "기업/부서명",
         },
-        used_yn_code: {
+        account_status: {
             type: DataTypes.TINYINT,
             allowNull: false,
-            comment: "사용 여부 코드 1:사용 중 0:사용 불가",
+            comment: "계정 상태 - 1:사용 중,0:사용 불가",
         },
-        reg_date: {
+        register_date: {
             type: DataTypes.DATE,
             allowNull: false,
             comment: "등록 일시",
         },
-        reg_member_id: {
+        register_index_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             comment: "등록자 고유번호",
@@ -64,7 +69,7 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: true,
             comment: "등록 일시",
         },
-        edit_member_id: {
+        edit_index_id: {
             type: DataTypes.INTEGER,
             allowNull: true,
             comment: "수정자 고유번호",
@@ -80,7 +85,7 @@ module.exports = function (sequelize, DataTypes) {
             name: "PRIMARY",
             unique: true,
             using: "BTREE",
-            fields: [{ name: "admin_member_id" }], //여러개의 컬럼이 프라이머리키인경우(복합키){}추가하여 설정가능
+            fields: [{ name: "index_id" }], //여러 개의 컬럼이 프라이머리키인 경우 (복합키){} 추가하여 설정가능
             },
         ],
         }
