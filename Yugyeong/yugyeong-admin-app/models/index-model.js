@@ -1,23 +1,30 @@
 // 서버 상의 경로를 조회하는 패키지 참조
-const path = require('path');
+const path = require("path");
 
 // 시퀄라이즈 ORM 프레임워크 객체 참조
 // 대문자 Sequelize는 각종 sequelize ORM 프레임워크 내에서 제공하는 객체, 데이터 타입 등을 제공한다.(ORM 패키지 자체)
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 
 // 개발모드 환경설정
-const env = process.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV || "development";
 
 // DB 연결 환경설정 정보 변경 처리
 // __dirname은 현재 모듈(index.js)의 물리적 경로 조회
-const config = require(path.join(__dirname,'..', 'config', 'config.json'))[env];
+const config = require(path.join(__dirname, "..", "config", "config.json"))[
+  env
+];
 
 // 데이터 베이스 객체
 const db = {};
 
 // DB 연결 정보로 시퀄라이즈 ORM 객체 생성
 // 소문자 sequelize는 실제 DB 서버에 연결하고, DB 서버에 SQL 구문을 전달해서 데이터를 처리하는 기능을 제공한다.
-const sequelize = new Sequelize(config.database, config.username, config.password, config);
+const sequelize = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  config
+);
 
 // 동적으로 속성을 만듬
 // DB 처리 객체에 시퀄라이즈 정보 맵핑 처리
@@ -26,13 +33,13 @@ db.sequelize = sequelize; // DB 연결 정보를 포함한 DB제어 객체속성
 db.Sequelize = Sequelize; // Sequelize 페키지에서 제공하는 각종 데이터 타입 및 관련 객체 정보를 제공함
 
 // 모델 모듈파일을 참조하고, db 객체에 동적 속성 정의
-db.Admin = require('./admin.js')(sequelize, Sequelize);
-db.Member = require('./member.js')(sequelize, Sequelize);
-db.Article = require('./article.js')(sequelize, Sequelize);
-db.ArticleFile = require('./article_file.js')(sequelize, Sequelize);
-db.channel = require('./channel.js')(sequelize, Sequelize);
-db.channel_member = require('./channel_member.js')(sequelize, Sequelize);
-db.channel_message = require('./channel_message.js')(sequelize, Sequelize);
+db.Admin = require("./admin-model.js")(sequelize, Sequelize);
+db.Member = require("./member-model.js")(sequelize, Sequelize);
+db.Article = require("./article-model.js")(sequelize, Sequelize);
+db.ArticleFile = require("./articleFile-model.js")(sequelize, Sequelize);
+db.channel = require("./channel-model.js")(sequelize, Sequelize);
+db.channel_member = require("./channelMember-model.js")(sequelize, Sequelize);
+db.channel_message = require("./channelMessage-model.js")(sequelize, Sequelize);
 
 // db객체 외부로 노출
 module.exports = db;
