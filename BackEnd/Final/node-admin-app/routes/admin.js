@@ -183,7 +183,7 @@ router.post('/create', isLoggedIn, async(req, res) => {
         used_yn_code,
         reg_date: Date.now(),
         reg_member_id: loginAdminId
-    }
+    };
 
     // Step3: DB 게시글 테이블에 상기 admin 데이터 등록 처리(Insert Into Table명...)
     // DB 서버에서 Insert SQL 구문을 통해서 DB 등록 처리가 되면 등록된 실제 데이터셋을 다시 반환한다.
