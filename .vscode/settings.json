@@ -1,15 +1,18 @@
 {
-    "cSpell.words": [
-        "cbnu",
-        "groupchat",
-        "NEXTJS",
-        "nodechatadmin",
-        "nodechatapp",
-        "RDBMS",
-        "resave",
-        "RESTAPI",
-        "TINYINT",
-        "VARCHAR",
-        "Yugyeong"
-    ]
+  "cSpell.words": [
+    "cbnu",
+    "groupchat",
+    "headlessui",
+    "heroicons",
+    "NEXTJS",
+    "nodechatadmin",
+    "nodechatapp",
+    "RDBMS",
+    "resave",
+    "RESTAPI",
+    "tailwindcss",
+    "TINYINT",
+    "VARCHAR",
+    "Yugyeong"
+  ]
 }
