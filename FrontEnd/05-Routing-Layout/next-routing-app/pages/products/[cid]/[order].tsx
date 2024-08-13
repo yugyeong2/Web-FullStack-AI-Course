@@ -4,8 +4,8 @@ const ProductCategory = () => {
     const router = useRouter();
 
     return (
-        <div>
-            제품 카테고리 페이지: {router.query.cid}
+        <div className='h-[700px]'>
+            제품 카테고리 페이지: {router.query.cid} - 정렬방식:{router.query.order}
         </div>
     );
 }
