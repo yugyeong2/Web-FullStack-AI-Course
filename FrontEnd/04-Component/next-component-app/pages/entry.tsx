@@ -5,8 +5,64 @@
 // 오픈소스 UI 라이브러리 기능 참조
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { Field, Label, Switch } from '@headlessui/react';
+// useState 상태관리 Hook을 참조
+import React, { useState } from 'react';
 
-function Entry() {
+const Entry = () => {
+  
+  // 원시 데이터 타입 기반 useState Hook 사용
+  // ! 개별 UI 요소별로 state 생성 시 관리 요소가 많이 발생한다.
+  const [name, setName] = useState<string>(''); // TypeScript는 타입 정의
+  const [password, setPassword] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [telephoneType, setTelephoneType] = useState<number>(0); // Default: 핸드폰
+  const [telephone, setTelephone] = useState<string>('');
+  const [introduction, setIntroduction] = useState<string>('');
+  const [agree, setAgree] = useState<boolean>(false);
+
+  // 이름 텍스트박스 값이 변경될 때마다 name State 값을 변경
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // 이번트가 발생한 input 요소의 현재 입력값을 추출해서 관련 setter 함수에 값을 전달해 상태값 변경
+    setName(e.target.value);
+  };
+
+  // 암호 텍스트박스 값이 변경될 때마다 password State 값을 변경
+  // 이벤트 처리핸들러 함수를 만드는 경우는 주로 핸들러 내에서 특정 로직을 구현해야 할 때 사용한다.
+  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPassword(e.target.value);
+  };
+
+  const handleTelephoneTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setTelephoneType(Number(e.target.value));
+  };
+
+  const handleIntroductionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setIntroduction(e.target.value);
+  };
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // 체크박스 요소의 체크여부(boolean) 값을 가져와서 상태값을 변경
+    setAgree(e.target.checked);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    // 기본 동작 차단 (Submit 이벤트 실행으로 인한 화면 깜빡임 방지 처리)
+    e.preventDefault();
+
+    // 백엔드로 보낼 JSON 데이터 객체 생성
+    const memberData = {
+      name,
+      password,
+      email,
+      telephoneType,
+      telephone,
+      introduction,
+      agree
+    };
+
+    console.log("백엔드 회원가입 API에 데이터를 전달한다.", memberData);
+  }
+
   return (
     <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
       <div
@@ -29,10 +85,10 @@ function Entry() {
           사용자 정보를 입력해주세요.
         </p>
       </div>
+      
       <form
-        action="#"
-        method="POST"
         className="mx-auto mt-16 max-w-xl sm:mt-20"
+        onSubmit={handleSubmit}
       >
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div>
@@ -47,6 +103,8 @@ function Entry() {
                 id="name"
                 name="name"
                 type="text"
+                value={name}
+                onChange={handleNameChange} // ! 사용자가 입력을 마치고, 마우스가 영역을 벗어났을 때 onChange 실행
                 autoComplete="given-name"
                 className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
@@ -64,6 +122,8 @@ function Entry() {
                 id="password"
                 name="password"
                 type="password"
+                value={password}
+                onChange={handlePassword}
                 autoComplete="family-name"
                 className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
@@ -82,6 +142,8 @@ function Entry() {
                 id="email"
                 name="email"
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)} // ! 핸들러를 따로 만들지 않고 바로 가능
                 autoComplete="email"
                 className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
@@ -96,17 +158,19 @@ function Entry() {
             </label>
             <div className="relative mt-2.5">
               <div className="absolute inset-y-0 left-0 flex items-center">
-                <label htmlFor="telephonetype" className="sr-only">
+                <label htmlFor="telephoneType" className="sr-only">
                   연락처 유형
                 </label>
                 <select
-                  id="telephonetype"
-                  name="telephonetype"
+                  id="telephoneType"
+                  name="telephoneType"
+                  value={telephoneType}
+                  onChange={handleTelephoneTypeChange}
                   className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-9 text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                 >
-                  <option>핸드폰</option>
-                  <option>집전화</option>
-                  <option>회사전화</option>
+                  <option value={0}>핸드폰</option>
+                  <option value={1}>집전화</option>
+                  <option value={2}>회사전화</option>
                 </select>
                 <ChevronDownIcon
                   aria-hidden="true"
@@ -117,8 +181,10 @@ function Entry() {
                 id="telephone"
                 name="telephone"
                 type="tel"
+                value={telephone}
+                onChange={(e) => setTelephone(e.target.value)}
                 autoComplete="tel"
-                className="block w-full rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 px-3.5 py-2 pl-32 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -133,17 +199,19 @@ function Entry() {
               <textarea
                 id="introduction"
                 name="introduction"
+                value={introduction}
+                onChange={handleIntroductionChange}
                 rows={4}
                 className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                defaultValue={''}
               />
             </div>
           </div>
+
           <Field className="flex gap-x-4 sm:col-span-2">
             <div className="flex h-6 items-center">
-              <Switch
-                // checked={agreed}
-                // onChange={setAgreed}
+              {/* <Switch
+                // checked={agree}
+                // onChange={setAgree}
                 className="group flex w-8 flex-none cursor-pointer rounded-full bg-gray-200 p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 data-[checked]:bg-indigo-600"
               >
                 <span className="sr-only">Agree to policies</span>
@@ -151,8 +219,18 @@ function Entry() {
                   aria-hidden="true"
                   className="h-4 w-4 transform rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition duration-200 ease-in-out group-data-[checked]:translate-x-3.5"
                 />
-              </Switch>
+              </Switch> */}
+
+              <input
+                type="checkbox"
+                id="agree"
+                name="agree"
+                value="agree"
+                onChange={handleCheckboxChange}
+                checked={agree}
+              />
             </div>
+
             <Label className="text-sm leading-6 text-gray-600">
               <a href="#" className="font-semibold text-indigo-600">
                 개인정보보호정책
