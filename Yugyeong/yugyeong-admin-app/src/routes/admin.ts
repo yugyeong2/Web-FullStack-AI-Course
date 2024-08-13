@@ -82,20 +82,33 @@ router.post("/create", async (req, res) => {
 
 // 기존 admin 계정 수정
 router.post("/modify", async (req, res) => {
-  const admin = {
-    company_code: 1,
-    admin_id: "test",
-    admin_password: "test user",
-    admin_name: "테스트 사용자",
-    email: "test@test.ac.kr",
-    telephone: "010-1234-5678",
-    dept_name: "테스트팀",
-    used_yn_code: 1,
+  const admin_id  = req.body.adminID;
+  const admin_password = req.body.adminPassword;
+  const admin_name = req.body.adminName;
+  const admin_email = req.body.adminEmail;
+  const admin_birth = req.body.adminBirth;
+  const admin_telephone = req.body.adminTelephone;
+  const admin_gender = req.body.adminGender;
+  const company_department = req.body.adminCompanyDepartment;
+  const account_state = req.body.adminAccountState;
+
+  const modifiedAdmin = {
+    admin_id,
+    admin_password,
+    admin_name,
+    admin_email,
+    admin_birth,
+    admin_telephone,
+    admin_gender,
+    company_department,
+    account_state,
     edit_date: Date.now(),
-    edit_member_id: 1,
+    edit_index_id: 1, // 나중에 세션 만들고 수정
   };
 
-  const updatedAdmin = await db.Admin.create(admin);
+  const updatedAdmin = await db.Admin.create(modifiedAdmin);
+  console.log("변경된 admin 계정:", updatedAdmin);
+
   res.redirect("/admin/list");
 });
 
@@ -109,12 +122,13 @@ router.post("/delete", async (req, res) => {
 // 와일드카드
 // 기존 admin 계정 수정 페이지
 router.get("/modify/:id", async (req, res) => {
-  const admin_member_id = req.params.id;
+  const admin_index_id = req.params.id;
+
   const admin = await db.Admin.findOne({
-    where: { admin_member_id: admin_member_id },
+    where: { admin_index_id: admin_index_id },
   });
 
-  res.render("admin/modify");
+  res.render("admin/modify", {admin});
 });
 
 export default router;
