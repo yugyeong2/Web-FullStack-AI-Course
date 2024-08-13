@@ -57,8 +57,8 @@ router.post("/create", async (req, res) => {
   const admin_birth = req.body.adminBirth;
   const admin_telephone = req.body.adminTelephone;
   const admin_gender = req.body.adminGender;
-  // const company_department = req.body.company_department;
-  // const account_status = req.body.account_status;
+  const company_department = req.body.adminCompanyDepartment;
+  const account_state = req.body.adminAccountState;
 
   const createdAdmin = {
     admin_id,
@@ -68,8 +68,8 @@ router.post("/create", async (req, res) => {
     admin_birth,
     admin_telephone,
     admin_gender,
-    company_department: "test", // 나중에 create.ejs에 form 만들고 추가
-    account_status: 1, // 나중에 create.ejs에 form 만들고 추가
+    company_department,
+    account_state,
     register_date: Date.now(),
     register_index_id: 1, // 나중에 세션 만들고 수정
   };
