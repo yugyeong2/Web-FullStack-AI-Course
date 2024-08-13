@@ -7,7 +7,12 @@ const router: Router = express.Router();
 // 동적 SQL 쿼리를 직접 작성해서 전달하기 위한 참조
 const sequelize: Sequelize = db.sequelize;
 
-// 전체 admin 계정 조회 페이지
+
+router.get("/", async (req, res) =>  {
+  res.redirect("/admin/list");
+});
+
+// 전체 admin 계정 리스트 페이지
 router.get("/list", async (req, res) => {
   const searchOption = { // 검색 옵션 설정
     admin_name: "",
