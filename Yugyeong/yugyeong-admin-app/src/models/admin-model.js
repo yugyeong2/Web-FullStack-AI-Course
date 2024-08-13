@@ -42,17 +42,17 @@ module.exports = function (sequelize, DataTypes) {
         admin_gender: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            comment: "관리자 성별 - 1:남성,2:여성",
+            comment: "관리자 성별 - 0:선택,1:남성,2:여성",
         },
         company_department: {
             type: DataTypes.STRING(100),
             allowNull: true,
             comment: "기업/부서명",
         },
-        account_status: {
+        account_state: {
             type: DataTypes.TINYINT,
             allowNull: false,
-            comment: "계정 상태 - 1:사용 중,0:사용 불가",
+            comment: "계정 상태 - 0:선택,1:사용 중,2:사용 불가",
         },
         register_date: {
             type: DataTypes.DATE,
