@@ -14,6 +14,11 @@ router.get("/", async (req, res) =>  {
 
 // 전체 admin 계정 리스트 페이지
 router.get("/list", async (req, res) => {
+  res.render("admin/list"); // list.ejs 또는 list.html과 같은 템플릿 파일 렌더링
+});
+
+// 전체 admin 계정 조회 라우터
+router.get("/api/list", async (req, res) => {
   const searchOption = { // 검색 옵션 설정
     admin_name: "",
     admin_gender: "0",
@@ -21,16 +26,17 @@ router.get("/list", async (req, res) => {
   }
 
   let query = `SELECT
-              admin_id, admin_name, admin_email, company_code, admin_gender, company_department, account_status, register_date
+              index_id, admin_name, admin_email, company_department, account_state, register_date
               FROM admin
               ORDER BY register_date DESC;`;
 
-  const admins = await db.Admin.query(query, {
+  const admins = await sequelize.query(query, {
     raw: true,
     type: QueryTypes.SELECT
   });
 
-  res.render("admin/list", { admins, searchOption });
+  // EJS를 사용하지 않고 JSON 데이터를 클라이언트에 반환
+  res.json({ admins, searchOption });
 });
 
 router.post("/list", async (req, res) => {
