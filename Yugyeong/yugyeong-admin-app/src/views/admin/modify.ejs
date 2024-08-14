@@ -14,7 +14,7 @@
                     <!-- 비밀번호 영역 -->
                     <div class="mb-3 col-sm-6">
                         <label for="adminPassword" class="form-label">비밀번호</label>
-                        <input type="password" class="form-control" id="adminPassword" name="adminPassword" />
+                        <input type="password" class="form-control" id="adminPassword" name="adminPassword" readonly />
                     </div>
                 </div>
 
@@ -22,19 +22,19 @@
                     <!-- 이름 영역 -->
                     <div class="mb-3 col-sm-4">
                         <label for="adminName" class="form-label">이름</label>
-                        <input type="text" class="form-control" id="adminName" name="adminName" />
+                        <input type="text" class="form-control" id="adminName" name="adminName" readonly />
                     </div>
 
                     <!-- 생년월일 영역 -->
                     <div class="mb-3 col-sm-4">
                         <label for="adminBirth" class="form-label">생년월일</label>
-                        <input type="text" class="form-control" id="adminBirth" name="adminBirth" />
+                        <input type="text" class="form-control" id="adminBirth" name="adminBirth" readonly />
                     </div>
 
                     <!-- 성별 영역 -->
                     <div class="mb-3 col-sm-4">
                         <label for="adminGender" class="form-label">성별</label>
-                        <select id="adminGender" class="form-control" name="adminGender">
+                        <select id="adminGender" class="form-control" name="adminGender" readonly >
                             <option value="0">선택</option>
                             <option value="1">남성</option>
                             <option value="2">여성</option>
@@ -94,3 +94,41 @@
         </form>
     </div>
 </div>
+
+
+<script>
+    // 서버로부터 관리자 정보를 가져와서 폼에 채우는 함수
+    async function fetchAdminData(adminId) {
+        try {
+            const response = await fetch(`/admin/api/modify/${adminId}`);
+            const admin = await response.json();
+
+            document.getElementById('adminID').value = admin.admin_id;
+            document.getElementById('adminPassword').value = admin.admin_password;
+            document.getElementById('adminName').value = admin.admin_name;
+            document.getElementById('adminBirth').value = admin.admin_name;
+            document.getElementById('adminGender').value = admin.admin_gender;
+            document.getElementById('adminEmail').value = admin.admin_email;
+            document.getElementById('adminTelephone').value = admin.admin_telephone;
+            document.getElementById('adminCompanyDepartment').value = admin.company_department;
+            document.getElementById('adminAccountState').value = admin.account_state;
+
+        } catch (error) {
+            console.error('Error fetching admin data:', error);
+        }
+    }
+
+    // 페이지 로드 시 관리자 정보를 가져와서 폼에 채우기
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const adminId = urlParams.get('id'); // URL에서 관리자 ID 추출
+        fetchAdminData(adminId);
+    });
+
+    // 삭제 버튼 클릭 시 처리
+    document.getElementById('btnDelete').addEventListener('click', function() {
+        if (confirm('정말 삭제하시겠습니까?')) {
+            location.href = `/admin/delete?id=${document.getElementById('index_id').value}`;
+        }
+    });
+</script>

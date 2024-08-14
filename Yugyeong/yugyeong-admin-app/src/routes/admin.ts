@@ -120,15 +120,20 @@ router.post("/delete", async (req, res) => {
 });
 
 // 와일드카드
-// 기존 admin 계정 수정 페이지
-router.get("/modify/:id", async (req, res) => {
-  const admin_index_id = req.params.id;
+// 수정할 기존 관리자 계정을 JSON 형식으로 반환
+router.get("/api/modify/:id", async (req, res) => {
+  const index_id = req.params.id;
 
   const admin = await db.Admin.findOne({
-    where: { admin_index_id: admin_index_id },
+    where: { index_id: index_id },
   });
 
-  res.render("admin/modify", {admin});
+  res.json(admin); // JSON 데이터 반환
+});
+
+// 기존 admin 계정 수정 페이지
+router.get("/modify/:id", async (req, res) => {
+  res.render("admin/modify");
 });
 
 export default router;
