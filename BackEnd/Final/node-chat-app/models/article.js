@@ -22,7 +22,7 @@ module.exports = function (sequelize, DataTypes) {
             article_type_code: {
                 type: DataTypes.TINYINT,
                 allowNull: false,
-                comment: "게시글 유형코드 0: 일반게시글 1: 상단고정게시글",
+                comment: "게시글 유형코드 0: 일반 게시글 1: 상단 고정 게시글",
             },
             contents: {
                 type: DataTypes.TEXT,
@@ -42,7 +42,7 @@ module.exports = function (sequelize, DataTypes) {
             is_display_code: {
                 type: DataTypes.TINYINT,
                 allowNull: false,
-                comment: "게시 여부 0: 게시안함 1: 게시함",
+                comment: "게시 여부 0: 게시하지 않음 1: 게시",
             },
             reg_date: {
                 type: DataTypes.DATE,

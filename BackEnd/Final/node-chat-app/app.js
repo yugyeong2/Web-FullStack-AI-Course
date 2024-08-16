@@ -20,6 +20,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 // 회원 정보 관리 RESTful API 라우터 파일 참조
 var memberRouter = require('./routes/memberAPI');
+var articleRouter = require('./routes/articleAPI');
 
 var app = express();
 
@@ -33,7 +34,7 @@ sequelize.sync(); // Code first, Model first
 app.use(
   cors({
     methods: ["GET", "POST", "DELETE", "OPTIONS"],
-    origin: ["http://localhost:5000", "http://127.0.0.1:5500"], // ! CORS 설정 주의
+    origin: ["http://localhost:5000", "http://127.0.0.1:5500", "http://localhost:3000"], // ! CORS 설정 주의
   })
 );
 
@@ -51,6 +52,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 // memberAPIRouter의 기본 호출주소 체계 정의
 app.use('/api/member', memberRouter);
+app.use('/api/article', articleRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
