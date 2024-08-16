@@ -34,10 +34,11 @@
         try {
             const response = await fetch('/admin/api/list');
             const data = await response.json();
-
             console.log(data);
 
             const adminTableBody = document.getElementById('adminTableBody');
+            console.log(adminTableBody);
+
             adminTableBody.innerHTML = '';
 
             data.admins.forEach(admin => {
