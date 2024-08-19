@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "paths": {
+      "@/*": ["./*"]
+    },
+    // 개발 환경에 따라 컴퓨터가 파일 이름의 대소문자를 구분할 수도, 구분하지 않을 수도 있다.
+    // 이러한 환경 에러를 방지하기 위해 해당 옵션을 true로 지정하면, 파일 경로의 대소문자가 변경될 때 TypeScript가 에러를 발생시킨다.
+    "forceConsistentCasingInFileNames": true // 대소문자 구분 옵션
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}
