@@ -53,11 +53,11 @@ router.post('/create', async(req, res) => {
 
     try {
         // Step0: 프론트엔드에서 전달된 JWT 토큰 값에서 로그인 사용자 정보 추출
-        // var token = req.headers.authorization.split('Bearer ')[1];
-        // console.log('게시글 등록 API 토큰 값:', token);
+        var token = req.headers.authorization.split('Bearer ')[1];
+        console.log('게시글 등록 API 토큰 값:', token);
 
-        // // 사용자 토큰 정보 유효성 검사 후, 정상적이면 토큰 내에서 사용자 인증 JSON 정보 추출
-        // var loginMember = await jwt.verify(token, process.env.JWT_AUTH_KEY);
+        // 사용자 토큰 정보 유효성 검사 후, 정상적이면 토큰 내에서 사용자 인증 JSON 정보 추출
+        var loginMember = await jwt.verify(token, process.env.JWT_AUTH_KEY);
 
         // Step1: 프론트엔드에서 전달한 데이터 추출
         const title = req.body.title;
@@ -76,15 +76,15 @@ router.post('/create', async(req, res) => {
             ip_address: req.headers["x-forwarded-for"] || req.connection.remoteAddress, // 사용자 IP 추출 -> 로컬 개발 환경인 경우 ::1로 나올 수 있다.
             is_display_code: display,
             reg_date: Date.now(),
-            reg_member_id: 1 // 추후 토큰에서 사용자 정보 추출 후 변경 예정
+            reg_member_id: loginMember.member_id // Client의 토큰 내의 사용자 인증 데이터에서 사용자 고유번호 추출
         };
         
         // Step3: DB article 테이블에 신규 게시글 정보 등록 처리
-        const registedArticle = await db.Article.create(article);
+        const registeredArticle = await db.Article.create(article);
 
         // Step4: 처리 결과 값 프론트엔드에 반환
         apiResult.code = 200;
-        apiResult.data = registedArticle;
+        apiResult.data = registeredArticle;
         apiResult.message = "200 OK";
 
     } catch (error) {
@@ -113,7 +113,7 @@ router.get('/delete', async(req, res) => {
  * 응답 결과: 단일 게시글 수정 결과 데이터
  */
 router.get('/modify/:id', async(req, res) => {
-    const articleIdx = req.parmas.id;
+    const articleIdx = req.params.id;
 
     let apiResult = {
         code: 400,

@@ -1,13 +1,22 @@
 // 백엔드 RESTful API 통신을 위한 axios 패키지 참조
 import axios from 'axios';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import { ICreateBlog } from '@/interfaces/blog';
 
 const BlogCreate = () => {
     const router = useRouter();
+
+    // 최초 화면 컴포넌트 렌더링(마운팅) 시점에 로컬스토리지 내의 토큰값 존재 여부 체크 후,
+    // 토큰이 없으면, 로그인하고 오시라고 로그인 페이지로 리다이렉션 처리
+    useEffect(() => {
+        // 서버 인증 JWT 사용자 인증 토큰이 스토리지에 존재하는지 확인
+        if(localStorage.getItem('token') == undefined) {
+            router.push('/login');
+        }
+    }, []);
 
     const [blog, setBlog] = useState<ICreateBlog>({
         title: '',
@@ -19,36 +28,44 @@ const BlogCreate = () => {
     const blogSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        // 웹브라우저 로컬스토리지 저장소에서 로그인 사용자 JWT 인증 토큰 문자열을 조회해온다.
+        const token = localStorage.getItem('token');
+
         // axios 또는 fetch()를 통해 백엔드 RESTful API를 호출한다.
         try {
             // ! Case 1) axios를 이용한 데이터 처리 방법
-            // // axios.post('API 주소', 전달 데이터);
-            // const response = await axios.post('http://localhost:5000/api/article/create', blog);
-            // console.log('axios를 통해 호출한 게시글 등록 결과:', response);
+            // axios.post('API 주소', 전달 데이터);
+            const response = await axios.post(
+                'http://localhost:5000/api/article/create',
+                blog,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
 
-            // if(response.data.code == 200) {
-            //     alert('등록 완료');
-            //     console.log('게시글 등록 성공:', response.data);
-            //     router.push('/mypage/blog/list');
-            // } else {
-            //     console.error('블로그 등록 중 에러 발생:', response.data.message);
-            // }
+            console.log('axios를 통해 호출한 게시글 등록 결과:', response);
+
+            if(response.data.code == 200) {
+                alert('등록 완료');
+                console.log('게시글 등록 성공:', response.data);
+                router.push('/mypage/blog/list');
+            } else {
+                console.error('블로그 등록 중 에러 발생:', response.data.message);
+            }
 
             // ! Case 2) fetch() 이용한 데이터 처리 방법
-            const response = await fetch('http://localhost:5000/api/article/create', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(blog)
-            });
+            // const response = await fetch('http://localhost:5000/api/article/create', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(blog)
+            // });
 
-            const result = await response.json();
-            if(result.code == 200) {
-                alert('등록 완료');
-                router.push('/mypage/blog/list');
+            // const result = await response.json();
+            // if(result.code == 200) {
+            //     alert('등록 완료');
+            //     router.push('/mypage/blog/list');
 
-            } else {
-                console.error('블로그 등록 중 에러 발생:', result.message);
-            }
+            // } else {
+            //     console.error('블로그 등록 중 에러 발생:', result.message);
+            // }
 
         } catch(error) {
             console.error('블로그 등록 중 백엔드 API 호출 에러 발생:', error);        

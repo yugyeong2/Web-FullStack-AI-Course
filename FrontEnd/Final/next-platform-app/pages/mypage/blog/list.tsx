@@ -7,8 +7,8 @@ import axios from 'axios';
 
 const BlogList = () => {
 
-
-// const BlogList = ( {blogs} : { blogs: IBlog[] } ) => { // ! SSR 방식으로 최초 화면 렌더링 처리 시 사용
+// ! SSR 방식으로 최초 화면 렌더링 처리 시 사용
+// const BlogList = ( {blogs} : { blogs: IBlog[] } ) => {
 
     const router = useRouter();
     
@@ -17,6 +17,12 @@ const BlogList = () => {
 
     // ! CSR 방식으로 최초 화면 렌더링(마운트) 시, 웹브라우저 서버 RESTful API 호출 및 게시글 목록 조회 바인딩 처리
     useEffect(() => {
+        // 서버 인증 JWT 사용자 인증 토큰이 스토리지에 존재하는지 확인'
+        // 토큰이 없으면, 로그인하고 오시라고 로그인 페이지로 리다이렉션 처리
+        if(localStorage.getItem('token') == undefined) {
+            router.push('/login');
+        }
+
         getBlogList();
     }, []);
 
