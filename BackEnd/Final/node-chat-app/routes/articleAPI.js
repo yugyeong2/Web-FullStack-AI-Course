@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
+// jsonwebtoken 참조
+var jwt = require('jsonwebtoken');
+
 // ORM DB 객체 참조
 var db = require('../models/index');
 
@@ -49,24 +52,31 @@ router.post('/create', async(req, res) => {
     };
 
     try {
+        // Step0: 프론트엔드에서 전달된 JWT 토큰 값에서 로그인 사용자 정보 추출
+        // var token = req.headers.authorization.split('Bearer ')[1];
+        // console.log('게시글 등록 API 토큰 값:', token);
+
+        // // 사용자 토큰 정보 유효성 검사 후, 정상적이면 토큰 내에서 사용자 인증 JSON 정보 추출
+        // var loginMember = await jwt.verify(token, process.env.JWT_AUTH_KEY);
+
         // Step1: 프론트엔드에서 전달한 데이터 추출
-        const board_type_code = req.body.board_type_code;
         const title = req.body.title;
         const contents = req.body.contents;
+        const display = req.body.display;
         const uploadFile = req.body.file;
     
         // Step2: DB article 테이블에 저장할 JSON 데이터 생성
         // Article 모델의 속성명과 데이터 속성명을 동일하게 작성해야 한다.
         const article = {
-            board_type_code,
-            title,
-            article_type_code: 2, // 게시판 고유번호 - 2: 일반 사용자 게시판
-            contents,
+            board_type_code: 2, // 게시판 고유번호 - 2: 일반 사용자 게시판
+            title: title,
+            article_type_code: 0, // 게시글 유형코드 0: 일반 게시글 1: 상단 고정 게시글
+            contents: contents,
             view_count: 0, // 게시글 생성 시 조회수는 0
             ip_address: req.headers["x-forwarded-for"] || req.connection.remoteAddress, // 사용자 IP 추출 -> 로컬 개발 환경인 경우 ::1로 나올 수 있다.
-            is_display_code: 1, // 게시 여부 - 1: 게시
+            is_display_code: display,
             reg_date: Date.now(),
-            reg_member_id: 1 // 추후 토큰에서 사용자 정보 추출
+            reg_member_id: 1 // 추후 토큰에서 사용자 정보 추출 후 변경 예정
         };
         
         // Step3: DB article 테이블에 신규 게시글 정보 등록 처리
