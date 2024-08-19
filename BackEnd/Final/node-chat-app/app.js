@@ -34,7 +34,7 @@ sequelize.sync(); // Code first, Model first
 app.use(
   cors({
     methods: ["GET", "POST", "DELETE", "OPTIONS"],
-    origin: ["http://localhost:5000", "http://127.0.0.1:5500", "http://localhost:3000"], // ! CORS 설정 주의
+    origin: ["http://localhost:5000", "http://127.0.0.1:5500", "http://localhost:3000", "http://localhost:3003"], // ! CORS 설정 주의
   })
 );
 

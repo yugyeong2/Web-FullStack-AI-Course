@@ -15,7 +15,7 @@ var db = require('../models/index');
 // JWT 토큰 발급 참조
 const jwt = require('jsonwebtoken');
 
-// 파일업로드를 위한 multer객체 참조
+// 파일 업로드를 위한 multer객체 참조
 var multer = require('multer');
 
 // 파일 저장 위치 지정
@@ -32,7 +32,7 @@ var storage  = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 /*
- * 신규 회원정보 등록처리 요청과 응답    ㅜ   라우팅 메소드
+ * 신규 회원정보 등록처리 요청과 응답 라우팅 메소드
  * 요청 주소: http://localhost:5000/api/member/entry
  * 요청 방식: POST
  * 응답 결과: 신규 회원정보 등록처리 후 DB에 저장된 회원정보 반환
@@ -41,18 +41,30 @@ var upload = multer({ storage: storage });
 router.post('/entry', async(req, res) => {
     // 백엔드 API를 호출하면, 반드시 아래 형식으로 백엔드에서 데이터를 반환한다.
     let apiResult = {
-        // 요청 상태코드 - 200:OK, 400:요청 리스소가 없음, 500:백엔드 개발자의 실수/데이터를 잘못 전달
-        code: 500,
+        // 요청 상태코드 - 200:OK, 400:요청 리소스가 없음, 500:백엔드 개발자의 실수/데이터를 잘못 전달
+        code: 400,
         data: null, // 백엔드에서 프론트엔드로 전달한 데이터
-        message: "ServerERR: 자세한 내용은 백엔드에 문의해주세요." // 처리결과 코멘트(백엔드 개발자가 프론트 개발자에게 알려주는 코멘트 메시지)
+        message: "요청 리소스가 없습니다." // 처리결과 코멘트(백엔드 개발자가 프론트 개발자에게 알려주는 코멘트 메시지)
     }
 
      // 로직 구현 -> 로직에서 에러가 나면, catch 블럭으로 에러 내용이 자동으로 전달된다.
     try {
         // Step1: 프론트에서 전송해주는 회원 정보 JSON 데이터를 추출한다.
         const email = req.body.email;
-        const nickname = req.body.nickname;
         const password = req.body.password;
+        const nickname = req.body.nickname;
+
+        // Step1-1: 신규회원 메일주소 중복검사 처리하기
+        const existMember = await db.Member.findOne({ where: { email: email } });
+
+        // 동일한 메일주소 사용자가 있는경우 에러처리 데이터 반환
+        if (existMember) {
+            apiResult.code = 400;
+            apiResult.data = null;
+            apiResult.message = "ExistMember, 동일한 메일이 존재합니다.";
+
+            return res.json(apiResult);
+        }
 
         // 사용자 암호를 단방향 암호화 문자열로 변환
         const bcryptPassword = await bcrypt.hash(password, 12); 
