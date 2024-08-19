@@ -1,8 +1,11 @@
-// 로그인 화면 컴포넌트
-
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
+// 로그인 화면 컴포넌트
 const Login = () => {
+
+  // 라우터 객체 생성 
+  const router = useRouter();
   
   // 로그인 사용자 정보 상태 관리 데이터 초기화
   const [ member, setMember ] = useState({
@@ -20,6 +23,51 @@ const Login = () => {
     e.preventDefault();
 
     // 백엔드 Login Restful API 호출
+    // Case 1: 웹브라우저 자바스크립트 엔진에 탑재되어 있는 fetch 함수를 통해 백엔드 Restful Login API를 호출
+    try {
+      const response = await fetch('http://localhost:5000/api/member/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(member)
+      })
+
+      // 통신 결과 로그인 API에서 반환한 JSON 데이터 값 추출
+      const result = await response.json();
+      console.log('로그인 API에서 반환한 요청 결과 값:', result);
+
+      if(result.code == 200) {
+        console.log('로그인 성공:', result);
+
+        // Step1: 백엔드에서 제공한 JWT 토큰 값을 웹브라우저의 localStorage 저장소에 저장
+        localStorage.setItem('token', result.data);
+
+        // Step2: 추후 Context API의 전역데이터로 사용자 정보 저장
+
+
+        // Step3: 메인 페이지로 이동 처리
+        router.push('/');
+
+      } else {
+
+        if(result.code == 400 && result.message == 'NotExistEmail: 이메일이 존재하지 않습니다.') {
+          alert('해당 이메일이 존재하지 않습니다.');
+          return false;
+        }
+
+        if(result.code == 400 && result.message == 'IncorrectPassword: 암호가 일치하지 않습니다.') {
+          alert('암호가 일치하지 않습니다.');
+          return false;
+        }
+
+        if(result.code == 500 && result.message == 'ServerERR: 자세한 내용은 백엔드에 문의해주세요.') {
+          alert('서버 에러가 발생했습니다. \n자세한 내용은 관리자에게 문의해주세요.');
+          return false;
+        }
+      }
+
+    } catch(error) {
+      console.log('로그인 중 백엔드 API 호출 에러 발생:', error)
+    }
   };
 
   return (

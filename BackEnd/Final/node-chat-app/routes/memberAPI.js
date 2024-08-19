@@ -44,7 +44,7 @@ router.post('/entry', async(req, res) => {
         // 요청 상태코드 - 200:OK, 400:요청 리소스가 없음, 500:백엔드 개발자의 실수/데이터를 잘못 전달
         code: 400,
         data: null, // 백엔드에서 프론트엔드로 전달한 데이터
-        message: "요청 리소스가 없습니다." // 처리결과 코멘트(백엔드 개발자가 프론트 개발자에게 알려주는 코멘트 메시지)
+        message: "400: 요청 리소스가 없습니다." // 처리결과 코멘트(백엔드 개발자가 프론트 개발자에게 알려주는 코멘트 메시지)
     }
 
      // 로직 구현 -> 로직에서 에러가 나면, catch 블럭으로 에러 내용이 자동으로 전달된다.
@@ -61,7 +61,7 @@ router.post('/entry', async(req, res) => {
         if (existMember) {
             apiResult.code = 400;
             apiResult.data = null;
-            apiResult.message = "ExistMember, 동일한 메일이 존재합니다.";
+            apiResult.message = "ExistMember: 동일한 이메일이 존재합니다.";
 
             return res.json(apiResult);
         }
@@ -89,7 +89,7 @@ router.post('/entry', async(req, res) => {
         // Step3: 등록 후 반환된, 실제 DB에 저장된 member 데이터를 프론트에 반환한다.
         apiResult.code = 200;
         apiResult.data = registeredMember;
-        apiResult.message = "OK";
+        apiResult.message = "200 OK";
 
     } catch(error) {
         // !중요 백엔드의 구체적인 에러 내용을 프론트엔드로 전송하는 것은 사직서와 동일하다.
@@ -118,9 +118,9 @@ router.post('/login', async(req, res) => {
     // 백엔드 API를 호출하면, 반드시 아래 형식으로 백엔드에서 데이터를 반환한다.
     let apiResult = {
         // 요청 상태코드 - 200:OK, 400:요청 리스소가 없음, 500:백엔드 개발자의 실수/데이터를 잘못 전달
-        code: 500,
+        code: 400,
         data: null, // 백엔드에서 프론트엔드로 전달한 데이터
-        message: "ServerERR: 자세한 내용은 백엔드에 문의해주세요." // 처리결과 코멘트(백엔드 개발자가 프론트 개발자에게 알려주는 코멘트 메시지)
+        message: "400: 요청 리소스가 없습니다." // 처리결과 코멘트(백엔드 개발자가 프론트 개발자에게 알려주는 코멘트 메시지)
     };
 
     try{

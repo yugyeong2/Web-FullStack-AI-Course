@@ -65,7 +65,7 @@ const Regist = () => {
       } else {
         console.log('회원가입 중 백엔드 서버 에러 발생:', result.message);
 
-        if(result.code == 400 && result.message == 'ExistMember, 동일한 메일이 존재합니다.') {
+        if(result.code == 400 && result.message == 'ExistMember: 동일한 이메일이 존재합니다.') {
           alert('이미 가입된 회원입니다. 다른 이메일 주소를 입력해주세요.');
           return false;
         }
