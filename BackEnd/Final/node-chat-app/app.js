@@ -21,6 +21,7 @@ var usersRouter = require('./routes/users');
 // 회원 정보 관리 RESTful API 라우터 파일 참조
 var memberRouter = require('./routes/memberAPI');
 var articleRouter = require('./routes/articleAPI');
+var openaiRouter = require('./routes/openaiAPI');
 
 var app = express();
 
@@ -53,6 +54,7 @@ app.use('/users', usersRouter);
 // memberAPIRouter의 기본 호출주소 체계 정의
 app.use('/api/member', memberRouter);
 app.use('/api/article', articleRouter);
+app.use('/api/openai', openaiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
