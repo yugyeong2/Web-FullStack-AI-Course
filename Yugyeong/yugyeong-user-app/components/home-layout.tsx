@@ -8,6 +8,6 @@ const HomeLayout = ( {children}: {children: React.ReactNode}) => {
             <div>{children}</div>            
         </div>
     );
-}
+};
 
 export default HomeLayout;

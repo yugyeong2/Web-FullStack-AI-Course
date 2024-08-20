@@ -9,7 +9,7 @@ const navigation = [
     { name: '만들기', path: '/create', icon: '/image/plus.png' },
     { name: '저장', path: '/collection', icon: '/image/bookmark.png' }
 ];
-// Link의 href 속성 확인
+
 const NavigationBar = () => {
     return (
         <nav>
@@ -19,9 +19,14 @@ const NavigationBar = () => {
                         
                         <Link href={item.path}>
                             <div className='relative w-5 h-5'>
-                            <Image src={item.icon} alt={item.name}
-                            width={20} height={20} // 1.25rem = 20px
+                            <Image
+                            src={item.icon}
+                            alt={item.name}
+                            layout="responsive" // 이미지 비율 유지(반응형)
+                            width={20} // 1.25rem = 20px
+                            height={20}
                             />
+
                             </div>
                             {item.name}
                         </Link>

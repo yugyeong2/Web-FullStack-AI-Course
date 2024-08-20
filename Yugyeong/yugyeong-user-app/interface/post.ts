@@ -8,7 +8,7 @@ export interface PostProps {
 
 export interface CommentProps {
     comment_id: number;
-    commenter: ProfileProps;
+    commenter_id: number;
     comment: string;
 }
 

@@ -8,21 +8,16 @@ const PostData: PostProps[] = [
         post_id: 1,
         poster: {
             user_id: 1,
-            profile_image: 'https://via.placeholder.com/150',
+            profile_image: '/image/default_profile.png',
             username: 'yugyeong',
             full_name: 'Yugyeong Park'
         },
-        post_image: 'image.png',
+        post_image: '/image/default_post.png',
         contents: '게시글 내용1',
         comments: [
             {
                 comment_id: 1,
-                commenter: {
-                    user_id: 2,
-                    profile_image: 'https://via.placeholder.com/150',
-                    username: 'yugyeong2',
-                    full_name: 'Yugyeong Park2'
-                },
+                commenter_id: 1, // 댓글 작성자의 user_id
                 comment: '댓글 내용1'
             }
         ]
@@ -44,17 +39,32 @@ const Post = () => {
                 <div key={post.post_id}>
                     {/* 게시글 헤더 */}
                     <div>
-                        <Image src={post.poster.profile_image} alt={post.poster.username} />
-                        <div>{post.poster.username}</div>
-                        <div>{post.poster.full_name}</div>                        
+                        <Image
+                        src={post.poster.profile_image}
+                        alt={post.poster.username}
+                        layout="responsive"
+                        width={40}
+                        height={40}
+                        className='flex'
+                        />
+
+                        <div className='mr-1'>
+                            <div>{post.poster.username}</div>
+                            <div>{post.poster.full_name}</div>
+                        </div>
                     </div>
 
                     {/* 게시글 본문 */}
                     <div>
-                        <Image src={post.post_image} alt='{post.poster}님의 게시글' />
-                        <div>
-                            {post.contents}
-                        </div>                    
+                        <Image src={post.post_image}
+                        alt='{post.poster}님의 게시글'
+                        layout="responsive"
+                        width={100} // 비율 적용
+                        height={100} // 비율 적용
+                        className="object-cover aspect-square flex-shrink-0"
+                        />
+
+                        <div>{post.contents}</div>
                     </div>
 
                     {/* 게시글 버튼 */}
