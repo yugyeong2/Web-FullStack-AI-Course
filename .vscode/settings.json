@@ -1,6 +1,8 @@
 {
   "cSpell.words": [
     "cbnu",
+    "dall",
+    "dalle",
     "groupchat",
     "headlessui",
     "heroicons",
@@ -8,9 +10,12 @@
     "NEXTJS",
     "nodechatadmin",
     "nodechatapp",
+    "openai",
     "RDBMS",
     "resave",
     "RESTAPI",
+    "signin",
+    "signup",
     "tailwindcss",
     "TINYINT",
     "VARCHAR",
