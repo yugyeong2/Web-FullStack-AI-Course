@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { IBlog, IBlogFile } from '@/interfaces/blog';
+import { IBlogFile } from '@/interfaces/blog';
 
 const Gallery = () => {
     // 모델 타입과 프롬프트 상태 값 정의
@@ -30,7 +30,7 @@ const Gallery = () => {
         const resultData = await response.json();
         console.log('백엔드에서 전달해준 결과 값 확인:', resultData);
 
-        await getBlogFiles();
+        await setFileList(resultData.data as IBlogFile[]);
     }
 
     // 이미지 생성 요청 함수
@@ -89,6 +89,7 @@ const Gallery = () => {
 
                 {/* 이미지 파일 목록 영역 */}
                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8">
+
                     { fileList.map((file, index) => (
                         <a href="#" key={index} className="group text-sm">
                             <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">

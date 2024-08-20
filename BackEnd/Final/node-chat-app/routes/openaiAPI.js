@@ -1,23 +1,23 @@
-var express = require("express");
+var express = require('express');
 var router = express.Router();
 
 // DB 객체 참조
 var db = require('../models/index');
 
-// OpenAI API 호출을 위한 axios 패키지 참조
-const axios = require("axios");
-
-// 파일 처리를 위한 file system 내장 객체 참조
-const fs = require("fs");
-
 // 동적 SQL 쿼리를 직접 작성해서 전달하기 위한 참조
 var sequelize = db.sequelize;
-const {QueryTypes} = sequelize;
+const { QueryTypes } = sequelize;
+
+// OpenAI API 호출을 위한 axios 패키지 참조
+const axios = require('axios');
+
+// 파일 처리를 위한 file system 내장 객체 참조
+const fs = require('fs');
 
 // OpenAI 객체 생성
-const { OpenAI } = require("openai");
+const { OpenAI } = require('openai');
 const openai = new OpenAI({
-    APIkey: process.env.OPENAI_API_KEY,
+    apiKey: process.env.OPENAI_API_KEY,
 });
 
 /*
@@ -40,19 +40,19 @@ router.post("/dalle", async (req, res) => {
 
         // Step2: OpenAI Dalle API 호출
         const response = await openai.images.generate({
-        model: model, // 이미지 처리 모델 선택: dall-e-2, dall-e-3
-        prompt: prompt, // 사용자 프롬프트
-        n: 1, // 이미지 생성 개수(dalle2는 최대 10개, dalle3는 1개)
-        size: "1024x1024", // dalle2: 256x256, 512x512, 1024x1024 / dalle3: 1024x1024, 1792x1024, 1024x1792 지원
-        style: "vivid", // 기본값: vivid, / natural: dalle3만 지원(더 자연스럽고 초현실적인 이미지 생성)
-        response_format: "url", // url: openai 사이트에 생성된 이미지 풀 주소 경로 반환, b64_json: 바이너리 데이터 형식으로 반환
+            model: model,           // 이미지 처리 모델 선택: dall-e-2, dall-e-3
+            prompt: prompt,         // 사용자 프롬프트
+            n: 1,                   // 이미지 생성 개수(dalle2는 최대 10개, dalle3는 1개)
+            size: "1024x1024",      // dalle2: 256x256, 512x512, 1024x1024 / dalle3: 1024x1024, 1792x1024, 1024x1792 지원
+            style: "vivid",         // 기본값: vivid, / natural: dalle3만 지원(더 자연스럽고 초현실적인 이미지 생성)
+            response_format: "url", // url: openai 사이트에 생성된 이미지 풀 주소 경로 반환, b64_json: 바이너리 데이터 형식으로 반환
         });
 
         // Step3: Dalle API 호출결과에서 물리적 이미지 생성, 서버 공간에 저장
         // url방식으로 이미지생성값을 반환받는 경우, 최대 1시간 이후에 OpenAI 이미지 서버에서 해당 이미지가 삭제된다.
         // 해당 이미지가 영구적으로 필요하면, 반환된 url주소를 이용해 이미지를 백엔드에 생성하면 된다.
         const imageURL = response.data[0].url;
-        console.log("dalle 이미지 생성 URL 경로 : ", imageURL);
+        console.log("dalle 이미지 생성 URL 경로: ", imageURL);
 
         // 이미지 경로를 이용해 물리적 이미지 파일 생성
         const imgFileName = `sample-${Date.now()}.png`;
@@ -76,39 +76,49 @@ router.post("/dalle", async (req, res) => {
             console.error("Error downloading image:", err);
         });
 
-        // Step4: 최종 생성도니 이미지 데이터 추출
+        // Step4: 최종 생성된 이미지 데이터 추출
         const article = {
-            board_type_code: 3, // 게시판 고유번호 - 3: AI 이미지 게시판
-            title: model,
-            article_type_code: 0,
-            contents: prompt,
+            board_type_code: 3,     // 게시판 고유번호 - 3: AI 이미지 게시판
+            title: model,           // 게시글 제목: AI 모델명
+            article_type_code: 0,   // 게시글 유형코드 - 0: 일반 게시글
+            contents: prompt,       // 게시글 내용: AI 프롬프트
             view_count: 0,
             ip_address: req.headers["x-forwarded-for"] || req.connection.remoteAddress, // 사용자 IP 추출 -> 로컬 개발 환경인 경우 ::1로 나올 수 있다.
-            is_display_code: 1,
+            is_display_code: 1,     // 게시 여부 - 1: 게시
             reg_date: Date.now(),
-            reg_member_id: 1 // 추후 JWT 토큰에서 사용자 고유번호를 추출하여 처리
+            reg_member_id: 1        // 추후 JWT 토큰에서 사용자 고유번호를 추출하여 처리 (DB에 존재하는 사용자 고유번호이어야 한다.)
         };
 
         // 신규 등록된 게시글 정보를 반환받는다.
-        const registedArticle = await db.Article.create(article);
+        const registeredArticle = await db.Article.create(article);
 
         // 생성된 이미지 정보 만들고 저장
-        const imageFullPath = `${process.env.DALLE_IMG_DOMAIN}/ai/${imgFileName}`;
+        const imageFullPath = `${process.env.DALLE_IMG_DOMAIN}/ai/${imgFileName}`; // 도메인주소를 포함한 백엔드 이미지 전체 url경로
 
         const articleFile = {
-            article_id: registedArticle.article_id,
+            article_id: registeredArticle.article_id,
             file_name: imgFileName,
-            file_size: 0, // 추후 변경
+            file_size: 0,   // 추후 변경
             file_path: imageFullPath, // 도메인 주소를 포함한 백엔드 이미지 전체 url 경로 (public 폴더는 도메인 주소를 통해 바로 접근 가능)
             file_type: "PNG",
             reg_date: Date.now(),
-            reg_member_id: 1 // 추후 변경
+            reg_member_id: 1 // 추후 변경 (생성한 article에 저장된 reg_member_id와 동일해야 하며, DB에 존재하는 사용자 고유번호이어야 한다.)
         }
 
         // Step5: DB 게시글 테이블에 사용자 이미지 생성요청 정보 등록처리
-        const registedFile = await db.Article_file.create(articleFile);
+        const registeredFile = await db.Article_file.create(articleFile);
 
-
+        // //단일 생성 이미지 파일 정보 생성
+        // const fileData = {
+        //   article_id: registeredArticle.article_id,
+        //   file_id: file.article_file_id,
+        //   title: registeredArticle.title,
+        //   contents: registeredArticle.contents,
+        //   file_path: file.file_path,
+        //   file_name: file.file_name,
+        //   reg_member_id: 1,
+        //   reg_member_name: "유경",
+        // };
 
         // Step6: 최종 생성된 이미지 정보를 프론트엔드로 반환한다.
         apiResult.code = 200;
