@@ -840,7 +840,60 @@ SSG와 비슷하지만, SSG는 빌드 타임에 정적 웹페이지를 생성하
 
 ---
 
-## Project
+## Final Project
+
+프론트엔드 프로젝트: FrontEnd/Final/next-platform-app/  
+백엔드: BackEnd/Final/node-chat-app/
+
+### 2024-08-19(월)
+
+지금까지 배운 내용을 기반으로 프론트엔드와 백엔드의 로그인, 회원가입 구현
+
+- 회원가입(프론트엔드: regist.tsx, 백엔드: memberAPI.js),
+- 로그인(프론트엔드: login.tsx, 백엔드: memberAPI.js),
+- 게시글 create(첨부파일 기능 제외) (프론트엔드: mypage/blog/create.tsx, 백엔드: articleAPI.js)
+- 게시글 list(프론트엔드: mypage/blog/list.tsx, 백엔드: articleAPI.js)
+- interface 적용
+- SSR, CSR 적용(마지막에 SSR 주석하고, CSR로 적용)
+- 로그인할 때 JWT 토큰 받아서 까기, 마이페이지에서 토큰 없으면 로그인 페이지로 이동
+
+### 2024-08-20(화)
+
+- 프론트엔드의 /gallery, /chat, /bot 템플릿 적용(구글 드라이브)
+- 백엔드의 .env에 OpenAI API key와 Dalle3에서 접근할 백엔드 도메인 주소 추가
+- 백엔드의 article_file model에 board_type_code에 3: 생성형 AI 이미지 게시판 선택지가 추가되었으니 주의
+- 백엔드의 /routes/openAPI.js의 /dalle 라우터 - 새로운 이미지 생성 기능 구현
+  - 로직: gallery 페이지에서 사용자가 프롬프트 입력 -> generate 버튼을 클릭 -> Dalle3를 통한 이미지 생성(이미지는 백엔드 서버의 public/ai에 저장됨) -> 게시글 생성
+- 백엔드의 /routes/openAPI.js의 /all 라우터 - gallery 페이지의 게시글 목록 기능 구현
+  -> 쿼리문을 통해 여러 테이블에서 필요한 데이터만 가져와 JOIN
+  - 쿼리문
+    const query = `SELECT  
+                    A.article_id,  
+                    A.title,  
+                    A.contents,  
+                    A.reg_member_id,  
+                    F.article_file_id AS file_id,  
+                    F.file_name,  
+                    F.file_path,  
+                    M.name AS reg_member_name  
+                    FROM article A INNER JOIN article_file F  
+                    ON A.article_id = F.article_id  
+                    INNER JOIN member M ON A.reg_member_id = M.member_id  
+                    WHERE A.board_type_code = 3`;  
+
+    - 3개의 테이블에서 원하는 데이터를 가져와 JOIN 한다.
+    - 흩어져 있는 데이터를 하나로 합쳐서 반환한다.
+    - 각각의 테이블 article: A, article_file: F, member: M이라고 부른다.
+    - AS: article_file_id를 file_id로 가져온다.
+    - ON 키워드는 JOIN 절과 함께 사용되어 두 테이블 간의 조인 조건을 지정한다.
+    - JOIN 조건에 사용되는 열은 각 테이블에서 Primary Key 또는 Foreign Key로 설정되어 있어야 한다.
+    - ON: article_id를 기준으로 JOIN한다
+    - INNER JOIN: 각 테이블에 모두 존재하는 데이터만 가져온다.
+- 프론트엔드의 /gallery/index.tsx에서 fetch를 통해 백엔드와 연결
+
+---
+
+## Yugyeong Project
 
 - PostData
   - 이 이름은 인터페이스가 실제 데이터 구조를 표현할 때 적합합니다.
