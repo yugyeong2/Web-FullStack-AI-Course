@@ -9,8 +9,9 @@
 - AJAX란, JavaScript의 라이브러리중 하나이며, HTML, CSS, 자바스크립트, DOM, XML 등 기존에 사용되던 여러 기술을 함께 사용하는 새로운 개발 기법이다.
 - 브라우저가 가지고있는 XMLHttpRequest 객체를 이용해서 전체 페이지를 새로 고치지 않고도 페이지의 일부만을 위한 데이터를 로드하는 기법이며, JavaScript를 사용한 비동기 통신, 클라이언트와 서버간에 XML 데이터를 주고받는 기술이다.
 - 즉, 쉽게 말하자면 자바스크립트를 통해서 서버에 데이터를 요청하는 것이다.
-- 참고: [AJAX란?](https://daegwonkim.tistory.com/445)  
-        [[비동기 통신] Ajax와 Axios의 차이점?](https://hstory0208.tistory.com/entry/%EB%B9%84%EB%8F%99%EA%B8%B0-%ED%86%B5%EC%8B%A0-Ajax%EC%99%80-Axios%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90)
+- 참고
+  [AJAX란?](https://daegwonkim.tistory.com/445)  
+  [[비동기 통신] Ajax와 Axios의 차이점?](https://hstory0208.tistory.com/entry/%EB%B9%84%EB%8F%99%EA%B8%B0-%ED%86%B5%EC%8B%A0-Ajax%EC%99%80-Axios%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90)
 
 ### PUT & PATCH 메소드
 
@@ -25,8 +26,6 @@ PUT과 PATCH 모두 데이터를 수정할 때 사용한다.
 
 와일드카드를 사용한 라우팅 메서드는 가장 아래에 선언해야 한다.  
 그렇지 않으면 aid = 1 = delete?aid=1 이들 모두 같다고 인식한다.
-
-Ex)
 
 ```text
 http://localhost:3000/api/articles/1
@@ -46,21 +45,20 @@ http://localhost:3000/api/articles/delete?aid=1
 ### EJS
 
 - 라우팅 메소드에서 view에 전달된 데이터 출력하려면 =을 쓴다.  
-  -> `<%=데이터 속성명%>`
+  `<%=데이터 속성명%>`
 
 ---
 
 ## 2024-07-25
 
-    주의 !  
-    `/views/.ejs` 파일의 `<%%`>` 구문은 백엔드 코드  
-    `/routes/.js` 파일의 `<script>` 구문은 프론트엔드 코드
+`/views/.ejs` 파일의 `<%%>` 구문은 백엔드 코드  
+`/routes/.js` 파일의 `<script>` 구문은 프론트엔드 코드
 
 ### 시맨틱 태그(Semantic Tag)
 
-- html에서 페이지가 어떤 내용의 영역인지 유추할 수 있도록 태그 이름에 의미를 부여한다.
+- html에서 페이지가 어떤 내용의 영역인지 유추할 수 있도록 태그 이름에 의미를 부여한다.  
   사실 div 태그로 해도 상관없다.
-- 똑같은 div로 하는 것보다 시맨틱 태그를 사용하는 것이 검색 엔진을 최적화할 수 있다.
+- 똑같은 div로 하는 것보다 시맨틱 태그를 사용하는 것이 검색 엔진을 최적화할 수 있다.  
   Ex) nav, main, article
 
 ### view 화면 컴포넌트 재사용
@@ -98,16 +96,16 @@ http://localhost:3000/api/articles/delete?aid=1
 
 - NoSQL
   - 관계형 데이터베이스의 한계를 극복
-  - 빠른 응답 속도, 높은 가용성(사용자가 늘어남에 따라 자원(DB 서버)을 늘렸다 줄였다 가능), 확장성(DB 서버를 실시간으로 복제해서 확장하는 것이 자유롭다.
+  - 빠른 응답 속도, 높은 가용성(사용자가 늘어남에 따라 자원(DB 서버)을 늘렸다 줄였다 가능), 확장성(DB 서버를 실시간으로 복제해서 확장하는 것이 자유롭다.  
     -> Scale-Up:단일 서버 CPU/메모리 추가, Scale-Out:서버를 추가), 가용성(백업(스탠바이)서버 없이 사용 중에 실시간으로 DB 서버가 늘릴 수 있다.)
   - 데이터 양이 많고(빅데이터), 데이터 구조가 정해져있지 않은 경우 NoSQL을 사용한다.
   - 정형 데이터 방식으로도, 비정형 데이터도 관리할 수 있다.
   - 실시간으로 확장이 가능하다.
   - 트래픽을 예측할 수 없는 경우 사용된다.
 
-- Document DB
+- Document DB  
   Ex) MongoDB
-- KEY-VALUE DB
+- KEY-VALUE DB  
   Ex) REDIS
 
 ---
@@ -146,7 +144,7 @@ http://localhost:3000/api/articles/delete?aid=1
 ### Model
 
 데이터의 구조를 프로그래밍 언어로 표현한 클래스  
-물리적인 테이블을 백엔드에서 제어하기 위함
+물리적인 테이블을 백엔드에서 제어하기 위해 사용한다.
 
 - Data Model: DB의 TABLE과 1대1 매핑된다.
 - View Model: 화면의 구조가 기준
@@ -168,7 +166,7 @@ ORM 프레임워크에서 동적으로 SQL 쿼리를 만들어준다.
 
 ### /model/index.js
 
-index.js는 물리적인 데이터베이스 그 자체를 가리킨다.
+`index.js`는 물리적인 데이터베이스 그 자체를 가리킨다.
 
 ---
 
@@ -180,10 +178,10 @@ index.js는 물리적인 데이터베이스 그 자체를 가리킨다.
 ### Socket.io 모듈
 
 - 클라이언트 -> 서버로 전송한 메시지 수신
-  - on 메소드
+  - on 메소드  
     현재 접속되어 있는 클라이언트로부터 메시지를 수신하려면 on 메소드를 사용한다.
     - `io.on`
-      - `connection` : socket.io의 기본 이벤트, 사용자가 웹사이트에 접속하면 자동으로 발생하는 이벤트
+      - `connection` : `socket.io`의 기본 이벤트, 사용자가 웹사이트에 접속하면 자동으로 발생하는 이벤트
     - `socket.on`
       - 해당 클라이언트에서 메세지를 보낸다.
 
@@ -199,12 +197,13 @@ index.js는 물리적인 데이터베이스 그 자체를 가리킨다.
       - 해당 소켓을 통해 클라이언트에게 메시지 전송
       - sender인 socket의 클라이언트는 제외한다.
 
-참고: [[Node.js] Socket.io 모듈 (.emit .on)](https://velog.io/@rzee/Node.js-Socket.io-%EB%AA%A8%EB%93%88-.emit-.on)  
-      [Socket.io - io.emit(io.sockets.emit)과 socket.broadcast.emit의 차이](https://velog.io/@nittre/NodeJS-io.emitio.sockets.emit%EA%B3%BC-socket.broadcast.emit%EC%9D%98-%EC%B0%A8%EC%9D%B4)
+참고
+[[Node.js] Socket.io 모듈 (.emit .on)](https://velog.io/@rzee/Node.js-Socket.io-%EB%AA%A8%EB%93%88-.emit-.on)  
+[Socket.io - io.emit(io.sockets.emit)과 socket.broadcast.emit의 차이](https://velog.io/@nittre/NodeJS-io.emitio.sockets.emit%EA%B3%BC-socket.broadcast.emit%EC%9D%98-%EC%B0%A8%EC%9D%B4)
 
 ### CORS
 
-- 같은 서버 도메인이 아닌 다른 도메인에서 데이터를 호출할 때, 차단되어 CORS 이슈가 생긴다.
+- 같은 서버 도메인이 아닌 다른 도메인에서 데이터를 호출할 때, 차단되어 CORS 이슈가 생긴다.  
   -> 동일 출처 원칙을 위반
 - 허용된 도메인에 대해서 데이터/소캣 기능을 제공할 수 있도록 CORS 설정이 필요하다.
 - 데이터를 제공하는 도메인과 사용하는 도메인이 다르면, 시스템 상에서 차단한다.
@@ -216,7 +215,7 @@ index.js는 물리적인 데이터베이스 그 자체를 가리킨다.
 JSON 형식의 데이터를 암호화해 놓은 토큰
 
 - 토큰을 까보면 JSON 데이터가 들어있다.
-- 토큰에 담겨져있는 데이터는 바꿀 수 없다.
+- 토큰에 담겨져있는 데이터는 바꿀 수 없다.  
   -> 바꾸면 깨져버리기 때문에 안전하다.
 - JWT 토큰의 형식
   - HEADER: 토큰 종류와 해시 알고리즘 정보 제공
@@ -225,25 +224,27 @@ JSON 형식의 데이터를 암호화해 놓은 토큰
 - PAYLOAD 영역에 들어있다.
 - 토큰을 만들 때도 인증키가 필요하고, 까볼 때 만들때 사용했던 인증키가 필요하다.(양방향 암호화)
 
-    Q. JWT 토큰을 왜 쓰는가?
-      - 용도
-        이기종 시스템 간의 데이터 상호교환을 통한 시스템 통합수단으로 사용
-      - 오리지널 데이터를 변조없이 주고 받을 수 있다.
-      - JWT토큰은 기본적으로 변조 불가능하다.
-      - 난독화/복호화 사용이 간편해 각종 시스템간 데이터 교환 표준 포맷으로 사용된다.
+```text
+Q. JWT 토큰을 왜 쓰는가?
+  - 용도
+    이기종 시스템 간의 데이터 상호교환을 통한 시스템 통합수단으로 사용
+  - 오리지널 데이터를 변조없이 주고 받을 수 있다.
+  - JWT토큰은 기본적으로 변조 불가능하다.
+  - 난독화/복호화 사용이 간편해 각종 시스템간 데이터 교환 표준 포맷으로 사용된다.
 
-      로그인 한 사용자의 정보를 유지한다.  
-      로그인을 했는지 안했는지 확인한다.
+  로그인 한 사용자의 정보를 유지한다.  
+  로그인을 했는지 안했는지 확인한다.
 
-      - 랜덤한 JWT 토큰 시크릿 키 만들기
-        참고: [JWT Secret Key 생성하기](https://velog.io/@5w31892p/JWT-Secret-Key-%EC%83%9D%EC%84%B1)
+  - 랜덤한 JWT 토큰 시크릿 키 만들기
+    참고: [JWT Secret Key 생성하기](https://velog.io/@5w31892p/JWT-Secret-Key-%EC%83%9D%EC%84%B1)
 
-      - JWT 까보기
-        https://jwt.io/
-        JWT 토큰에는 공개되도 괜찮은 데이터만 담아야 한다.  
-        JWT 토큰이 localStorage에 담겼을 때, 그걸 저 사이트를 통해 까볼 수 있다.  
-        JWT를 까봤을 때 중요한 개인정보가 담겼으면, 유출될 수 있다.  
-        -> JWT 토큰에 개인정보를 담을 경우, 암호화해서 담아야한다.  
+  - JWT 까보기
+    https://jwt.io/
+    JWT 토큰에는 공개되도 괜찮은 데이터만 담아야 한다.  
+    JWT 토큰이 localStorage에 담겼을 때, 그걸 저 사이트를 통해 까볼 수 있다.  
+    JWT를 까봤을 때 중요한 개인정보가 담겼으면, 유출될 수 있다.  
+    -> JWT 토큰에 개인정보를 담을 경우, 암호화해서 담아야한다.  
+```
 
 ---
 
@@ -251,9 +252,11 @@ JSON 형식의 데이터를 암호화해 놓은 토큰
 
 ### RESTful
 
+```text
 Q. REST API와 RESTful API의 차이는 뭘까?  
   RESTful은 REST의 설계 규칙을 잘 지켜서 설계된 API를 RESTful한 API라고 합니다.  
   즉, REST의 원리를 잘 따르는 시스템을 RESTful이란 용어로 지칭됩니다.
+```
 
 참고: [REST란? REST API 와 RESTful API의 차이점](https://dev-coco.tistory.com/97)
 
@@ -289,8 +292,8 @@ Q. REST API와 RESTful API의 차이는 뭘까?
   -> 요청과 응답이 있을 때마다 어느 서버로 보낼지는 모른다.  
   -> 1번 서버에서는 로그인을 해서 세션이 생겼는데, 다른 페이지를 들어갔더니 2번 서버에서 세션이 없어서 다시 로그인을 해야하는 세션 이슈가 생길 수 있다.
 
-- 해결
-  세션을 메모리에 저장하는 것이 아니라, DB에 저장한다.(주로 Redis)
+- 해결  
+  -> 세션을 메모리에 저장하는 것이 아니라, DB에 저장한다.(주로 Redis)
 
 ### 클라우드 컴퓨팅
 
@@ -302,11 +305,11 @@ Q. REST API와 RESTful API의 차이는 뭘까?
 
 - 호스트 가상화 기술 환경
   - Host OS를 설치하고, 그 위에 가상화 소프트웨어를 설치하고, 그 위에 어플리케이션을 설치한다.
-  - 사용자 환경에서 가상화 기술 시용
+  - 사용자 환경에서 가상화 기술 시용  
     -> 가상화 소프트웨어: VMWare, Virtual Box
 - 하이퍼바이저 가상화 기술 환경
   - Host OS를 설치하지 않고, 하드웨어위에 하이퍼바이저 소프트웨어를 설치한다.
-  - 실행 속도와 성능이 더 좋다.
+  - 실행 속도와 성능이 더 좋다.  
     -> Ex) 마이크로소프트의 Hyper-V, Citrix Xen Hypervisor
 
 -> 클라우드는 하드웨어 가상화 기술이라고 할 수 있다 !
@@ -368,7 +371,8 @@ Q. REST API와 RESTful API의 차이는 뭘까?
   - 사용자가 요청했을 때만 작동하기 때문에, 사용한 만큼만 비용을 내면 된다.
     -> MSA를 사용하면서 클라우드 환경에서 서비스하는 기술을 "서버리스"라고 한다.
     -> FaaS는 서버리스의 하위집합
-  - 어려움
+  - 어려움  
+
 -> 보통 섞어서 개발한다. 모든 기능을 MSA로 개발하는 것이 좋은 게 아니다.
   유기적이어야 하는 기능/트래픽이 정적인 기능은 모놀리식으로, 사용자 요청이 많은 기능만 MSA로 개발하면 된다. 특정 기간에 갑자기 몰리면 MSA로 개발한다.
 
@@ -380,13 +384,13 @@ Q. REST API와 RESTful API의 차이는 뭘까?
 
 ### 클라우드 기반 서비스하기(IaaS)
 
-- VPC(Virtual Private Cloud)
+- VPC(Virtual Private Cloud)  
     가상 서버를 배치시킬 수 있는 가상의 네트워크
-  - 논리적으로 분리된 가상의 사설 네트워크 공간
+  - 논리적으로 분리된 가상의 사설 네트워크 공간  
     업무의 목적에 따라 네트워크를 나누어 사용하실 수 있도록 논리적으로 격리된 네트워크를 제공합니다.  
     또한 사설 IP 주소와 Subnet 생성, 네트워크 게이트웨이, 접근 제어 등을 지원함으로서, 손쉽게 전용 네트워크를 확보하실 수 있습니다.  
 
-- Subnet
+- Subnet  
 VPC 내에 세분화된 격리 공간을 제공
 
 - 서버 OS 업데이트
@@ -397,7 +401,8 @@ sudo apt upgrade
 sudo apt autoremove
 ```
 
-- Q. 왜 WAS 서버와 웹 서버를 나누는가?
+```text
+Q. 왜 WAS 서버와 웹 서버를 나누는가?
   실제 서비스에는 물리적인 서버가 최소한 3대가 필요하다.  
   -> 로드 밸런서를 두어 서버를 확장한다.  
   ![alt text](image.png)
@@ -408,6 +413,7 @@ sudo apt autoremove
   항상 웹서버의 80포트는 열려있기 때문에, 백엔드 서버는 WAS 서버로 개별 포트를 두고 서비스를 한다.  
   설령 80포트가 뚫려도, 외부에서는 직접적으로 들어오지 못하기 때문에 WAS와 DB 서버는 뚫리기 어렵다.
   -> 프락시 환경(공개된 public IP를 통해 들어오는것이 아닌, public IP를 통해 내부의 private IP로 접근한다.)
+```
 
 - ACG
   - Inbound
@@ -427,9 +433,11 @@ sudo apt autoremove
 4. DNS는 호스트명과 도메인 주소로 서비스하는 서버의 IP 주소를 찾는다.
 5. IP 주소로 직접적으로 서버와 통신한다.
 
-Ex) www.naver.com
-호스트명: www
+```text
+Ex) www.naver.com  
+호스트명: www  
 도메인: naver.com
+```
 
 ---
 
@@ -441,53 +449,54 @@ Ex) www.naver.com
 
 - IAM 계정: Identity and Access Management
 
-- 클라우드 서비스명: EC2(가상서버-IaaS)
+- 클라우드 서비스명: EC2(가상서버-IaaS)  
   -> 서비스 관리단위: 인스턴스
 
-- 클라우드 서비스명: S3(스토리지)
+- 클라우드 서비스명: S3(스토리지)  
   -> 서비스 관리단위: 버킷
 
-- 클라우드 서비스명: Lambda(가상서버-FaaS)
+- 클라우드 서비스명: Lambda(가상서버-FaaS)  
   -> 서비스 관리단위: 함수
 
 ### AWS EC2
 
 1. 인스턴스 시작
-2. 탄력적 IP(고정 IP) 주소 할당 후 연결
-   -> 고정 IP를 통해 원격 서버 연결
+
+2. 탄력적 IP(고정 IP) 주소 할당 후 연결  
+  -> 고정 IP를 통해 원격 서버 연결
+
 3. putty로 연결
    - 사용자 계정 root: ec2-user
-   - sudo su
+   - sudo su  
      -> root 권한 위임 후 설정
    - 리눅스 명령어
-     - `rpm -qa \*-release`
-     - `cat /proc/version`
+    `rpm -qa \*-release`  
+    `cat /proc/version`
+
 4. Node Framework 설치
-   - `sudo dnf install nodejs`
+  `sudo dnf install nodejs`
+
 5. pm2 기반 WAS 서비스
    - pm2 설치
-     - `npm install pm2 -g`
-   - 서비스 폴더 만들고 접근 권한 주기
-     - `sudo mkdir-p -- /var/www /var/www/nodechatapp`
-     - `sudo mkdir-p -- /var/www /var/www/nodechatadmin`
+    `npm install pm2 -g`
+   - 서비스 폴더 만들고 접근 권한 주기  
+    `sudo mkdir-p -- /var/www /var/www/nodechatapp`  
+    `sudo mkdir-p -- /var/www /var/www/nodechatadmin`
    - WinSCP로 서비스 폴더에 개발 소스 업로드하기
    - 패키지 설치
-     - `npm i`
+    `npm i`
    - pm2로 시작 모듈을 app.js로 하여 노드 애플리케이션 시작하고 관리
      - 단일 스레드 기반 서비스
-       - `pm2 start app.js --name nodechatadmin`
+      `pm2 start app.js --name nodechatadmin`
      - 멀티코어 클러스터링 기반 분산환경 제공
-       - `pm2 start app.js --name nodechatadmin -i 0`
+      `pm2 start app.js --name nodechatadmin -i 0`
        - 주요 pm2 명령어
-
-        ```bash
-        pm2 list
-        pm2 start www--name nodechatapp
-        pm2 stop nodechatapp
-        pm2 restart nodechatapp
-        pm2 delete nodechatapp
-        pm2 monit
-        ```
+        `pm2 list`
+        `pm2 start www--name nodechatapp`
+        `pm2 stop nodechatapp`
+        `pm2 restart nodechatapp`
+        `pm2 delete nodechatapp`
+        `pm2 monit`
 
 6. NginX 웹서버 설치
    - `dnf install nginx`
@@ -497,32 +506,34 @@ Ex) www.naver.com
      - `sudo systemctl start nginx`
      - `sudo systemctl status nginx`
      - `sudo systemctl stop nginx`
+
 7. 도메인 주소 기반 가상 호스팅
    - nginx 설정 파일 수정
      - `sudo vi /etc/nginx/nginx.conf`
 
-      ```nginx
-      server {
-        listen 80;
-        server_name 3.37.185.159 cbnu13.wechatmaker.com;
+        ```nginx
+        server {
+          listen 80;
+          server_name 3.37.185.159 cbnu13.wechatmaker.com;
 
-        location / {
-          proxy_pass http://172.31.9.22:5001;
-          proxy_http_version 1.1;
-          proxy_set_header Upgrade $http_upgrade;
-          proxy_set_header Connection $http_connection;
-          proxy_set_header Host $http_host;
-          proxy_cache_bypass $http_upgrade;
-          }
-      }
-      ```
+          location / {
+            proxy_pass http://172.31.9.22:5001;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection $http_connection;
+            proxy_set_header Host $http_host;
+            proxy_cache_bypass $http_upgrade;
+            }
+        }
+        ```
 
    - 모든 nginx 설정 변경 후에는 반드시 설정파일 구문 검사 후 재시작해줘야 한다.
-     - `sudo nginx -t`
-       설정 파일이 잘 수정되었는지 확인하는 테스트/문법 검사 실행
-       문제가 없다면, test is successful
-     - `sudo nginx -s reload`
-       nginx 재시작
+    `sudo nginx -t`
+      - 설정 파일이 잘 수정되었는지 확인하는 테스트/문법 검사 실행
+      - 문제가 없다면, test is successful
+    `sudo nginx -s reload`
+      - nginx 재시작
+
 8. 서비스를 종료하고 삭제
    - 인스턴스
      - 인스턴스 중지: 잠시동안 중지한다.(돈은 계속 빠져나간다.)
@@ -530,41 +541,47 @@ Ex) www.naver.com
    - 탄력적 IP
    - 보안 그룹(default는 삭제하지 않는다.)
 
-  Q. 웹 서버를 통해 도메인 주소를 세팅하는 이유
-    1. 도메인을 사용하지 않으면, 사용자가 IP와 port를 외워야 한다.
-      도메인을 이용하면 기본 80포트로 연결된다.
-      관리해 줄 필요 x, IP와 port를 외울 필요 x
-    2. 보안적 문제
-      ! 백엔드가 돌아가는 WAS 서버의 port를 개방하면 보안적으로 좋지 않다.
-      http: 80 port
-      https: 443 port
-      -> Ex) 사용자가 WAS 서버의 3000번 port로 직접 들어올 수 있으면, 공격해서 소스를 가져오면, 털린다.
-      사용자가 웹 서버는 털려도 된다.
-      웹 서버로 들어오는 것을 프록시라고 한다.
+```text
+Q. 웹 서버를 통해 도메인 주소를 세팅하는 이유
+  1. 도메인을 사용하지 않으면, 사용자가 IP와 port를 외워야 한다.
+    도메인을 이용하면 기본 80포트로 연결된다.
+    관리해 줄 필요 x, IP와 port를 외울 필요 x
+  2. 보안적 문제
+    ! 백엔드가 돌아가는 WAS 서버의 port를 개방하면 보안적으로 좋지 않다.
+    http: 80 port
+    https: 443 port
+    -> Ex) 사용자가 WAS 서버의 3000번 port로 직접 들어올 수 있으면, 공격해서 소스를 가져오면, 털린다.
+    사용자가 웹 서버는 털려도 된다.
+    웹 서버로 들어오는 것을 프록시라고 한다.
+```
 
+```text
   ! WAS는 일반적으로 private IP로 통신한다.
     -> Why? 외부에서 직접적으로 들어오는 경우만 public IP를 사용한다.
     private IP로 통신할 때는 기본적으로는 port 규칙/제약이 없다.(-> 리눅스 방화벽 프로그램으로 port를 제한한다.)
     웹서버만 public IP로 통신하고, 내부적인 서버와 통신할 때는 private IP로 통신한다.
+```
 
+```text
   ! nginx를 사용하면, 서버를 여러 개 뒀을 때 지가 알아서 로드밸런싱을 한다.
+```
 
 ### Maria DB Server
 
 - 설치
   `sudo yum install -y mariadb105-server`
 - 접속
-  `mysql -u root -p`
+  `mysql -u root -p`  
   암호는 설정되어 있지 않기 때문에, 엔터
 - DB 선택
   `use mysql`
 - 외부에서 Maria DB 접속 설정
 
-  ```sql
-  select host, user, password from user;
-  grant all privileges on*.* to 'root'@'%' identified by 'yugyeong';
-  flush privileges;
-  ```
+    ```sql
+    select host, user, password from user;
+    grant all privileges on*.* to 'root'@'%' identified by 'yugyeong';
+    flush privileges;
+    ```
 
 ### Redis
 
@@ -576,37 +593,39 @@ Ex) www.naver.com
 보안 소켓 계층
 
 - 사용자와 서버간의 통신을 하는 안전한 통로를 개설한다.
-- 통로 안에서 데이터를 주고 받는다.
+- 통로 안에서 데이터를 주고 받는다.  
   -> SSL 기반으로 http 통신을 하는 방법이 https로 통신하는 것이다.
 - 무료 SSL 비영리 단체: Let's Encrypt
 
+```text
 Q. SSL을 어떻게 적용할까?
   웹서버에 SSL 인증서를 설치한다.
   인증서를 서버에 바인딩(설치)한다.
   인증서 파일이 만들어지면, nginx에 추가한다.
   사용자가 요청할 때마다 먼저 인증서를 통해 통로를 만들고 안전하게 데이터를 주고 받는다.
+```
 
 ---
 
 ## 2024-08-07
 
-웹브라우저: 웹브라우저에 전달된 웹페이지 소스를 해석한다.
+웹브라우저: 웹브라우저에 전달된 웹페이지 소스를 해석한다.  
 프론트엔드: HTML을 변조하여, 웹사이트에 동적으로 보여준다.
 
 ### JavaScript
 
-  -> 타입 지정이 불가하다.
-  -> 불안정
+- 타입 지정이 불가하다.
+- 불안정
 
 ### AltJS
 
-순수 JavaScript의 대안으로 개발된 또 다른 언어
-AltJS로 개발된 언어는 컴파일 과정을 통해 순수 JavaScript로 변환된다.
+순수 JavaScript의 대안으로 개발된 또 다른 언어  
+AltJS로 개발된 언어는 컴파일 과정을 통해 순수 JavaScript로 변환된다.  
 JavaScript와 함깨 사용할 수 있다.
 
 ### TypeScript
 
-- 컴파일 과정
+- 컴파일 과정  
   타입스크립트 -> 컴파일 -> 자바스크립트 -> 실행
 - 자바스크립트 문법을 확장한 상위 호완성 제공(SuperSet)을 통해 순수 자바스크립트와 혼용하여 사용 가능
 - 정적 타입 검사 기능
@@ -625,36 +644,38 @@ JavaScript와 함깨 사용할 수 있다.
 
 ## 2024-08-08
 
-  Q. 어떨 때 타입 지정 방식을 사용하고, 인터페이스를 사용하는가?
-  A. 코딩은 일관성있어야 한다.
-    대부분 JSON 데이터와 같이 다양한 데이터의 구조를 정의할 때는 인터페이스를 사용한다.
+```text
+Q. 어떨 때 타입 지정 방식을 사용하고, 인터페이스를 사용하는가?
+A. 코딩은 일관성있어야 한다.
+  대부분 JSON 데이터와 같이 다양한 데이터의 구조를 정의할 때는 인터페이스를 사용한다.
+```
 
 개발 컨벤션: 똑같은 기능을 구현하는 방법이 정말 많기 때문에, 팀 내에서 코딩 규칙을 정의한다.
 
 ### React 프로젝트 만들기
 
 - 화면의 작은 단위인 Component 기반으로 개발한다.
-- JSX(JavaScriptXML) 문법을 이용한다.
+- JSX(JavaScriptXML) 문법을 이용한다.  
   -> HTML처럼 보이는 코드는 HTML이 아니라, JSX 문법이다.
   - 실행 과정
     1. JSX 코드를 순수 자바스크립트 코드로 변환한다.
-    2. 자바스크립트가 실행되어 HTML이 생성된다.
-        -> yarn build 명령어 실행 시 build 폴더가 생성되는데, 이는 번들링 과정을 통해 만들어진 리액트의 최종 결과물이다.(정적 리소스가 만들어진다.) 이 build 폴더를 서버에 배포한다.
-    3. 서버에서 보내준 HTML 태그들을 웹브라우저에 올린다.
-        이때 웹브라우저의 메모리 상에 HTML 요소를 올린다.
-        이 메모리를 DOM이라고 한다.
-- Virtual DOM: DOM 내의 변경된 부분만 DOM에 적용한다.
+    2. 자바스크립트가 실행되어 HTML이 생성된다.  
+      -> yarn build 명령어 실행 시 build 폴더가 생성되는데, 이는 번들링 과정을 통해 만들어진 리액트의 최종 결과물이다.(정적 리소스가 만들어진다.) 이 build 폴더를 서버에 배포한다.
+    3. 서버에서 보내준 HTML 태그들을 웹브라우저에 올린다.  
+      이때 웹브라우저의 메모리 상에 HTML 요소를 올린다.  
+      이 메모리를 DOM이라고 한다.
+- Virtual DOM: DOM 내의 변경된 부분만 DOM에 적용한다.  
   HTML DOM: 특정 영역만 바뀌어도 전체 웹페이지 DOM을 다시 렌더링한다.
 
-- CRA
+- **CRA**
   - 가장 올드하다.
   - 최초에 프로젝트를 만들고, 구성하는데 너무 오래걸린다.
 
-- Vite
+- **Vite**
   - Next.js 도입전까지 가장 많이 사용되던 리액트 프로젝트 생성/개발 방식
   - 기존 CRA 프로젝트 기반의 비효율성(번들링) 개선과 현대적 프론트엔드 애플리케이션 요구사항 반영
 
-- NEXT.js
+- **NEXT.js**
   NEXT.js는 두 가지의 라우팅 방식을 지원한다.  
   프론트엔드와 백엔드 모두 적용 가능(풀스택 개발자 프레임워크)
   - Pages Router
@@ -683,8 +704,8 @@ JavaScript와 함깨 사용할 수 있다.
   - `package.json`
     `dependencies`: 실제 서비스와 관련된 패키지
     `devDependencies`: 개발할 때 사용하는 패키지
-  - `postcss.config.mjs`
-      css 후처리기 관련 config 설정 파일
+  - `postcss.config.mjs`  
+      css 후처리기 관련 config 설정 파일  
       -> css는 전처리기(css를 자동으로 만들어준다)와 후처리기(만들어진 css를 브라우저에서 실행할 수 있도록 해준다)
   - `tsconfig.json`
     타입스크립트 관련 config 설정 파일
@@ -692,7 +713,7 @@ JavaScript와 함깨 사용할 수 있다.
     - 특별한 용도(대부분 애플리케이션의 전반적인 구조와 동작을 정의하는 시스템 파일이나 설정 파일)로 사용된다.(NextJS에서 제공하는 컨벤션)
     - 라우팅 규칙에서 빠진다.(자동 라우팅 메커니즘에서 제외한다.)
     - 프라이빗으로 간주한다.
-  - `@/`
+  - `@/`  
     최상위에서 경로를 나타낸다.
 
 - Next Page Router 프로젝트 실행 순서
@@ -710,24 +731,24 @@ JavaScript 언어에 XML 표기문법을 추가한 자바스크립트 확장문�
 리액트에서 HTML 태그와 유사하게 태그방식으로 UI를 표현하는 방식 제공  
 JSX는 HTML 태그처럼 보이지만 HTML태그는 아니며, 자바스크립트 +XML 문법을 이용
 
-- 최상위 태그는 하나이어야 한다.
-  Ex) `<div></div> <div></div>`와 같이 최상위 태그가 여러 개이면 안된다.
+- 최상위 태그는 하나이어야 한다.  
+  Ex) `<div></div> <div></div>`와 같이 최상위 태그가 여러 개면 안된다.  
       `<></>` 또는 `<Fragment></Fragment>` 스타일이 없는 `<div></div>`로 감싸준다.
-- 컴파일 과정
+- 컴파일 과정  
   JSX Code -> Client JavaScript 파일 -> 자바스크립트에 의해 HTML 태그 생성
 - 닫는 태그가 반드시 필요하다.
 
 ### React
 
-대문자로 시작하는 파스칼식으로 사용한다.
+대문자로 시작하는 파스칼식으로 사용한다.  
 리액트에서는 참조할 때, require 대신 표준 문법인 import를 사용한다.
 
 - **컴포넌트**
   - 페이지 컴포넌트는 사용자가 라우팅주소를 통해 호출하는 기본단위로 작동된다.
-  - 리액트 컴포넌트는 props(속성값)를 통해 부모 컴포넌트로부터 입력값들을 전달(읽기전용)받고,
+  - 리액트 컴포넌트는 props(속성값)를 통해 부모 컴포넌트로부터 입력값들을 전달(읽기전용)받고,  
     컴포넌트의 실행결과는 리액트 JSX요소를 반환한다.
-  - 부모 컴포넌트에서 자식 컴포넌트로 값을 전달할 떄는 읽기전용 데이터 속성인 props을 통해 전달하고,
-    해당 컴포넌트의 자체 상태 값(수정가능한 데이터) 관리는 state란 개념을 이용한다.
+  - 부모 컴포넌트에서 자식 컴포넌트로 값을 전달할 떄는 읽기전용 데이터 속성인 props을 통해 전달하고,  
+    해당 컴포넌트의 자체 상태 값(수정가능한 데이터) 관리는 state란 개념을 이용한다.  
     -> state 데이터는 백엔드에서 가져오기도 한다.
 
   ![alt text](image-2.png)
@@ -739,7 +760,7 @@ JSX는 HTML 태그처럼 보이지만 HTML태그는 아니며, 자바스크립�
   - **함수형 컴포넌트**
     - React v16 이후부터 클래스 컴포넌트에서 함수형 컴포넌트가 기본으로 변경
     - Hooks를 통한 state 및 LifeCycle 관리 기능 제공
-    - Pages폴더 내에 존재하는 페이지 컴포넌트 파일명은 라우팅주소 체계로 사용된다.
+    - Pages폴더 내에 존재하는 페이지 컴포넌트 파일명은 라우팅주소 체계로 사용된다.  
       -> 파일명을 신중히 정해야 한다.
 
   - 재사용하기 위해 페이지를 컴포넌트로 쪼갠다.
@@ -753,8 +774,8 @@ JSX는 HTML 태그처럼 보이지만 HTML태그는 아니며, 자바스크립�
 ### useState
 
 - 데이터 소스가 바뀌면 UI가 다시 렌더링된다.
-- 비구조화 할당으로 useState 함수는 변수와 변수값 변경 세터함수를 반환한다.
-  const [변수, 변수값 변경 세터함수] = useState(초기 값);
+- 비구조화 할당으로 useState 함수는 변수와 변수값 변경 세터함수를 반환한다.  
+  `const [변수, 변수값 변경 세터함수] = useState(초기 값);`
 
 ### useEffect
 
@@ -767,13 +788,13 @@ JSX는 HTML 태그처럼 보이지만 HTML태그는 아니며, 자바스크립�
     - 컴포넌트의 state, props가 변경되면, 화면을 재렌더링하여 화면을 다시 그리는 과정
     - 부모 컴포넌트의 상태가 변경되면, 기본적으로 자식 컴포넌트도 업데이트 발생
     - 특정 상태값이 변경될 때마다 선택적 업데이트 가능
-    - 마운팅 이후에 UI가 바뀌는 것
+    - 마운팅 이후에 UI가 바뀌는 것  
       -> 화면의 일부가 바뀌는 것
   - 언마운팅(UnMounting)
     - 마지막 발생
     - 컴포넌트가 화면에서 사라지는 과정
 
-  -> 프로그램적으로 각 시점을 잘 파악하는 것이 중요
+  -> 프로그램적으로 각 시점을 잘 파악하는 것이 중요  
   -> 렌더링(마운팅, 업데이팅)을 어떻게 하느냐에 따라 성능에 영향을 미친다.
 
 - 함수형 컴포넌트 라이프사이클 관리 훅
@@ -786,13 +807,12 @@ JSX는 HTML 태그처럼 보이지만 HTML태그는 아니며, 자바스크립�
 
 ### useContext
 
-- 부모/자식 컴포넌트 구조에서 부모에서 자식으로 아래 방향으로 자식으로 상태정보를 전달하고 싶으면 기본적으로 props(이벤트함수, 세터함수, props 데이터를 전달)를 이용한다.
+- 부모/자식 컴포넌트 구조에서 부모에서 자식으로 아래 방향으로 자식으로 상태정보를 전달하고 싶으면 기본적으로 props(이벤트함수, 세터함수, props 데이터를 전달)를 이용한다.  
   But! Depth가 너무 깊은 경우, 관리에 어려움 존재한다.(무한 데이터 전달...)
-- 자식에서 부모 컴포넌트로의 데이터의 공유/전송이나 부모/자식 관계가 아닌 컴포넌트(형제, 전혀 다른 루트파컴포넌트)간의 상태 정보 공유 시
-주로 `useContext`를 사용.
-- 모든 컴포넌트 중 일부 컴포넌트 그룹에서 전역 데이터 상태정보를 공유하고 싶을 떄 사용
+- 자식에서 부모 컴포넌트로의 데이터의 공유/전송이나 부모/자식 관계가 아닌 컴포넌트(형제, 전혀 다른 루트파컴포넌트)간의 상태 정보 공유 시 주로 `useContext`를 사용.
+- 모든 컴포넌트 중 일부 컴포넌트 그룹에서 전역 데이터 상태정보를 공유하고 싶을 떄 사용  
 
-Ex) 사용자의 정보나 로그인 상태를 매번 보내야 할 때, 전역으로 두면 어디서든 접근할 수 있다.
+Ex) 사용자의 정보나 로그인 상태를 매번 보내야 할 때, 전역으로 두면 어디서든 접근할 수 있다.  
 Ex) 테마(라이트모드/다크모드)
 
 ## 2024-08-16
@@ -818,7 +838,7 @@ Ex) 테마(라이트모드/다크모드)
 
 - 처음 화면 렌더링이 너무 오래걸리면 SSR을 쓴다.
 - 서버에서 html과 data를 만든다.
-- 검색 엔진을 최적화할 수 있다.
+- 검색 엔진을 최적화할 수 있다.  
 -> 최초에는 SSR을 하는 것이 좋다.
 ![alt text](image-5.png)
 ![alt text](image-4.png)
@@ -827,13 +847,13 @@ Ex) 테마(라이트모드/다크모드)
 
 - 정적 웹사이트 생성기
 - 웹사이트가 동적으로 변경되지 않고, 이미 정해져 있다.
-- 로컬에서 빌드 시점에서 html 소스가 만들어진다.
+- 로컬에서 빌드 시점에서 html 소스가 만들어진다.  
   -> 프리 렌더링이라고 한다.
 - `useState`가, `useEffect`가 들어가면, CSR이 된다.
 - 데이터 연동이 없는 단순 컴포넌트
 
-Case 1) jsx 코드만을 사용해 만든 정적 페이지
-Case 2) 빌드 타임에 데이터 기반 정적 페이지 생성 `getStatics props`
+Case 1) jsx 코드만을 사용해 만든 정적 페이지  
+Case 2) 빌드 타임에 데이터 기반 정적 페이지 생성 `getStatics props`  
 Case 3) 빌드 타임에 데이터 기반 여러 페이지 생성 `getStaticPath`
 
 ### ISR
@@ -879,7 +899,7 @@ SSG와 비슷하지만, SSG는 빌드 타임에 정적 웹페이지를 생성하
 - 백엔드의 .env에 OpenAI API key와 Dalle3에서 접근할 백엔드 도메인 주소 추가
 - 백엔드의 article_file model에 board_type_code에 3: 생성형 AI 이미지 게시판 선택지가 추가되었으니 주의
 - 백엔드의 /routes/openAPI.js의 /dalle 라우터 - 새로운 이미지 생성 기능 구현
-  - 로직: gallery 페이지에서 사용자가 프롬프트 입력 -> generate 버튼을 클릭 -> Dalle3를 통한 이미지 생성(이미지는 백엔드 서버의 public/ai에 저장됨) -> 게시글 생성
+  - 로직: gallery 페이지에서 사용자가 프롬프트 입력 -> generate 버튼을 클릭 -> Dalle3를 통한 이미지 생성(이미지는 백엔드 서버의 public/ai에 저장됨) -> 게시글 생성  
 - 백엔드의 /routes/openAPI.js의 /all 라우터 - gallery 페이지의 게시글 목록 기능 구현
   -> 쿼리문을 통해 여러 테이블에서 필요한 데이터만 가져와 JOIN
   - 쿼리문
@@ -900,17 +920,51 @@ SSG와 비슷하지만, SSG는 빌드 타임에 정적 웹페이지를 생성하
       WHERE A.board_type_code = 3
     ```
 
-    - 3개의 테이블에서 원하는 데이터를 가져와 JOIN 한다.
+    - 3개의 테이블에서 원하는 데이터를 가져와 `JOIN` 한다.
     - 흩어져 있는 데이터를 하나로 합쳐서 반환한다.
-    - 각각의 테이블 article: A, article_file: F, member: M이라고 부른다.
-    - AS: article_file_id를 file_id로 가져온다.
-    - ON 키워드는 JOIN 절과 함께 사용되어 두 테이블 간의 조인 조건을 지정한다.
-    - JOIN 조건에 사용되는 열은 각 테이블에서 Primary Key 또는 Foreign Key로 설정되어 있어야 한다.
-    - ON: article_id를 기준으로 JOIN한다
+    - 각각의 테이블 `article`: A, `article_file`: F, `member`: M이라고 부른다.
+    - `AS`: `article_file_id`를 `file_id`로 가져온다.
+    - `ON` 키워드는 `JOIN` 절과 함께 사용되어 두 테이블 간의 조인 조건을 지정한다.
+    - `JOIN` 조건에 사용되는 열은 각 테이블에서 Primary Key 또는 Foreign Key로 설정되어 있어야 한다.
+    - `ON`: `article_id`를 기준으로 `JOIN`한다
     - INNER JOIN: 각 테이블에 모두 존재하는 데이터만 가져온다.
-- 프론트엔드의 /gallery/index.tsx에서 fetch를 통해 백엔드와 연결
+- 프론트엔드의 `/gallery/index.tsx`에서 `fetch`를 통해 백엔드와 연결
 
+### 2024-08-21(수)
 
+- openai.images.generate의 response_format
+  > response_format을 url에서 b64_json으로 변경했을 때 발생한 버그가 해결된 이유를 이해하려면 두 방식의 차이점과 해당 버그가 발생한 가능성을 고려해야 합니다.
+  >
+  >
+  > - url:
+  > OpenAI API는 생성된 이미지를 일시적으로 저장하고, 그 이미지에 대한 URL을 반환합니다.
+  > 이 URL을 사용하면 프론트엔드에서 이미지를 직접 다운로드하거나 표시할 수 있습니다.
+  > 단, 이 URL은 일시적이며, 일정 시간이 지나면 이미지가 삭제될 수 있습니다.
+  > 프론트엔드에서 이 URL을 기반으로 이미지를 렌더링하는 방식입니다.
+  >
+  > - b64_json:
+  > OpenAI API는 생성된 이미지를 Base64 인코딩된 JSON 데이터로 반환합니다.
+  > 이 데이터는 서버에서 바로 디코딩하여 파일로 저장하거나 프론트엔드에 직접 전달할 수 있습니다.
+  > 프론트엔드에서 이 Base64 데이터를 이미지로 디코딩하여 즉시 렌더링할 수 있습니다.
+  >
+  >
+  > - 버그의 원인 분석
+  > -> 이미지 로딩 타이밍 문제:
+  > url 방식에서는 이미지가 서버에 저장된 후 프론트엔드가 그 URL을 받아와 렌더링하게 됩니다. 하지만, 이미지가 서버에 완전히 저장되기 전에 프론트엔드에서 URL을 요청해 이미지를 로드하려 하면, 해당 이미지가 아직 완전히 준비되지 않아서 회색으로 보일 수 있습니다.
+  > 이는 특히 네트워크 지연이나 서버 성능 이슈가 있을 때 더 자주 발생할 수 있습니다.
+  >
+  > -> 프론트엔드 캐싱 문제:
+  > url 방식에서 프론트엔드가 이미지를 캐싱하고, 캐싱된 이미지가 불완전할 경우, 새로고침하기 전까지 제대로 된 이미지가 로드되지 않을 수 있습니다. 새로고침 후에야 캐시가 초기화되면서 이미지가 정상적으로 표시될 수 있습니다.
+  >
+  >
+  > - b64_json 방식이 문제를 해결한 이유:
+  > b64_json 방식에서는 이미지를 서버에 저장하지 않고 바로 프론트엔드에 전달할 수 있습니다. 프론트엔드는 이 데이터를 디코딩하여 즉시 렌더링하기 때문에, 서버에 이미지가 저장될 때까지 기다릴 필요가 없습니다.
+  > 이로 인해 프론트엔드와 백엔드 간의 타이밍 문제가 발생하지 않고, 이미지가 바로 정상적으로 렌더링될 가능성이 높아집니다.
+  >
+  >
+  > - 결론
+  > 버그가 발생했던 이유는 url 방식의 이미지 생성 및 로드 타이밍 문제일 가능성이 큽니다. 이미지를 서버에 저장하고 URL을 반환하는 과정에서 네트워크 지연이나 서버의 성능 이슈로 인해 이미지가 완전히 준비되지 않았을 때 프론트엔드가 그 URL을 로드하려고 해서 발생한 문제로 보입니다.
+  > b64_json 방식으로 변경했을 때, 이미지 데이터를 직접 프론트엔드로 전달하고 바로 렌더링할 수 있으므로 이러한 타이밍 문제를 회피하게 되어 버그가 사라졌습니다.
 
 ---
 
