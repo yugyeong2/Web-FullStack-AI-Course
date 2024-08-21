@@ -6,9 +6,9 @@
 
 ### AJAX(Asynchronous Javascript And XML)
 
-- AJAX란, JavaScript의 라이브러리중 하나이며, HTML, CSS, 자바스크립트, DOM, XML 등 기존에 사용되던 여러 기술을 함께 사용하는 새로운 개발 기법입니다.
-- 브라우저가 가지고있는 XMLHttpRequest 객체를 이용해서 전체 페이지를 새로 고치지 않고도 페이지의 일부만을 위한 데이터를 로드하는 기법이며, JavaScript를 사용한 비동기 통신, 클라이언트와 서버간에 XML 데이터를 주고받는 기술입니다.
-- 즉, 쉽게 말하자면 자바스크립트를 통해서 서버에 데이터를 요청하는 것입니다.
+- AJAX란, JavaScript의 라이브러리중 하나이며, HTML, CSS, 자바스크립트, DOM, XML 등 기존에 사용되던 여러 기술을 함께 사용하는 새로운 개발 기법이다.
+- 브라우저가 가지고있는 XMLHttpRequest 객체를 이용해서 전체 페이지를 새로 고치지 않고도 페이지의 일부만을 위한 데이터를 로드하는 기법이며, JavaScript를 사용한 비동기 통신, 클라이언트와 서버간에 XML 데이터를 주고받는 기술이다.
+- 즉, 쉽게 말하자면 자바스크립트를 통해서 서버에 데이터를 요청하는 것이다.
 - 참고: [AJAX란?](https://daegwonkim.tistory.com/445)  
         [[비동기 통신] Ajax와 Axios의 차이점?](https://hstory0208.tistory.com/entry/%EB%B9%84%EB%8F%99%EA%B8%B0-%ED%86%B5%EC%8B%A0-Ajax%EC%99%80-Axios%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90)
 
@@ -28,8 +28,10 @@ PUT과 PATCH 모두 데이터를 수정할 때 사용한다.
 
 Ex)
 
-- http://localhost:3000/api/articles/1
-- http://localhost:3000/api/articles/delete?aid=1
+```text
+http://localhost:3000/api/articles/1
+http://localhost:3000/api/articles/delete?aid=1
+```
 
 와일드 카드는 주소체계가 같으면 뒤쪽을 값으로 인식한다.
 
@@ -44,15 +46,15 @@ Ex)
 ### EJS
 
 - 라우팅 메소드에서 view에 전달된 데이터 출력하려면 =을 쓴다.  
-  -> <%=데이터 속성명%>
+  -> `<%=데이터 속성명%>`
 
 ---
 
 ## 2024-07-25
 
     주의 !  
-    views/.ejs 파일의 <%%> 구문은 백엔드 코드  
-    routes/.js 파일의 <script> 구문은 프론트엔드 코드
+    `/views/.ejs` 파일의 `<%%`>` 구문은 백엔드 코드  
+    `/routes/.js` 파일의 `<script>` 구문은 프론트엔드 코드
 
 ### 시맨틱 태그(Semantic Tag)
 
@@ -68,8 +70,8 @@ Ex)
   - html 태그 영역, script 태그 영역, css 영역은 여전히 중복된다.
 - 레이아웃
   - 레이아웃에는 실제 컨텐츠를 제외한 공통 부분만 포함한다.
-  - 레이아웃에서 <%- %> 태그를 이용해 통합한다.
-  - <body>, <meta>(검색 엔진 최적화), <style>, <script> html 태그를 적용할 수 있다.
+  - 레이아웃에서 `<%- %>` 태그를 이용해 통합한다.
+  - `<body>`, `<meta>`(검색 엔진 최적화), `<style>`, `<script>` html 태그를 적용할 수 있다.
 
 -> 기본적으로는 레이아웃 기술을 사용하고, 레이아웃을 적용해도 중복되는 부분은 부분적으로 Include 파일로 따로 뺀다.
 
@@ -155,7 +157,6 @@ Ex)
 모델과 물리적인 TABLE을 1대1 매핑해 모델을 통해 관리한다.  
 ORM 프레임워크에서 동적으로 SQL 쿼리를 만들어준다.
 
-
 ### Code First & Model First
 
 코드로 모델을 만들고, DB를 적용한다.  
@@ -181,17 +182,18 @@ index.js는 물리적인 데이터베이스 그 자체를 가리킨다.
 - 클라이언트 -> 서버로 전송한 메시지 수신
   - on 메소드
     현재 접속되어 있는 클라이언트로부터 메시지를 수신하려면 on 메소드를 사용한다.
-    - io.on
-      - 'connection' : socket.io의 기본 이벤트, 사용자가 웹사이트에 접속하면 자동으로 발생하는 이벤트
-    - socket.on - 해당 클라이언트에서 메세지를 보낸다.
+    - `io.on`
+      - `connection` : socket.io의 기본 이벤트, 사용자가 웹사이트에 접속하면 자동으로 발생하는 이벤트
+    - `socket.on`
+      - 해당 클라이언트에서 메세지를 보낸다.
 
 - 서버 -> 클라이언트로 메시지 전송
   - emit 메소드
-    - io.emit
+    - `io.emit`
       - 서버가 현재 접속해있는 모든 클라이언트에게 이벤트 전달
       - io.emit은 연결된 모든 클라이언트를 대상으로 한다.
         -> 따라서 sender인 socket에 해당되는 client에게도 전달된다.
-    - socket.emit
+    - `socket.emit`
       - 서버쪽에서 event를 발생시키는 함수
       - 서버에서 이벤트 발생시키면 클라이언트 페이지의 해당 이벤트 리스너에서 처리
       - 해당 소켓을 통해 클라이언트에게 메시지 전송
@@ -388,9 +390,12 @@ Q. REST API와 RESTful API의 차이는 뭘까?
 VPC 내에 세분화된 격리 공간을 제공
 
 - 서버 OS 업데이트
+
+```bash
 sudo apt update
 sudo apt upgrade
 sudo apt autoremove
+```
 
 - Q. 왜 WAS 서버와 웹 서버를 나누는가?
   실제 서비스에는 물리적인 서버가 최소한 3대가 필요하다.  
@@ -455,60 +460,68 @@ Ex) www.naver.com
    - sudo su
      -> root 권한 위임 후 설정
    - 리눅스 명령어
-     - rpm -qa \*-release
-     - cat /proc/version
+     - `rpm -qa \*-release`
+     - `cat /proc/version`
 4. Node Framework 설치
-   - sudo dnf install nodejs
+   - `sudo dnf install nodejs`
 5. pm2 기반 WAS 서비스
    - pm2 설치
-     - npm install pm2 -g
+     - `npm install pm2 -g`
    - 서비스 폴더 만들고 접근 권한 주기
-     - sudo mkdir-p -- /var/www /var/www/nodechatapp
-     - sudo mkdir-p -- /var/www /var/www/nodechatadmin
+     - `sudo mkdir-p -- /var/www /var/www/nodechatapp`
+     - `sudo mkdir-p -- /var/www /var/www/nodechatadmin`
    - WinSCP로 서비스 폴더에 개발 소스 업로드하기
    - 패키지 설치
-     - npm i
+     - `npm i`
    - pm2로 시작 모듈을 app.js로 하여 노드 애플리케이션 시작하고 관리
      - 단일 스레드 기반 서비스
-       - pm2 start app.js --name nodechatadmin
+       - `pm2 start app.js --name nodechatadmin`
      - 멀티코어 클러스터링 기반 분산환경 제공
-       - pm2 start app.js --name nodechatadmin -i 0
+       - `pm2 start app.js --name nodechatadmin -i 0`
        - 주요 pm2 명령어
-         pm2 list
-         pm2 start www--name nodechatapp
-         pm2 stop nodechatapp
-         pm2 restart nodechatapp
-         pm2 delete nodechatapp
-         pm2 monit
+
+        ```bash
+        pm2 list
+        pm2 start www--name nodechatapp
+        pm2 stop nodechatapp
+        pm2 restart nodechatapp
+        pm2 delete nodechatapp
+        pm2 monit
+        ```
+
 6. NginX 웹서버 설치
-   - dnf install nginx
+   - `dnf install nginx`
      -> 넌 지금부터 웹서버야
    - nginX 서비스 관리 명령어
-     - sudo systemctl enable nginx
-     - sudo systemctl start nginx
-     - sudo systemctl status nginx
-     - sudo systemctl stop nginx
+     - `sudo systemctl enable nginx`
+     - `sudo systemctl start nginx`
+     - `sudo systemctl status nginx`
+     - `sudo systemctl stop nginx`
 7. 도메인 주소 기반 가상 호스팅
    - nginx 설정 파일 수정
-     - sudo vi /etc/nginx/nginx.conf
-       server {
-         listen 80;
-         server_name 3.37.185.159 cbnu13.wechatmaker.com;
+     - `sudo vi /etc/nginx/nginx.conf`
 
-         location / {
-           proxy_pass http://172.31.9.22:5001;
-           proxy_http_version 1.1;
-           proxy_set_header Upgrade $http_upgrade;
-           proxy_set_header Connection $http_connection;
-           proxy_set_header Host $http_host;
-           proxy_cache_bypass $http_upgrade;
-           }
-       }
+      ```nginx
+      server {
+        listen 80;
+        server_name 3.37.185.159 cbnu13.wechatmaker.com;
+
+        location / {
+          proxy_pass http://172.31.9.22:5001;
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection $http_connection;
+          proxy_set_header Host $http_host;
+          proxy_cache_bypass $http_upgrade;
+          }
+      }
+      ```
+
    - 모든 nginx 설정 변경 후에는 반드시 설정파일 구문 검사 후 재시작해줘야 한다.
-     - sudo nginx -t
+     - `sudo nginx -t`
        설정 파일이 잘 수정되었는지 확인하는 테스트/문법 검사 실행
        문제가 없다면, test is successful
-     - sudo nginx -s reload
+     - `sudo nginx -s reload`
        nginx 재시작
 8. 서비스를 종료하고 삭제
    - 인스턴스
@@ -539,16 +552,19 @@ Ex) www.naver.com
 ### Maria DB Server
 
 - 설치
-  sudo yum install -y mariadb105-server
+  `sudo yum install -y mariadb105-server`
 - 접속
-  mysql -u root -p
+  `mysql -u root -p`
   암호는 설정되어 있지 않기 때문에, 엔터
 - DB 선택
-  use mysql
+  `use mysql`
 - 외부에서 Maria DB 접속 설정
+
+  ```sql
   select host, user, password from user;
   grant all privileges on*.* to 'root'@'%' identified by 'yugyeong';
   flush privileges;
+  ```
 
 ### Redis
 
@@ -661,30 +677,30 @@ JavaScript와 함깨 사용할 수 있다.
   
   ![alt text](image-1.png)
   
-  - app.tsx: 전체 레이아웃 구성
-  - index.tsx: 메인 페이지 컴포넌트(최초로 보여질 기본 페이지)
-  - next-env.d.ts: 설치된 패키지가 타입스크립트를 지원하지 않는지 알려준다.
-  - package.json
-    dependencies: 실제 서비스와 관련된 패키지
-    devDependencies: 개발할 때 사용하는 패키지
-  - postcss.config.mjs
+  - `app.tsx`: 전체 레이아웃 구성
+  - `index.tsx`: 메인 페이지 컴포넌트(최초로 보여질 기본 페이지)
+  - `next-env.d.ts`: 설치된 패키지가 타입스크립트를 지원하지 않는지 알려준다.
+  - `package.json`
+    `dependencies`: 실제 서비스와 관련된 패키지
+    `devDependencies`: 개발할 때 사용하는 패키지
+  - `postcss.config.mjs`
       css 후처리기 관련 config 설정 파일
       -> css는 전처리기(css를 자동으로 만들어준다)와 후처리기(만들어진 css를 브라우저에서 실행할 수 있도록 해준다)
-  - tsconfig.json
+  - `tsconfig.json`
     타입스크립트 관련 config 설정 파일
-  - _(언더스코어)로 시작되는 파일과 폴더
+  - `_`(언더스코어)로 시작되는 파일과 폴더
     - 특별한 용도(대부분 애플리케이션의 전반적인 구조와 동작을 정의하는 시스템 파일이나 설정 파일)로 사용된다.(NextJS에서 제공하는 컨벤션)
     - 라우팅 규칙에서 빠진다.(자동 라우팅 메커니즘에서 제외한다.)
     - 프라이빗으로 간주한다.
-  - @/
+  - `@/`
     최상위에서 경로를 나타낸다.
 
 - Next Page Router 프로젝트 실행 순서
-  1. 사용자 웹브라우저 NextApp 최초 호출(도메인주소) 
-  2. _app.tsx(서버에서 실행) 
-  3. _app.tsx내 메인 페이지 컴포넌트 호출(서버에서 실행) 
-  4. _document.tsx 호출(서버에서 실행) 
-  5. Single Web HTML Page 생성(서버에서 실행) 
+  1. 사용자 웹브라우저 NextApp 최초 호출(도메인주소)
+  2. _app.tsx(서버에서 실행)
+  3. _app.tsx내 메인 페이지 컴포넌트 호출(서버에서 실행)
+  4. _document.tsx 호출(서버에서 실행)
+  5. Single Web HTML Page 생성(서버에서 실행)
   6. 클라이언트로 Single Web HTML Page 전송
   7. 메인 페이지 기능 작동
 
@@ -695,8 +711,8 @@ JavaScript 언어에 XML 표기문법을 추가한 자바스크립트 확장문�
 JSX는 HTML 태그처럼 보이지만 HTML태그는 아니며, 자바스크립트 +XML 문법을 이용
 
 - 최상위 태그는 하나이어야 한다.
-  Ex) <div></div><div></div>와 같이 최상위 태그가 여러 개이면 안된다.
-      <></> 또는 <Fragment></Fragment> 스타일이 없는 <div></div>로 감싸준다.
+  Ex) `<div></div> <div></div>`와 같이 최상위 태그가 여러 개이면 안된다.
+      `<></>` 또는 `<Fragment></Fragment>` 스타일이 없는 `<div></div>`로 감싸준다.
 - 컴파일 과정
   JSX Code -> Client JavaScript 파일 -> 자바스크립트에 의해 HTML 태그 생성
 - 닫는 태그가 반드시 필요하다.
@@ -770,10 +786,10 @@ JSX는 HTML 태그처럼 보이지만 HTML태그는 아니며, 자바스크립�
 
 ### useContext
 
-- 부모/자식 컴포넌트 구조에서 부모에서 자식으로 아래 방향으로 자식으로 상태정보를 전달하고 싶으면 기본적으로 props(이벤트함수, 세터함수,props 데이터를 전달)를 이용한다.
+- 부모/자식 컴포넌트 구조에서 부모에서 자식으로 아래 방향으로 자식으로 상태정보를 전달하고 싶으면 기본적으로 props(이벤트함수, 세터함수, props 데이터를 전달)를 이용한다.
   But! Depth가 너무 깊은 경우, 관리에 어려움 존재한다.(무한 데이터 전달...)
 - 자식에서 부모 컴포넌트로의 데이터의 공유/전송이나 부모/자식 관계가 아닌 컴포넌트(형제, 전혀 다른 루트파컴포넌트)간의 상태 정보 공유 시
-주로 useContext를 사용.
+주로 `useContext`를 사용.
 - 모든 컴포넌트 중 일부 컴포넌트 그룹에서 전역 데이터 상태정보를 공유하고 싶을 떄 사용
 
 Ex) 사용자의 정보나 로그인 상태를 매번 보내야 할 때, 전역으로 두면 어디서든 접근할 수 있다.
@@ -813,12 +829,12 @@ Ex) 테마(라이트모드/다크모드)
 - 웹사이트가 동적으로 변경되지 않고, 이미 정해져 있다.
 - 로컬에서 빌드 시점에서 html 소스가 만들어진다.
   -> 프리 렌더링이라고 한다.
-- useState가, useEffect가 들어가면, CSR이 된다.
+- `useState`가, `useEffect`가 들어가면, CSR이 된다.
 - 데이터 연동이 없는 단순 컴포넌트
 
 Case 1) jsx 코드만을 사용해 만든 정적 페이지
-Case 2) 빌드 타임에 데이터 기반 정적 페이지 생성 getStatics props
-Case 3) 빌드 타임에 데이터 기반 여러 페이지 생성 getStaticPath
+Case 2) 빌드 타임에 데이터 기반 정적 페이지 생성 `getStatics props`
+Case 3) 빌드 타임에 데이터 기반 여러 페이지 생성 `getStaticPath`
 
 ### ISR
 
@@ -867,19 +883,22 @@ SSG와 비슷하지만, SSG는 빌드 타임에 정적 웹페이지를 생성하
 - 백엔드의 /routes/openAPI.js의 /all 라우터 - gallery 페이지의 게시글 목록 기능 구현
   -> 쿼리문을 통해 여러 테이블에서 필요한 데이터만 가져와 JOIN
   - 쿼리문
-    const query = `SELECT  
-                    A.article_id,  
-                    A.title,  
-                    A.contents,  
-                    A.reg_member_id,  
-                    F.article_file_id AS file_id,  
-                    F.file_name,  
-                    F.file_path,  
-                    M.name AS reg_member_name  
-                    FROM article A INNER JOIN article_file F  
-                    ON A.article_id = F.article_id  
-                    INNER JOIN member M ON A.reg_member_id = M.member_id  
-                    WHERE A.board_type_code = 3`;  
+
+    ```sql
+    SELECT
+      A.article_id,
+      A.title,
+      A.contents,
+      A.reg_member_id,
+      F.article_file_id AS file_id,
+      F.file_name,
+      F.file_path,
+      M.name AS reg_member_name
+      FROM article A INNER JOIN article_file F
+      ON A.article_id = F.article_id
+      INNER JOIN member M ON A.reg_member_id = M.member_id
+      WHERE A.board_type_code = 3
+    ```
 
     - 3개의 테이블에서 원하는 데이터를 가져와 JOIN 한다.
     - 흩어져 있는 데이터를 하나로 합쳐서 반환한다.
@@ -890,6 +909,8 @@ SSG와 비슷하지만, SSG는 빌드 타임에 정적 웹페이지를 생성하
     - ON: article_id를 기준으로 JOIN한다
     - INNER JOIN: 각 테이블에 모두 존재하는 데이터만 가져온다.
 - 프론트엔드의 /gallery/index.tsx에서 fetch를 통해 백엔드와 연결
+
+
 
 ---
 
