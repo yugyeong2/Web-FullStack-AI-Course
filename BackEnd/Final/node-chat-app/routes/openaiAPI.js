@@ -45,36 +45,46 @@ router.post("/dalle", async (req, res) => {
             n: 1,                   // 이미지 생성 개수(dalle2는 최대 10개, dalle3는 1개)
             size: "1024x1024",      // dalle2: 256x256, 512x512, 1024x1024 / dalle3: 1024x1024, 1792x1024, 1024x1792 지원
             style: "vivid",         // 기본값: vivid, / natural: dalle3만 지원(더 자연스럽고 초현실적인 이미지 생성)
-            response_format: "url", // url: openai 사이트에 생성된 이미지 풀 주소 경로 반환, b64_json: 바이너리 데이터 형식으로 반환
+            response_format: "b64_json", // url: openai 사이트에 생성된 이미지 풀 주소 경로 반환, b64_json: 바이너리 데이터 형식으로 반환
         });
 
         // Step3: Dalle API 호출결과에서 물리적 이미지 생성, 서버 공간에 저장
         // url방식으로 이미지생성값을 반환받는 경우, 최대 1시간 이후에 OpenAI 이미지 서버에서 해당 이미지가 삭제된다.
         // 해당 이미지가 영구적으로 필요하면, 반환된 url주소를 이용해 이미지를 백엔드에 생성하면 된다.
-        const imageURL = response.data[0].url;
-        console.log("dalle 이미지 생성 URL 경로: ", imageURL);
+        
+        // const imageURL = response.data[0].url;
+        // console.log("dalle 이미지 생성 URL 경로: ", imageURL);
 
         // 이미지 경로를 이용해 물리적 이미지 파일 생성
         const imgFileName = `sample-${Date.now()}.png`;
         const imgFilePath = `./public/ai/${imgFileName}`; // 로컬에 저장될 이미지 위치
+        
+        // ! 이미지 생성 요청에 대한 응답 값으로 이미지 바이너리 데이터로 반환 후 서버에 이미지 파일 생성
+        const imageBinaryData = response.data[0].b64_json;
+        console.log("이미지 바이너리 데이터 정보:", imageBinaryData);
 
-        axios({
-            url: imageURL,
-            responseType: "stream",
-        })
-        .then((response) => {
-            response.data
-            .pipe(fs.createWriteStream(imgFilePath))
-            .on("finish", () => {
-                console.log("Image saved successfully.");
-            })
-            .on("error", (err) => {
-                console.error("Error saving image:", err);
-            });
-        })
-        .catch((err) => {
-            console.error("Error downloading image:", err);
-        });
+        const buffer = Buffer.from(imageBinaryData, "base64");
+        fs.writeFileSync(imgFilePath, buffer);
+
+        // axios({
+        //     url: imageURL,
+        //     responseType: "stream",
+        // })
+        // .then((response) => {
+        //     response.data
+        //     .pipe(fs.createWriteStream(imgFilePath))
+        //     .on("finish", () => {
+        //         console.log("Image saved successfully.");
+        //     })
+        //     .on("error", (err) => {
+        //         console.error("Error saving image:", err);
+        //     });
+        // })
+        // .catch((err) => {
+        //     console.error("Error downloading image:", err);
+        // });
+
+
 
         // Step4: 최종 생성된 이미지 데이터 추출
         const article = {
@@ -103,7 +113,7 @@ router.post("/dalle", async (req, res) => {
             file_type: "PNG",
             reg_date: Date.now(),
             reg_member_id: 1 // 추후 변경 (생성한 article에 저장된 reg_member_id와 동일해야 하며, DB에 존재하는 사용자 고유번호이어야 한다.)
-        }
+        };
 
         // Step5: DB 게시글 테이블에 사용자 이미지 생성요청 정보 등록처리
         const registeredFile = await db.Article_file.create(articleFile);

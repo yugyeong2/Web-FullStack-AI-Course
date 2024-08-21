@@ -49,6 +49,10 @@ const Gallery = () => {
 
         // 파일 목록 데이터 조회 출력
         await getBlogFiles();
+
+        // 이미지 생성 후 프롬프트 모델 선택 값 초기화 처리
+        setPrompt('');
+        setModel('dall-e-3');
     };
 
     return (
