@@ -216,20 +216,37 @@ router.post('/gpt', async (req, res) => {
     }
 
     try {
-        // Step1: 프론트엔드에서 사용자 질문 프롬프트 추출
+        // Step1: 프론트엔드에서 전달해준 사용자 질문 메시지 프롬프트 추출
+        const prompt = message.body.message;
 
-        // Step2: ChatGPT API 호출
+        // Step2: OpenAI ChatGPT REST API 호출
+        // -> 서버와 gpt는 실시간 연결이 아니라, RestAPI 통신하여 요청과 응답을 처리한다.
+        const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+            model: 'gpt-4o', // 지원 LLM 모델: gpt-4o-mini, gpt-4o, gpt-4, gpt-3.5-turbo
+            message: [{role: 'user', content: prompt}],
+        },
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
+            }
+        });
 
         // Step3: ChatGPT 응답 메시지 추출
+        const gptMessage = response.data.choices[0].message[0].message.content;
 
-        // Step4: 프론트엔드에 ChatGPT 응답 메시지 반환
-
+        apiResult.code = 200;
+        apiResult.data = gptMessage;
+        apiResult.message = "200 OK";
 
     } catch (error) {
         apiResult.code = 500;
         apiResult.data = null;
         apiResult.message = "ServerERR: 자세한 내용은 백엔드에 문의해주세요.";
     }
+
+    // Step4: 프론트엔드에 ChatGPT 응답 메시지 반환
+    res.json(apiResult);
 });
 
 module.exports = router;
