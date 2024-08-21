@@ -77,7 +77,7 @@ const BlogCreate = () => {
         <div className="space-y-12">
             <div className="border-b border-gray-900/10 pb-12">
             <h2 className="text-base font-semibold leading-7 text-gray-900">
-                신규 게시글
+                신규 게시글 등록
             </h2>
             <p className="mt-1 text-sm leading-6 text-gray-600">
                 신규 게시글을 작성합니다.
