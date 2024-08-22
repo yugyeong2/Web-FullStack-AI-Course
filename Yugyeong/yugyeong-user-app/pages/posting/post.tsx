@@ -39,14 +39,17 @@ const Post = () => {
                 <div key={post.post_id}>
                     {/* 게시글 헤더 */}
                     <div>
-                        <Image
-                        src={post.poster.profile_image}
-                        alt={post.poster.username}
-                        layout="responsive"
-                        width={40}
-                        height={40}
-                        className='flex'
-                        />
+                        <div className='relative w-10 h-10'>
+                            <Image
+                            src={post.poster.profile_image}
+                            alt={post.poster.username}
+                            layout='responsive'
+                            width={40}
+                            height={40}
+                            className='flex'
+                            />                            
+                        </div>
+
 
                         <div className='mr-1'>
                             <div>{post.poster.username}</div>
@@ -56,13 +59,17 @@ const Post = () => {
 
                     {/* 게시글 본문 */}
                     <div>
-                        <Image src={post.post_image}
-                        alt='{post.poster}님의 게시글'
-                        layout="responsive"
-                        width={100} // 비율 적용
-                        height={100} // 비율 적용
-                        className="object-cover aspect-square flex-shrink-0"
-                        />
+                        <div className='relative w-96 h-96'>
+                            <Image
+                            src={post.post_image}
+                            alt='{post.poster}님의 게시글'
+                            layout='responsive'
+                            width={100} // 비율 적용
+                            height={100} // 비율 적용
+                            className='object-cover aspect-square flex-shrink-0'
+                            />                            
+                        </div>
+
 
                         <div>{post.contents}</div>
                     </div>
