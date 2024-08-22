@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 
 // 전역 컨텍스트 참조
 import { GlobalContext } from '@/library/globalContext';
+import { IGlobalData, ILoginMember } from '@/interfaces/global';
 
 // 로그인 화면 컴포넌트
 const Login = () => {
@@ -50,14 +51,12 @@ const Login = () => {
 
         // Step2: 추후 Context API의 전역데이터로 사용자 정보 저장
         // 로그인한 사용자 정보를 전역 상태의 member 속성값으로 저장
-        setGlobalData({...globalData, member: result.data.member});
-        // setGlobalData(result.data);
+        setGlobalData(result.data.member);
 
         // Step3: 메인 페이지로 이동 처리
         router.push('/');
 
       } else {
-
         if(result.code == 400 && result.message == 'NotExistEmail: 이메일이 존재하지 않습니다.') {
           alert('해당 이메일이 존재하지 않습니다.');
           return false;
