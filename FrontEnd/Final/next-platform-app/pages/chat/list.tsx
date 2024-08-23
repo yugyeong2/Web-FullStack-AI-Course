@@ -6,7 +6,7 @@ import { IChannel } from '@/interfaces/chat';
 
 // 전역 컨텍스트 참조하기
 import { GlobalContext } from '@/library/globalContext';
-import { IGlobalData, ILoginMember } from '@/interfaces/global';
+import { IGlobalData } from '@/interfaces/global';
 
 const ChatList = () => {
     const router = useRouter();
