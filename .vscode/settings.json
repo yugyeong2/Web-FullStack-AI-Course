@@ -1,11 +1,13 @@
 {
   "cSpell.words": [
     "cbnu",
+    "Colab",
     "dall",
     "dalle",
     "groupchat",
     "headlessui",
     "heroicons",
+    "langchain",
     "Mypage",
     "NEXTJS",
     "nodechatadmin",
@@ -16,8 +18,11 @@
     "RESTAPI",
     "signin",
     "signup",
+    "simplebot",
     "tailwindcss",
+    "tiktoken",
     "TINYINT",
+    "translatebot",
     "VARCHAR",
     "Yugyeong"
   ]
