@@ -10,6 +10,8 @@ import { GlobalContext } from '@/library/globalContext';
 // 채팅 클라이언트 socket객체 참조
 import { socket } from '@/library/socket';
 
+import moment from 'moment';
+
 const Chat = () => {
   // 라우터 객체 생성
   const router = useRouter();
@@ -137,7 +139,7 @@ const Chat = () => {
       name: globalData.member.name,
       profile: `http://localhost:5000/images/user${globalData.member.member_id.toString()}.png`,
       message: message,
-      send_date: Date.now().toString(),
+      send_date: new Date(),
     };
 
     // 채팅 서버 소켓으로 메시지 전송
@@ -161,6 +163,9 @@ const Chat = () => {
                   {
                     messageList.map((message, index) =>
                       message.member_id === globalData.member.member_id ? (
+                        console.log('메시지 작성자 아이디:', message.member_id),
+                        console.log('메시지 작성자 아이디:', globalData.member.member_id),
+
                         // 메시지 작성자 아이디와 현재 로그인한 사용자 아이디가 같으면, 오른쪽에 출력
                         <div
                           key={index}
@@ -174,7 +179,7 @@ const Chat = () => {
                               <div>{message.message}</div>
 
                               <div className="absolute w-[200px] text-right text-xs bottom-0 right-0 -mb-5 text-gray-500">
-                                {message.name} {message.send_date}
+                                {message.name} {moment(message.send_date).format('YYYY-MM-DD HH:mm:ss')}
                               </div>
                             </div>
                           </div>
