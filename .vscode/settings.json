@@ -13,17 +13,21 @@
     "nodechatadmin",
     "nodechatapp",
     "openai",
+    "pagebot",
     "RDBMS",
     "resave",
     "RESTAPI",
+    "searchbot",
     "signin",
     "signup",
     "simplebot",
     "tailwindcss",
+    "Tavily",
     "tiktoken",
     "TINYINT",
     "translatebot",
     "VARCHAR",
+    "vectorstores",
     "Yugyeong"
   ]
 }
