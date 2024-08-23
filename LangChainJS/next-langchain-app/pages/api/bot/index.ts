@@ -8,7 +8,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 // 프론트엔드로 반환할 메시지 데이터 타입 참조
-import { IMessage, UserType } from "@/interfaces/message";
+import { IMemberMessage, UserType } from "@/interfaces/message";
 
 // OpenAI LLM 서비스 객체 참조
 import { ChatOpenAI } from '@langchain/openai';
@@ -53,7 +53,8 @@ export default async function handler(
          */
         if (req.method == 'POST') {
             // Step1: 프론트엔드에서 전달해주는 사용자 프롬프트 데이터 추출
-            const prompt: string = req.body.message;
+            const nickname: string = req.body.nickname; // 사용자 대화명
+            const prompt: string = req.body.message; // 사용자 입력 메시지
 
             // Step2: LLM 모델 생성
             const llm = new ChatOpenAI({
@@ -69,7 +70,8 @@ export default async function handler(
             // Step4: 메시지 처리결과데이터 - result가 AIMessage타입인 경우(CASE1~3에 해당하는 경우만)
             const resultMsg: IMessage = {
                 user_type: UserType.BOT,
-                message: result.content as string,
+                nickname: 'bot',
+                message: resultMessage,
                 send_date: new Date()
             };
 

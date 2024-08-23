@@ -1,24 +1,28 @@
 import { useState } from 'react';
-import { IMessage, UserType } from '@/interfaces/message';
+import { IMemberMessage, UserType } from '@/interfaces/message';
 
 import moment from 'moment';
 
-const SimpleBot = () => {
+const Bot = () => {
+
+    // 사용자 대화 닉네임 상태 값 정의
+    const [nickname, setNickname] = useState<string>('');
 
     // 사용자 입력 채팅 메시지 상태값 정의 및 초기화
     const [message, setMessage] = useState<string>('');
 
     // 챗봇과의 채팅 이력 상태값 목록 정의 초기화
     // -> 대화 이력을 LLM 자체 시스템에 저장하지 않기 때문에, 메시지 목록을 상태값으로 관리
-    const [messageList, setMessageList] = useState<IMessage[]>([]);
+    const [messageList, setMessageList] = useState<IMemberMessage[]>([]);
 
     // 매시지 전송 버튼 클릭 시 메시지 백엔드 API 전송
     const messageSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         // 백엔드로 사용자가 메시지를 전송히기 전에 사용
-        const userMessage: IMessage = {
+        const userMessage: IMemberMessage = {
             user_type: UserType.USER,
+            nickname: nickname,
             message: message,
             send_date: new Date()
         };
@@ -28,11 +32,14 @@ const SimpleBot = () => {
         // 왜? 여기서?? 현재 WebSocket 기반 실시간 통신이 아니기 때문에, 백엔드에서 두 번의 메시지를 받아줄 수 없기 때문이다.
         setMessageList((prev) => [...prev, userMessage]);
 
-        
-        const response = await fetch('/api/bot/simplebot', {
+        // 사용자 입력 메시지를 백엔드로 전송
+        const response = await fetch('/api/bot', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify( { message } )
+            body: JSON.stringify({
+                nickname,
+                message
+            })
         });
 
         if (response.status === 200) {
@@ -63,13 +70,13 @@ const SimpleBot = () => {
                                     >
                                         <div className="flex items-center justify-start flex-row-reverse">
                                         <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                                            User
+                                            {message.nickname}
                                         </div>
                                         <div className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
                                             <div>{message.message}</div>
             
                                             <div className="absolute w-[200px] text-right text-xs bottom-0 right-0 -mb-5 text-gray-500">
-                                            {message.user_type} {moment(message.send_date).format('YYYY-MM-DD HH:mm:ss')}
+                                            {message.nickname} {moment(message.send_date).format('YYYY-MM-DD HH:mm:ss')}
                                             </div>
                                         </div>
                                         </div>
@@ -121,17 +128,25 @@ const SimpleBot = () => {
         
                         {/* 메시지 입력요소 영역 */}
                         <div className="flex-grow ml-4">
-                        <div className="relative w-full">
-                            <input
-                            type="text"
-                            name={message}
-                            value={message}
-                            onChange={e => {
-                                setMessage(e.target.value);
-                            }}
-                            className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
-                            />
-                        </div>
+                            <div className="flex w-full">
+                                <input
+                                type='text'
+                                value={nickname}
+                                onChange={ (e) => { setNickname(e.target.value); } }
+                                placeholder='닉네임'
+                                className="flex w-[85px] border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
+                                />      
+
+                                <input
+                                type="text"
+                                name={message}
+                                value={message}
+                                onChange={e => {
+                                    setMessage(e.target.value);
+                                }}
+                                className="flex ml-2 w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
+                                />
+                            </div>
                         </div>
         
                         {/* 메시지 전송버튼 영역 */}
@@ -162,4 +177,4 @@ const SimpleBot = () => {
     );
 }
 
-export default SimpleBot;
+export default Bot;
