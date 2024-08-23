@@ -1,9 +1,9 @@
 export interface IGlobalData {
     token: string;
-    member: ILoginMember;
+    member: IGlobalMember;
 }
 
-export interface ILoginMember {
+export interface IGlobalMember {
     member_id: number;
     name: string;
     email: string;

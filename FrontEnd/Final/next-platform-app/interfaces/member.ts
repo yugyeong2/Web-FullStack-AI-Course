@@ -4,3 +4,8 @@ export interface IEntryMember {
     password: string;
     nickname: string;
 }
+
+export interface ILoginMember {
+    email: string;
+    password: string;
+}
