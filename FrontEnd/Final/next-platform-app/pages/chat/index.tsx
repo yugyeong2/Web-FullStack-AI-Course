@@ -30,29 +30,8 @@ const Chat = () => {
   const [message, setMessage] = useState<string>('');
 
   // 채팅 메시지 목록(채팅 이력 정보) 상태 값 정의
-  const [messageList, setMessageList] = useState<IMessage[]>([
-    {
-      member_id: 1,
-      name: '박유경1',
-      profile: '/images/profile.jpg',
-      message: '안녕하세요',
-      send_date: '2024-08-21 12:00:00'
-    },
-    {
-      member_id: 2,
-      name: '박유경2',
-      profile: '/images/profile.jpg',
-      message: '반갑습니다.',
-      send_date: '2024-08-21 12:01:00'
-    },
-    {
-      member_id: 1,
-      name: '박유경3',
-      profile: '/images/profile.jpg',
-      message: '좋은 아침이에요.',
-      send_date: '2024-08-21 12:02:00'
-    },
-  ]);
+  const [messageList, setMessageList] = useState<IMessage[]>([]);
+
 
   // useEffect 훅은 CSR환경에서 작동되고, userRouter훅은 SSR/CSR순서로 2번작동됨.
   // useEffect훅에서 userRouter훅을 이용해 URL키 값이 추출안되는 문제는  useRouter.isReady값을 이용해 해결 가능
@@ -70,11 +49,15 @@ const Chat = () => {
   // 현재 접속 채널 정보가 변경될 때마다 실행되는 useEffect 함수
   // 채널 번호가 바뀌면 바뀐번호로 채팅방에 입장하기 처리 
   useEffect(() => {
-    if(channel > 0) {
-      setChannel(channel);
-
-    // 채팅방 입장 처리
     console.log('채팅방 채널이 변경되었습니다.', channel);      
+
+    if(channel > 0) {
+      // 채팅방 입장 처리
+      console.log('채팅방에 입장합니다.', channel);
+
+      // 변경된 채팅방에 입장 처리
+      socket.emit('entry', globalData.member, channel.toString());
+      setChannel(channel);
     }
   }, [channel]);
 
@@ -101,7 +84,7 @@ const Chat = () => {
     // 서버 소켓과 연결이 완료되면 자동으로 client 소켓에서 connect이벤트가 실행되고,
     // connect이벤트가 실행되면 처리할 이벤트 처리할 기능 구현
     socket.on('connect', () => {
-      console.log('정상적으로 서버소켓과 연결이 완료되었습니다.');
+      console.log('connect: 정상적으로 서버소켓과 연결이 완료되었습니다.');
 
       // 사용자 채팅방에 입장 처리
     });
@@ -110,13 +93,25 @@ const Chat = () => {
     // 서버와의 연결 소켓이 끊어진 경우 처리할 기능을 핸들러 함수에서 처리한다.
     // 소켓 시스템 이벤트
     socket.on('disconnect', () => {
-      console.log('서버소켓과 연결이 종료되었습니다.');
+      console.log('disconnect: 서버소켓과 연결이 종료되었습니다.');
     });
 
     // 개발자 정의 클라이언트 소켓 이벤트 수신기 정의
     // socket.on('클라이언트 이벤트 수신기명', 서버에서 전달해준 데이터를 받는 함수 정의);
     socket.on('receiveAll', function (message: IMessage) {
-      console.log('receiveAll - 서버소켓에서 전달받은 메시지:', message);
+      console.log('receiveAll: 서버소켓에서 전달받은 메시지:', message);
+      setMessageList(prev => [...prev, message]);
+    });
+
+    // 사용자 지정 채널 입장완료 이벤트 수신기 정의
+    socket.on('entryOK', function (message: IMessage) {
+      console.log('entryOK: 서버소켓에서 전달받은 메시지:', message);
+      setMessageList(prev => [...prev, message]);
+    });
+
+    // 채팅 채널별 메시지 수신기 정의
+    socket.on('receiveChannel', function (message: IMessage) {
+      console.log('receiveChannel: 서버소켓에서 전달받은 메시지:', message);
       setMessageList(prev => [...prev, message]);
     });
 
@@ -128,8 +123,11 @@ const Chat = () => {
       socket.off('connect');
       socket.off('disconnect');
       socket.off('receiveAll');
+      socket.off('entryOk');
+      socket.off('receiveChannel');
     };
   }, []);
+
 
   // 채팅 메시지 전송 이벤트 처리 함수
   const sendMessage = () => {
@@ -144,7 +142,7 @@ const Chat = () => {
 
     // 채팅 서버 소켓으로 메시지 전송
     // socket.emit('서버 이벤트 수신기명', 전달할 데이터);
-    socket.emit('broadcast', messageData);
+    socket.emit('channelMsg', channel.toString(), messageData);
 
     // 메시지 전송 후 입력요소 초기화
     setMessage('');
@@ -198,7 +196,7 @@ const Chat = () => {
                               <div>{message.message}</div>
 
                               <div className="absolute w-[200px] text-xs bottom-0 left-0 -mb-5 text-gray-500">
-                                {message.name} {message.send_date}
+                                {message.name} {moment(message.send_date).format('YYYY-MM-DD HH:mm:ss')}
                               </div>
                             </div>
                           </div>

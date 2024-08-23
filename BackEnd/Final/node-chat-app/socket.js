@@ -80,7 +80,7 @@ module.exports = (server)=>{
 
         // 지정한 채팅방 개설 및 입장처리 메시지 이벤트 수신기
         // socket.on("서버 측 이벤트 수신기명", 콜백함수(){});
-        socket.on("entry", async(nickname, channel) => {
+        socket.on("entry", async(member, channel) => {
             // socket.join('채팅방 이름');은  서버환경에 해당 채팅방이름으로 채널을 개설하고, 현재 입장하는 사용자를 해당 채팅방 사용자로 등록 처리한다.
             // 이미 해당 채널이 개설되어 있으면 신규 개설하지 않고 기존 채널로 입장한다.
             // socket.join('채팅방 이름');
@@ -91,13 +91,27 @@ module.exports = (server)=>{
             // 내가 입장했을 떼는 아래와 메시지가 뜨지 않는다. 다른 메시지가 뜨게 할 수도 있음.
             socket
             .to(channel)
-            .emit("entryOk", `${nickname}님이 ${channel} 채널에 입장하였습니다.`);
+            .emit("entryOk", {
+                    member_id: member.member_id,
+                    name: member.name,
+                    profile: member.profile,
+                    message: `${member.name}님이 ${channel} 채널에 입장하였습니다.`,
+                    send_date: new Date()
+                }
+            );
 
             // 나에게만 보내고 싶을 때: socket.emit, 나를 제외한 나머지에게 보내고 싶을 때: socket.to
             // 현재 채널에 입장하고 있는 사용자에게만 메시지 발송하기
             // socket.emit(); -> 현재 서버소켓을 호출한(입장하는) 사용자에게만 메시지 발송하기
             // socket은 개인 사용자(나)를 기준으로 보낼 때 사용, io는 서버 단위로 연결되어 있는 사용자에게 보낼 때 사용
-            socket.emit("entryOk", `${nickname}님, ${channel} 채널에 입장하신 것을 환영합니다.`);
+            socket.emit("entryOk",{
+                    member_id: member.member_id,
+                    name: member.name,
+                    profile: member.profile,
+                    message: `${member.name}님, ${channel} 채널에 입장하신 것을 환영합니다.`,
+                    send_date: new Date()
+                }
+            );
         });
 
 
@@ -116,12 +130,18 @@ module.exports = (server)=>{
 
         // 채팅방 기준으로 해당 채팅방에 나를 포함한 모든 사용자들에게 메시지 발송하기
         // 클라이언트에서 메시지 데이터를 JSON 포맷으로 전송한다.
-        socket.on('channelMsg', async(msgData) => { // JSON 데이터로 파라미터를 받는다.
+        socket.on('channelMsg', async(channel, msgData) => { // JSON 데이터로 파라미터를 받는다.
             // 클라이언트로 보낼 메시지 포맷 정의
-            const message = `${msgData.Nickname}:${msgData.Message}`;   
+            const message = {
+                member_id: msgData.member_id,
+                name: msgData.name,
+                profile: msgData.profile,
+                message: msgData.message,
+                send_date: new Date(),
+            };
 
             // io.to('채널명').emit()은 현재 채널에 메시지를 보낸 당사자(나)를 포함한 현재 채널의 모든 접속자(사용자)에게 메시지를 발송한다.
-            io.to(msgData.Channel).emit('receiveChannel', message)
+            io.to(channel).emit('receiveChannel', message);
         });
 
 
