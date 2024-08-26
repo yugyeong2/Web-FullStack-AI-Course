@@ -18,3 +18,10 @@ export enum UserType {
     USER = 'User',
     BOT = 'Bot'
 }
+
+export enum BotType {
+    LLMGPT = 'LLMGPT',
+    LLMGEMINI = 'LLMGEMINI',
+    RAGDOC = 'RAGDOC', // 문서 기반 RAG
+    RAGWEB = 'RAGWEB' // 웹페이지 기반 RAG
+}
