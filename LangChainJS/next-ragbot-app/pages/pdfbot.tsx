@@ -33,7 +33,7 @@ const PDFBot = () => {
         setMessageList((prev) => [...prev, userMessage]);
 
         // 사용자 입력 메시지를 백엔드로 전송
-        const response = await fetch('/api/pagebot', {
+        const response = await fetch('/api/pdfbot', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify({

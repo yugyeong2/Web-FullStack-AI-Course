@@ -102,7 +102,7 @@ export default async function handler(
             const retriever = vectorStore.asRetriever();
             const searchResult = await retriever.invoke(prompt);
 
-            console.log('백터 저장소 쿼리 검색 결과:', searchResult);
+            console.log('벡터 저장소 쿼리 검색 결과:', searchResult);
 
             // Step7: 프론트엔드로 반환되는 메시지 데이터 생성
             // -> 사용자가 입력한 메시지를 챗봇이 받아서 처리한 결과 메시지를 반환
