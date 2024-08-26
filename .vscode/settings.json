@@ -1,6 +1,5 @@
 {
   "cSpell.words": [
-    "qnabot",
     "cbnu",
     "charmonman",
     "Colab",
@@ -17,6 +16,8 @@
     "openai",
     "pagebot",
     "pdfbot",
+    "pdfpineconebot",
+    "qnabot",
     "RDBMS",
     "resave",
     "RESTAPI",
