@@ -56,6 +56,53 @@ module.exports = (server)=>{
     // connection 이벤트는 웹브라우저와 서버소켓이 연결 완료되면 발생한다.
     // -> 연결이 전제되었을 때, 다른 기능이 수행되어야 하기 때문에 connection 안에 구현한다.
     io.on("connection", (socket) => {
+
+        // !
+        const req = socket.request;
+
+        // 웹 소켓 서버에 접속한 사용자 아이피 조회
+        const userIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress.replace('::;ffff', '');
+
+        // 웹 소켓 아이디 = connection id 추출
+        // 서버에서 사용자를 구분할 수 있는 connection id(=socket.id)
+        // -> connection id를 통해 사용자에게 직접 메시지를 보낼 수도 있다.
+        const socketId = socket.id;
+
+        // 클라이언트 소켓이 비정상적으로 소켓과 연결이 끊어진 경우를 인지하여, 해당 사용자의 연결 정보를 갱신할 수 있다.
+        // 비정상적인 소켓 끊김: 웹브라우저를 닫고 나가기 / 모바일 앱을 닫기 / 네트워크가 끊김 (wifi <-> mobile)
+        // -> 연결된 상태에서 연결이 끊어지기 때문에 disconnection은 connection 안쪽에서 구현
+        socket.on('disconnect', async() => {
+            // 사용자 연결 끊김 처리 필요
+            await UserDisconnectionOut();
+        });
+
+        // 비정상 연결 끊김 사용자 정보 처리
+        async function UserDisconnectionOut() {
+            // 현재 웹소켓이 끊긴 사용자 정보 조회
+            let exitUser = await db.ChannelMember.findOne({
+                where: { connection_id: socketId, active_state_code: 1 }
+            });
+            // ! ...
+
+            // 나갈 때 메시지
+            if(exitUser != null) {
+                var msg = {
+                    channel_id: exitUser.channel_id,
+                    member_id: exitUser.member_id,
+                    nick_name: exitUser.nick_name,
+                    msg_type_code: 0,
+                    connection_id: socketId,
+                    message: exitUser.nick_name + ' 사용자가 퇴장했습니다.',
+                    ip_address: userIP,
+                    msg_state_code: 1,
+                    msg_date: new Date()
+                };
+
+                await db.Channel_message.create(msg);
+            }
+        }
+        // !
+
         // socket은 현재 연결된 사용자(웹브라우저)와 서버소켓간 연결 객체
         // 웹브라우저에서 서버소켓에 broadcast라는 이벤트 수신기를 호출하면, 관련 콜백함수가 실행된다.
         // socket.on("서버소켓 이벤트 수신기명", 처리할 콜백함수);
@@ -85,6 +132,61 @@ module.exports = (server)=>{
             // 이미 해당 채널이 개설되어 있으면 신규 개설하지 않고 기존 채널로 입장한다.
             // socket.join('채팅방 이름');
             socket.join(channel);
+
+            var chatUser = await db.ChannelMember.findOne({
+                where: { channel_id: channel, member_id: member.member_id } // 어떤 채널에 어떤 사용자가 접속해있는지
+            });
+
+            // 현재 채널에 접속한 사용자 정보가 없으면, 접속 정보를 갱신한다.
+            // 채팅방에 들어올 때마다, 최신의 정보를 갱신한다.
+            if(chatUser == null) {
+                var entryMember = {
+                    channel_id: channel,
+                    member_id: member.member_id,
+                    nick_name: member.name,
+                    member_type_code: 0,
+                    active_state_code: 1,
+                    last_contact_date: new Date(),
+                    connection_id: socketId,
+                    ip_address: userIP,
+                    edit_date: new Date(),
+                    edit_member_id: member.member_id
+                };
+
+                chatUser = await db.ChannelMember.create(entryMember);
+
+            } else { //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+                var entryMember = {
+                    active_state_code: 1,
+                    last_contact_date: new Date(),
+                    connection_id: socketId,
+                    ip_address: userIP,
+                    edit_date: new Date(),
+                    edit_member_id: member.member_id
+                };
+
+                await db.ChannelMember.update(updateMember, {
+                    where: {
+                        channel_id: channel,
+                        member_id: member.member_Id,
+                    },
+                });
+            }
+
+            // 입장 메시지
+            var msg = {
+                channel_id: channel,
+                member_id: msgData.member_id,
+                nick_name: msgData.name,
+                msg_type_code: 1,
+                connection_id: socketId,
+                message: msgData.name + ' 사용자가 입장했습니다.',
+                ip_address: userIP,
+                msg_state_code: 1,
+                msg_date: new Date()
+            };
+
+            await db.ChannelMsg.create(msg);
 
             // 현재 접속자를 제외한 해당 채널에 이미 접속한 모든 사용자에게 메시지를 발송한다.
             // socket.to('채널명').emit();
@@ -139,6 +241,21 @@ module.exports = (server)=>{
                 message: msgData.message,
                 send_date: new Date(),
             };
+
+            // 채팅방에서 주고받은 메시지를 DB에 저장
+            var msg = {
+                channel_id: channel,
+                member_id: msgData.member_id,
+                nick_name: msgData.name,
+                msg_type_code: 2,
+                connection_id: socketId,
+                message: msgData.message,
+                ip_address: userIP,
+                msg_state_code: 1,
+                msg_date: new Date()
+            };
+
+            await db.Channel_message.create(msg);
 
             // io.to('채널명').emit()은 현재 채널에 메시지를 보낸 당사자(나)를 포함한 현재 채널의 모든 접속자(사용자)에게 메시지를 발송한다.
             io.to(channel).emit('receiveChannel', message);
