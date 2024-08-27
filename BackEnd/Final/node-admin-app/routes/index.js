@@ -71,6 +71,9 @@ router.post('/login', async(req, res, next) => {
       // DB에 저장된 암호와 관리자가 로그인 화면에서 입력한 암호와 일치하는지 체크
       // bcrypt.compare('로그인 화면에서 전달된 암호', db에서 저장된 암호화된 문자열) 메소드는 암호가 같으면 true 반환, 다르면 false 반환
       const comparePassword = await bcrypt.compare(admin_password, admin.admin_password)
+      console.log('입력한 암호:', admin_password);
+      console.log('입력한 암호를 암호화한 값:', await bcrypt.hash(admin_password, 12));
+      console.log('DB에 저장된 암호:', admin.admin_password);
       
       if(comparePassword) { // 암호가 일치하는 경우
         // Step4: 아이디/암호가 일치하면, home 페이지로 이동시키고, 그렇지 않으면 처리결과 data를 login.ejs에 전달한다.
