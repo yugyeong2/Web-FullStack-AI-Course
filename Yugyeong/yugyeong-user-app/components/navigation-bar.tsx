@@ -1,6 +1,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
+// import { Charmonman } from 'next/font/google';
+
+// const charmonman = Charmonman({ subsets: ['latin'], weight: ['400', '700'], });
+
 const navigation = [
     { name: '홈', path: '/', icon: '/image/home.png' },
     { name: '검색', path: '/search', icon: '/image/search.png' },
@@ -12,27 +16,29 @@ const navigation = [
 
 const NavigationBar = () => {
     return (
-        <nav className='fixed flex flex-col justify-center items-center top-0 left-0 h-full w-60 border-r border-gray-300 shadow-lg font-sans'>
-            <div>
-                <span className='fixed top-10 flex justify-center items-center'>iamstar</span>
+        <nav className='fixed flex flex-col items-center justify-center h-full border-r border-gray-300 shadow-lg w-52'>
+            <div className='absolute top-0 left-0 flex items-center justify-center w-full py-9'>
+            <span className='text-xl font-bold'>logo</span>
             </div>
 
-            <ul>
-                { navigation.map((item) => (
-                    <li key={item.name}>
-                        <Link href={item.path}>
-                            <div className='relative w-5 h-5'>
-                                <Image
-                                src={item.icon}
-                                alt={item.name}
-                                layout="responsive" // 이미지 비율 유지(반응형)
-                                width={20} // 1.25rem = 20px
-                                height={20}
-                                />
-                            </div>
-                            {item.name}
-                        </Link>
-                    </li>
+            <ul className='items-center justify-center mt-16'>
+                {
+                    navigation.map((item) => (
+                        <li key={item.name}>
+                            <Link href={item.path} className='flex p-10 text-black'>
+                                <div className='w-5 h-5 mr-2'>
+                                    <Image
+                                    src={item.icon}
+                                    alt={item.name}
+                                    layout="responsive" // 이미지 비율 유지(반응형)
+                                    width={20} // 1.25rem = 20px
+                                    height={20}
+                                    />
+                                </div>
+
+                                {item.name}
+                            </Link>
+                        </li>
                     ))
                 }
             </ul>

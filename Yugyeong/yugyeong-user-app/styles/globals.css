@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: 'SeoulHangang';
+    font-weight: normal;
+    font-style: normal;    
+    src: url('/fonts/SeoulHangangM.ttf') format('truetype');
+}
+
+body{
+	font-family: 'SeoulHangang'
+}
