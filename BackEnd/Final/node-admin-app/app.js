@@ -46,6 +46,12 @@ app.set('layout extractScripts', true);
 app.set('layout extractStyles', true);
 app.set('layout extractMetas', true);
 
+// 모든 페이지에서 요청 시 현재 경로를 가져올 수 있다.
+app.use((req, res, next) => {
+  res.locals.currentPath = req.path;
+  next();
+});
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
