@@ -15,6 +15,8 @@ var db = require('../models/index');
 var sequelize = db.sequelize;
 const { QueryTypes, Op } = require('sequelize');
 
+const {isLoggedIn} = require('./sessionMiddleware.js'); // isLoggedIn 권한 체크 미들웨어를 통해 먼저 로그인을 했는지 체크한다.
+
 
 /*
  * 사용자 계정 목록 조회 웹페이지 요청/응답 라우팅 메소드
@@ -22,7 +24,7 @@ const { QueryTypes, Op } = require('sequelize');
  * 요청 방식: GET
  * 응답 결과: list view 페이지 반환
 */
-router.get('/list', async(req, res) => {
+router.get('/list', isLoggedIn, async(req, res) => {
 
     // 사용자 목록조회 옵션 데이터 정의 = ViewModel
     const searchOption = { // 기본 검색 옵션 설정
@@ -48,7 +50,7 @@ router.get('/list', async(req, res) => {
 });
 
 
-router.post('/list', async(req, res) => {
+router.post('/list', isLoggedIn, async(req, res) => {
 
     // Step1: 조회 옵션 정보 추출하기
     const email = req.body.email;
@@ -73,18 +75,6 @@ router.post('/list', async(req, res) => {
 })
 
 
-/*
- * 신규 사용자 계정 등록 요청/응답 데이터 처리 라우팅 메소드
- * 요청 주소: http://localhost:5001/member/create
- * 요청 방식: POST
- * 응답 결과: 해당 사용자 계정 JSON 데이터 반환 후 list로 이동
-*/
-router.post('/create', async(req, res) => {
-    
-
-    res.redirect('/member/list');
-});
-
 
 /*
  * 기존 사용자 계정 확인 요청/응답 데이터 처리 라우팅 메소드
@@ -92,7 +82,32 @@ router.post('/create', async(req, res) => {
  * 요청 방식: POST
  * 응답 결과: 해당 사용자 계정의 수정된 JSON 데이터 반환 후 list로 이동
 */
-router.post('/modify', async(req, res) => {
+router.post('/modify', isLoggedIn, async(req, res) => {
+
+    const member_id = req.body.member_id;
+    const email = req.body.email;
+    const member_password = req.body.member_password;
+    const name = req.body.name;
+    const profile_img_path = req.body.profile_img_path;
+    const telephone = req.body.telephone;
+    const entry_type_code = req.body.entry_type_code;
+    const use_state_code = req.body.use_state_code;
+    const birth_date = req.body.birth_date;
+
+    const member = {
+        name,
+        profile_img_path,
+        telephone,
+        entry_type_code,
+        use_state_code,
+        birth_date,
+        edit_date: moment().format('YYYY-MM-DD HH:mm:ss'),
+        edit_member_id: req.session.loginUser.member_id
+    }
+
+    await db.Member.update(member, {
+        where: {member_id: member_id}
+    });
 
     res.redirect('/member/list');
 });
@@ -104,7 +119,7 @@ router.post('/modify', async(req, res) => {
  * 요청 방식: POST
  * 응답 결과: 삭제된 사용자 계정의 id JSON 데이터 반환 후 list로 이동
 */
-router.post('/delete', async(req, res) => {
+router.post('/delete', isLoggedIn, async(req, res) => {
 
     res.redirect('/member/list');
 })
@@ -116,8 +131,14 @@ router.post('/delete', async(req, res) => {
  * 요청 방식: GET
  * 응답 결과: modify view 페이지 반환
 */
-router.get('/modify', async(req, res) => {
-    res.render('member/modify');
+router.get('/modify/:id', isLoggedIn, async(req, res) => {
+    const member_id = req.params.id;
+
+    const member = await db.Member.findOne({
+        where: {member_id: member_id}
+    })
+
+    res.render('member/modify', {member});
 });
 
 

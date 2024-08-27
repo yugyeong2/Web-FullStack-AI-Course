@@ -38,7 +38,7 @@
                         <label class="control-label">사용자 이메일</label>
                         <!-- member_id 속성으로 백엔드에서 데이터를 가져온다. -->
                         <!-- 이메일 값을 바꿀 수 없도록 readonly로 설정 -->
-                        <input type="email" id="member_id" name="member_id" class="form-control" readonly value="<%= member.member_id %>"/>
+                        <input type="email" id="email" name="email" class="form-control" readonly value="<%= member.email %>"/>
                     </div>
                 </div>
 
@@ -46,7 +46,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">사용자 암호</label>
-                        <input type="password" id="member_password" name="member_password" class="form-control"/>
+                        <input type="password" id="member_password" name="member_password" class="form-control" readonly/>
                     </div>
                 </div>
 
@@ -54,7 +54,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">회원명</label>
-                        <input type="text" id="name" name="name" class="form-control"/>
+                        <input type="text" id="name" name="name" class="form-control" readonly value="<%= member.name %>"/>
                     </div>
                 </div>
             </div>
@@ -74,7 +74,7 @@
                     <div class="form-group">
                         <label class="control-label">전화번호</label>
                         <input type="text" id="telephone" name="telephone" class="form-control" value="<% member.telephone %>"/>
-                    </div>>
+                    </div>
                 </div>
 
                 <!-- 가입 유형 영역 -->
@@ -85,7 +85,7 @@
                             <option value="0" <% if(member.entry_type_code == "0") { %> selected <% } %> >직접 가입</option>
                             <option value="1" <% if(member.entry_type_code == "1") { %> selected <% } %> >페이스북 SNS</option>
                         </select>
-                    </div>>
+                    </div>
                 </div>
             </div>
 
@@ -96,7 +96,7 @@
                     <div class="form-group">
                         <label class="control-label">이용 상태</label>
                         <input type="text" id="telephone" name="telephone" class="form-control" value="<% member.telephone %>"/>
-                    </div>>
+                    </div>
                 </div>
 
                 <!-- 생년월일 영역 -->
@@ -126,7 +126,7 @@
     // 삭제한다고 하면 서버 삭제 처리 주소를 호출한다.
     $("#btnDelete").click(function() {
         if(confirm('정말 삭제하시겠습니까?')) {
-            location.href="/member/delete?id=<%= mbmer.member_id %>";
+            location.href="/member/delete?id=<%= member.member_id %>";
         }
     });
 
