@@ -42,15 +42,4 @@
     "vectorstores",
     "Yugyeong"
   ],
-  "workbench.colorCustomizations": {
-    "editorSuggestWidget.background": "#292a2b",
-    "editorSuggestWidget.foreground": "#ffffff",
-    "editorSuggestWidget.selectedForeground": "#ffffff",
-    "editorSuggestWidget.selectedBackground": "#f66ba3",
-    "editorSuggestWidget.focusHighlightForeground": "#008cff",
-    "editorSuggestWidget.highlightForeground": "#008cff",
-    "activityBar.background": "#143324",
-    "titleBar.activeBackground": "#1C4832",
-    "titleBar.activeForeground": "#F7FCFA"
-  }
 }
