@@ -25,7 +25,7 @@ export default function handler(
         if(req.method == 'GET') {
             
             // * 게시글 조회
-            const posts: 
+            // const posts: 
             try {
                 apiResult = {
                     code: 200,
@@ -59,6 +59,6 @@ export default function handler(
 
         }
     }
-    res.json(apiResult);            
+    // res.json(apiResult);            
 
 }
