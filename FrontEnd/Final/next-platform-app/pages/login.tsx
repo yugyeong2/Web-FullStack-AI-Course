@@ -50,7 +50,10 @@ const Login = () => {
         // Step1: 백엔드에서 제공한 JWT 토큰 값을 웹브라우저의 localStorage 저장소에 저장
         localStorage.setItem('token', result.data.token);
 
-        // Step2: 추후 Context API의 전역데이터로 사용자 정보 저장
+        // Step1-2: member 객체를 JSON 문자열로 변환하여 localStorage에 저장
+        localStorage.setItem('member', JSON.stringify(result.data.member));
+  
+      // Step2: 추후 Context API의 전역데이터로 사용자 정보 저장
         // 로그인한 사용자 정보를 전역 상태의 member 속성값으로 저장
         setGlobalData(
           { token: result.data.token,

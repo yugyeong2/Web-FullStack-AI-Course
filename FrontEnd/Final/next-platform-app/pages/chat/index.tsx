@@ -18,6 +18,7 @@ const Chat = () => {
 
   // 전역 상태값에서 로그인한 사용자의 정보 조회를 위해 컨택스트 객체 생성
   // 전역 상태값을 불러오거나 값을 변경할 수 있게 변수와 세터함수 참조
+  // ! url로 직접 페이지를 이동할 때, 전역 데이터가 초기화되는 문제 발생 -> localStorage로 변경
   const { globalData, setGlobalData } = useContext(GlobalContext);
 
   // 사용자 인증 토큰 정보 관리 상태값 정의
@@ -33,6 +34,12 @@ const Chat = () => {
   const [messageList, setMessageList] = useState<IMessage[]>([]);
 
 
+  // 로컬스토리지에서 member 객체를 가져오는 함수
+  const getStoredMember = () => {
+    return JSON.parse(localStorage.getItem('member') || '{}');
+  };
+
+
   // useEffect 훅은 CSR환경에서 작동되고, userRouter훅은 SSR/CSR순서로 2번작동됨.
   // useEffect훅에서 userRouter훅을 이용해 URL키 값이 추출안되는 문제는  useRouter.isReady값을 이용해 해결 가능
   // useRouter.isReady 값이 기본은 false->true로 변경되는 시점에 관련 기능 구현하면 된다.
@@ -41,22 +48,30 @@ const Chat = () => {
 
     // URL주소를 통해 채널 고유번호가 전달된 경우에만 실행
     if (router.query.cid != undefined) {
+
       //현재 채널 고유번호 상태값 설정
       setChannel(Number(router.query.cid));
+
+    } else { // 채널번호없이 /chat에 접속하면 /chat/list로 리다이렉트 처리
+      router.push('/chat/list');
     }
   }, [router.isReady]);
 
   // 현재 접속 채널 정보가 변경될 때마다 실행되는 useEffect 함수
   // 채널 번호가 바뀌면 바뀐번호로 채팅방에 입장하기 처리 
   useEffect(() => {
-    console.log('채팅방 채널이 변경되었습니다.', channel);      
+    console.log('채팅방 채널이 변경되었습니다.', channel);
+
+    // 로컬스토리지에서 member 객체를 가져온다.
+    const storedMember = getStoredMember();
+    console.log('localStorage에 저장된 사용자 정보:', storedMember);
 
     if(channel > 0) {
       // 채팅방 입장 처리
       console.log('채팅방에 입장합니다.', channel);
 
       // 변경된 채팅방에 입장 처리
-      socket.emit('entry', globalData.member, channel.toString());
+      socket.emit('entry', storedMember, channel);
       setChannel(channel);
     }
   }, [channel]);
@@ -112,7 +127,12 @@ const Chat = () => {
     // 채팅 채널별 메시지 수신기 정의
     socket.on('receiveChannel', function (message: IMessage) {
       console.log('receiveChannel: 서버소켓에서 전달받은 메시지:', message);
+
+      console.log('Previous message list:', messageList);
+
       setMessageList(prev => [...prev, message]);
+
+      console.log('Updated message list:', messageList);
     });
 
     // 해당 채팅 컴포넌트가 화면에서 사라질 때(언마운팅 시점)
@@ -131,18 +151,21 @@ const Chat = () => {
 
   // 채팅 메시지 전송 이벤트 처리 함수
   const sendMessage = () => {
+    // 로컬스토리지에서 member 객체를 가져온다.
+    const storedMember = getStoredMember();
+
     // 채팅 서버 소켓으로 메시지를 전송한다.
     const messageData = {
-      member_id: globalData.member.member_id,
-      name: globalData.member.name,
-      profile: `http://localhost:5000/images/user${globalData.member.member_id.toString()}.png`,
+      member_id: storedMember.member_id,
+      name: storedMember.name,
+      profile: `http://localhost:5000/images/user${storedMember.member_id.toString()}.png`,
       message: message,
       send_date: new Date(),
     };
 
     // 채팅 서버 소켓으로 메시지 전송
     // socket.emit('서버 이벤트 수신기명', 전달할 데이터);
-    socket.emit('channelMsg', channel.toString(), messageData);
+    socket.emit('channelMsg', channel, messageData);
 
     // 메시지 전송 후 입력요소 초기화
     setMessage('');
@@ -158,11 +181,15 @@ const Chat = () => {
               <div className="flex flex-col h-full">
                 <div className="grid grid-cols-12 gap-y-2">
                   {/* 채팅 메시지 목록 */}
-                  {
-                    messageList.map((message, index) =>
-                      message.member_id === globalData.member.member_id ? (
-                        console.log('메시지 작성자 아이디:', message.member_id),
-                        console.log('메시지 작성자 아이디:', globalData.member.member_id),
+                  { messageList.map((message, index) => {
+                      
+                      // 로컬스토리지에서 member 객체를 가져온다.
+                      const storedMember = getStoredMember();
+                      
+                      return message.member_id === storedMember.member_id ? (
+
+                        console.log('메시지 작성자 아이디:', message.member_id), // 메시지 작성자 아이디
+                        console.log('메시지 작성자 아이디:', storedMember.member_id), // 현재 로그인한 사용자 아이디
 
                         // 메시지 작성자 아이디와 현재 로그인한 사용자 아이디가 같으면, 오른쪽에 출력
                         <div
@@ -177,7 +204,7 @@ const Chat = () => {
                               <div>{message.message}</div>
 
                               <div className="absolute w-[200px] text-right text-xs bottom-0 right-0 -mb-5 text-gray-500">
-                                {message.name} {moment(message.send_date).format('YYYY-MM-DD HH:mm:ss')}
+                                {storedMember.name} {moment(message.send_date).format('YYYY-MM-DD HH:mm:ss')}
                               </div>
                             </div>
                           </div>
@@ -201,9 +228,8 @@ const Chat = () => {
                             </div>
                           </div>
                         </div>
-                      ),
-                    )
-                  }
+                      );
+                  }) }
 
                   {/* 왼쪽 다른 사용자 메시지 출력 영역 */}
                   {/* <div className="col-start-1 col-end-8 p-3 rounded-lg">
