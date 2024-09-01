@@ -109,7 +109,7 @@ export default async function handler(
             // const resultMsg: IMessage = {
             //     user_type: UserType.BOT,
             //     message: result.content as string,
-            //     send_date: Date.now().toString()
+            //     send_date: new Date()
             // };
 
 

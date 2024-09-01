@@ -77,14 +77,14 @@ export default async function handler(
             });
 
             // Step3: cheerio를 이용해 특정 웹페이지 내용을 크롤링
-            const loader = new CheerioWebBaseLoader('https://ardalis.com/clean-architecture-sucks/?ref=dailydev');
+            const loader = new CheerioWebBaseLoader('https://www.freecodecamp.org/news/responsive-design-best-practices/');
             const rawDocs = await loader.load();
             console.log('Cheerio를 통해 로딩한 raw 웹페이지 데이터:', rawDocs);
 
             // Step4: 텍스트 스플리팅 처리
             const splitter = new RecursiveCharacterTextSplitter({
-                chunkSize: 1000,
-                chunkOverlap: 200
+                chunkSize: 1000, // 청크의 크기(1000자)를 설정. 이는 텍스트를 나누는 기준
+                chunkOverlap: 200 // 청크가 서로 중복되는 부분(200자)을 설정. 이는 문맥을 유지하며 텍스트를 나누기 위함
             });
 
             // Splitting된 단어의 집합 문서를 생성
