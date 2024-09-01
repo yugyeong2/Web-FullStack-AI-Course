@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { PostProps, CommentProps, ProfileProps } from '@/interface/post';
+import { PostProps, CommentProps, ProfileProps } from '@/interfaces/post';
 import Comment from '@/components/comment';
 
 const PostData: PostProps[] = [

@@ -1,4 +1,4 @@
-import { CommentProps } from '@/interface/post';
+import { CommentProps } from '@/interfaces/post';
 import Image from 'next/image';
 
 const Comment = ( {comment}: {comment: CommentProps} ) => {
