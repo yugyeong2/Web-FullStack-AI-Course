@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-
+import { useRouter } from 'next/router';
 import {
   CalendarIcon,
   ChartPieIcon,
@@ -10,17 +10,12 @@ import {
 } from '@heroicons/react/24/outline';
 
 const navigation = [
-  { name: 'Home', href: '/', icon: HomeIcon, count: '5', current: true },
-  { name: 'Profile', href: '/mypage/profile', icon: UsersIcon, current: false },
-  {
-    name: 'Blogs',
-    href: '/mypage/blog/list',
-    icon: DocumentDuplicateIcon,
-    current: false,
-  },
+  { name: 'Home', href: '/', icon: HomeIcon },
+  { name: 'Profile', href: '/mypage/profile', icon: UsersIcon },
+  { name: 'Blogs', href: '/mypage/blog/list', icon: DocumentDuplicateIcon },
 ];
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
@@ -33,6 +28,8 @@ type MyPageLayoutProps = {
 };
 
 const MyPageLayout: NextPage<MyPageLayoutProps> = props => {
+  const router = useRouter();
+
   return (
     <Container>
       <Header />
@@ -53,7 +50,7 @@ const MyPageLayout: NextPage<MyPageLayoutProps> = props => {
                             <a
                               href={item.href}
                               className={classNames(
-                                item.current
+                                router.pathname === item.href
                                   ? 'bg-gray-50 text-indigo-600'
                                   : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
                                 'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
@@ -61,7 +58,7 @@ const MyPageLayout: NextPage<MyPageLayoutProps> = props => {
                             >
                               <item.icon
                                 className={classNames(
-                                  item.current
+                                  router.pathname === item.href
                                     ? 'text-indigo-600'
                                     : 'text-gray-400 group-hover:text-indigo-600',
                                   'h-6 w-6 shrink-0',
