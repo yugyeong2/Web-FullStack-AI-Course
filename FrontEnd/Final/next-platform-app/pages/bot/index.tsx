@@ -5,6 +5,8 @@ import { IMessage } from '@/interfaces/chat';
 // 채팅 클라이언트 socket객체 참조
 import { socket } from '@/library/socket';
 
+import moment from 'moment';
+
 const Bot = () => {
   // 라우터 객체 생성
   const router = useRouter();
@@ -78,7 +80,7 @@ const Bot = () => {
       name: `사용자 - ${memberId.toString()}`,
       profile: `http://localhost:5000/img/user${memberId.toString()}.png`,
       message: message,
-      send_date: Date.now().toString(),
+      send_date: new Date(),
     };
 
     // 채팅 서버 소켓으로 메시지 전송
@@ -99,48 +101,53 @@ const Bot = () => {
               <div className="flex flex-col h-full">
                 <div className="grid grid-cols-12 gap-y-2">
                   {/* 채팅 메시지 목록 */}
-                  {
-                    // 메시지 작성자와 현재 로그인한 사용자가 같으면 오른쪽에 출력
-                    messageList.map((message, index) =>
-                      message.member_id === memberId ? (
-                        <div
-                          key={index}
-                          className="col-start-6 col-end-13 p-3 rounded-lg"
-                        >
-                          <div className="flex items-center justify-start flex-row-reverse">
-                            <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                              A
-                            </div>
-                            <div className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
-                              <div>{message.message}</div>
+                  {messageList.map((message, index) =>
+                    message.member_id === memberId ? (
+                      // 메시지 작성자 아이디와 현재 로그인한 사용자 아이디가 같으면, 오른쪽에 출력
+                      <div
+                        key={index}
+                        className="col-start-6 col-end-13 p-3 rounded-lg"
+                      >
+                        <div className="flex items-center justify-start flex-row-reverse">
+                          <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+                            User  
+                          </div>
+                          <div className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
+                            <div>{message.message}</div>
 
-                              <div className="absolute w-[200px] text-right text-xs bottom-0 right-0 -mb-5 text-gray-500">
-                                {message.name} {message.send_date}
-                              </div>
+                            <div className="absolute w-[200px] text-right text-xs bottom-0 right-0 -mb-5 text-gray-500">
+                              {message.name}{' '}
+                              {moment(message.send_date).format(
+                                'YYYY-MM-DD HH:mm:ss',
+                              )}
                             </div>
                           </div>
                         </div>
-                      ) : (
-                        <div
-                          key={index}
-                          className="col-start-1 col-end-8 p-3 rounded-lg"
-                        >
-                          <div className="flex flex-row items-center">
-                            <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                              A
-                            </div>
-                            <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
-                              <div>{message.message}</div>
+                      </div>
+                    ) : (
+                      // 메시지 작성자 아이디와 현재 로그인한 사용자 아이디가 다르면, 왼쪽에 출력
+                      <div
+                        key={index}
+                        className="col-start-1 col-end-8 p-3 rounded-lg"
+                      >
+                        <div className="flex flex-row items-center">
+                          <div className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+                            Bot
+                          </div>
+                          <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
+                            <div>{message.message}</div>
 
-                              <div className="absolute w-[200px] text-xs bottom-0 left-0 -mb-5 text-gray-500">
-                                {message.name} {message.send_date}
-                              </div>
+                            <div className="absolute w-[200px] text-xs bottom-0 left-0 -mb-5 text-gray-500">
+                              Bot{' '}
+                              {moment(message.send_date).format(
+                                'YYYY-MM-DD HH:mm:ss',
+                              )}
                             </div>
                           </div>
                         </div>
-                      ),
-                    )
-                  }
+                      </div>
+                    ),
+                  )}
 
                   {/* 왼쪽 다른 사용자 메시지 출력 영역 */}
                   {/* <div className="col-start-1 col-end-8 p-3 rounded-lg">

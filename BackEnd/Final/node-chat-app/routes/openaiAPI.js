@@ -56,7 +56,7 @@ router.post("/dalle", async (req, res) => {
         // console.log("dalle 이미지 생성 URL 경로: ", imageURL);
 
         // 이미지 경로를 이용해 물리적 이미지 파일 생성
-        const imgFileName = `sample-${Date.now()}.png`;
+        const imgFileName = `sample-${new Date()}.png`;
         const imgFilePath = `./public/ai/${imgFileName}`; // 로컬에 저장될 이미지 위치
         
         // ! 이미지 생성 요청에 대한 응답 값으로 이미지 바이너리 데이터로 반환 후 서버에 이미지 파일 생성
@@ -95,7 +95,7 @@ router.post("/dalle", async (req, res) => {
             view_count: 0,
             ip_address: req.headers["x-forwarded-for"] || req.connection.remoteAddress, // 사용자 IP 추출 -> 로컬 개발 환경인 경우 ::1로 나올 수 있다.
             is_display_code: 1,     // 게시 여부 - 1: 게시
-            reg_date: Date.now(),
+            reg_date: new Date(),
             reg_member_id: 1        // 추후 JWT 토큰에서 사용자 고유번호를 추출하여 처리 (DB에 존재하는 사용자 고유번호이어야 한다.)
         };
 
@@ -111,7 +111,7 @@ router.post("/dalle", async (req, res) => {
             file_size: 0,   // 추후 변경
             file_path: imageFullPath, // 도메인 주소를 포함한 백엔드 이미지 전체 url 경로 (public 폴더는 도메인 주소를 통해 바로 접근 가능)
             file_type: "PNG",
-            reg_date: Date.now(),
+            reg_date: new Date(),
             reg_member_id: 1 // 추후 변경 (생성한 article에 저장된 reg_member_id와 동일해야 하며, DB에 존재하는 사용자 고유번호이어야 한다.)
         };
 

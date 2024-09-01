@@ -47,10 +47,10 @@ const ChatList = () => {
                 {/* 제목 및 설명 영역 */}
                 <div className="sm:flex-auto">
                     <h1 className="text-base font-semibold leading-6 text-gray-900">
-                        채팅방 목록
+                        채널 목록
                     </h1>
                     <p className="mt-2 text-sm text-gray-700">
-                        일대일 사용자 채팅방 목록
+                        그룹 채팅을 위한 채널 목록
                     </p>
                 </div>
 

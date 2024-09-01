@@ -46,7 +46,7 @@ const ChannelCreate = () => {
             if(response.data.code == 200) {
                 alert('등록 완료');
                 console.log('채널 등록 성공:', response.data);
-                router.push('/channel/list');
+                router.push('/chat/list');
             } else {
                 console.error('채널 등록 중 에러 발생:', response.data.message);
             }

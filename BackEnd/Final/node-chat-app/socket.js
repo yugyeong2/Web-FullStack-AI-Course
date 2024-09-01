@@ -98,7 +98,7 @@ module.exports = (server)=>{
                     msg_date: new Date()
                 };
 
-                await db.Channel_message.create(msg);
+                await db.ChannelMessage.create(msg);
             }
         }
         // !
@@ -133,7 +133,7 @@ module.exports = (server)=>{
             // socket.join('채팅방 이름');
             socket.join(channel);
 
-            var chatUser = await db.ChannelMember.findOne({
+            let chatUser = await db.ChannelMember.findOne({
                 where: { channel_id: channel, member_id: member.member_id } // 어떤 채널에 어떤 사용자가 접속해있는지
             });
 
@@ -154,9 +154,11 @@ module.exports = (server)=>{
                 };
 
                 chatUser = await db.ChannelMember.create(entryMember);
+                console.log('생성된 채널 접속자:', chatUser.nick_name);
 
-            } else { //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
-                var entryMember = {
+            } else {
+                var updateMember = {
+                    
                     active_state_code: 1,
                     last_contact_date: new Date(),
                     connection_id: socketId,
@@ -165,28 +167,28 @@ module.exports = (server)=>{
                     edit_member_id: member.member_id
                 };
 
-                await db.ChannelMember.update(updateMember, {
+                chatUser = await db.ChannelMember.update(updateMember, {
                     where: {
                         channel_id: channel,
-                        member_id: member.member_Id,
+                        member_id: member.member_id,
                     },
                 });
             }
 
             // 입장 메시지
-            var msg = {
+            var entry_message = {
                 channel_id: channel,
-                member_id: msgData.member_id,
-                nick_name: msgData.name,
-                msg_type_code: 1,
+                member_id: member.member_id,
+                nick_name: member.name,
+                msg_type_code: 1, // 입장 메시지
                 connection_id: socketId,
-                message: msgData.name + ' 사용자가 입장했습니다.',
+                message: member.name + ' 사용자가 입장했습니다.',
                 ip_address: userIP,
                 msg_state_code: 1,
                 msg_date: new Date()
             };
 
-            await db.ChannelMsg.create(msg);
+            await db.ChannelMessage.create(entry_message);
 
             // 현재 접속자를 제외한 해당 채널에 이미 접속한 모든 사용자에게 메시지를 발송한다.
             // socket.to('채널명').emit();
@@ -233,32 +235,38 @@ module.exports = (server)=>{
         // 채팅방 기준으로 해당 채팅방에 나를 포함한 모든 사용자들에게 메시지 발송하기
         // 클라이언트에서 메시지 데이터를 JSON 포맷으로 전송한다.
         socket.on('channelMsg', async(channel, msgData) => { // JSON 데이터로 파라미터를 받는다.
-            // 클라이언트로 보낼 메시지 포맷 정의
-            const message = {
-                member_id: msgData.member_id,
-                name: msgData.name,
-                profile: msgData.profile,
-                message: msgData.message,
-                send_date: new Date(),
-            };
+            try {
+                // 클라이언트로 보낼 메시지 포맷 정의
+                const message = {
+                    member_id: msgData.member_id,
+                    name: msgData.name,
+                    profile: msgData.profile,
+                    message: msgData.message,
+                    send_date: new Date(),
+                };
 
-            // 채팅방에서 주고받은 메시지를 DB에 저장
-            var msg = {
-                channel_id: channel,
-                member_id: msgData.member_id,
-                nick_name: msgData.name,
-                msg_type_code: 2,
-                connection_id: socketId,
-                message: msgData.message,
-                ip_address: userIP,
-                msg_state_code: 1,
-                msg_date: new Date()
-            };
+                // 채팅방에서 주고받은 메시지를 DB에 저장
+                var msg = {
+                    channel_id: channel,
+                    member_id: msgData.member_id,
+                    nick_name: msgData.name,
+                    msg_type_code: 2,
+                    connection_id: socketId,
+                    message: msgData.message,
+                    ip_address: userIP,
+                    msg_state_code: 1,
+                    msg_date: new Date()
+                };
 
-            await db.Channel_message.create(msg);
+                await db.ChannelMessage.create(msg);
 
-            // io.to('채널명').emit()은 현재 채널에 메시지를 보낸 당사자(나)를 포함한 현재 채널의 모든 접속자(사용자)에게 메시지를 발송한다.
-            io.to(channel).emit('receiveChannel', message);
+                // io.to('채널명').emit()은 현재 채널에 메시지를 보낸 당사자(나)를 포함한 현재 채널의 모든 접속자(사용자)에게 메시지를 발송한다.
+                io.to(channel).emit('receiveChannel', message);
+
+                console.log('채널 메시지:', message);
+            } catch (error) {
+                console.error('channelMsg 전송 중 에러:', error);
+            }
         });
 
 
