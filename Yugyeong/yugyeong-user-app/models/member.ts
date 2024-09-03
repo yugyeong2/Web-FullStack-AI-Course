@@ -7,8 +7,8 @@ export default function defineMemberModel(sequelize: Sequelize) {
         public member_password!: string;
         public username!: string;
         public nickname!: string;
-        public profile_img_path?: string;
-        public telephone?: string;
+        public profile_image_path?: string;
+        public telephone!: string;
         public entry_type_code!: number;
         public use_state_code!: number;
         public birth_date?: string;
@@ -46,20 +46,20 @@ export default function defineMemberModel(sequelize: Sequelize) {
             allowNull: false,
             comment: "회원 닉네임",
         },
-        profile_img_path: {
+        profile_image_path: {
             type: DataTypes.STRING(300),
             allowNull: true,
             comment: "회원 프로필 이미지 경로",
         },
         telephone: {
             type: DataTypes.STRING(200),
-            allowNull: true,
+            allowNull: false,
             comment: "전화번호-AES 양방향 암호화 적용",
         },
         entry_type_code: {
             type: DataTypes.TINYINT,
             allowNull: false,
-            comment: "가입 유형코드 0: 직접가입 1: 페이스북 SNS",
+            comment: "가입 유형코드 0: 직접가입 1: SNS",
         },
         use_state_code: {
             type: DataTypes.TINYINT,

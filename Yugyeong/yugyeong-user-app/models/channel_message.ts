@@ -18,7 +18,7 @@ class ChannelMessage extends Model {
 export default function defineChannelMessageModel(sequelize: Sequelize) {
     ChannelMessage.init(
         {
-            channel_msg_id: {
+            channel_message_id: {
                 type: DataTypes.INTEGER,
                 autoIncrement: true,
                 primaryKey: true,
@@ -84,7 +84,7 @@ export default function defineChannelMessageModel(sequelize: Sequelize) {
         },
         {
             sequelize,
-            tableName: "channel_msg",
+            tableName: "channel_message",
             timestamps: false,
             comment: "채널 메시지 정보",
             indexes: [
@@ -92,7 +92,7 @@ export default function defineChannelMessageModel(sequelize: Sequelize) {
                     name: "PRIMARY",
                     unique: true,
                     using: "BTREE",
-                    fields: [{ name: "channel_msg_id" }],
+                    fields: [{ name: "channel_message_id" }],
                 },
             ],
         }

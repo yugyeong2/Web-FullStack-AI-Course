@@ -3,9 +3,8 @@ import { Sequelize, DataTypes, Model } from 'sequelize';
 class ArticleComment extends Model {
     public article_comment_id!: number;
     public article_id!: number;
-    public member_id!: number;
-    public nickname!: string;
     public contents!: string;
+    public nickname!: string;
     public reg_date!: Date;
     public reg_member_id!: number;
     public edit_date?: Date;
@@ -27,15 +26,16 @@ export default function defineArticleCommentModel(sequelize: Sequelize) {
                 allowNull: false,
                 comment: "게시글 고유번호",
             },
-            nickname: {
-                type: DataTypes.STRING(100),
-                allowNull: false,
-                comment: "댓글 작성자 이름",
-            },
+
             contents: {
                 type: DataTypes.TEXT,
                 allowNull: false,
                 comment: "댓글 내용"
+            },
+            nickname: {
+                type: DataTypes.STRING(100),
+                allowNull: false,
+                comment: "댓글 작성자 이름",
             },
             reg_date: {
                 type: DataTypes.DATE,
