@@ -18,7 +18,7 @@ const NavigationBar = () => {
     return (
         <nav className='fixed flex flex-col items-center justify-center h-full border-r border-gray-300 shadow-lg w-52'>
             <div className='absolute top-0 left-0 flex items-center justify-center w-full py-9'>
-            <span className='text-xl font-bold'>logo</span>
+            <span className='text-xl font-bold'>iamstar</span>
             </div>
 
             <ul className='items-center justify-center mt-16'>
@@ -30,9 +30,9 @@ const NavigationBar = () => {
                                     <Image
                                     src={item.icon}
                                     alt={item.name}
-                                    layout="responsive" // 이미지 비율 유지(반응형)
                                     width={20} // 1.25rem = 20px
                                     height={20}
+                                    priority
                                     />
                                 </div>
 
