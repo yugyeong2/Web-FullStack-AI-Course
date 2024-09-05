@@ -6,7 +6,7 @@ import db from '@/models/index';
 
 type ResponseData = {
     code: number;
-    data: string | null;
+    result: string | null;
     message: string;
 };
 
@@ -14,9 +14,9 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<ResponseData>
 ) {
-    let apiResult: ResponseData = {
+    let payload: ResponseData = {
         code: 400,
-        data: null,
+        result: null,
         message: 'Bad Request: 요청 리소스를 찾을 수 없습니다.'
     };
 
@@ -25,9 +25,9 @@ export default async function handler(
         if(req.method == 'GET') {
             const postList = await db.Article.findAll();
             
-            apiResult = {
+            payload = {
                 code: 200,
-                data: postList,
+                result: postList,
                 message: 'Success: 게시글 전체 목록 데이터 반환'
             };
         }
@@ -47,9 +47,9 @@ export default async function handler(
                 reg_member_id: 1 // 추후 토큰에서 추출한 회원 ID로 변경
             });
 
-            apiResult = {
+            payload = {
                 code: 200,
-                data: newPost,
+                result: newPost,
                 message: 'Success: 새로운 게시글 등록 완료'
             };
         }
@@ -65,9 +65,9 @@ export default async function handler(
                 edit_member_id: 1 // 추후 토큰에서 추출한 회원 ID로 변경
             });
 
-            apiResult = {
+            payload = {
                 code: 200,
-                data: editPost,
+                result: editPost,
                 message: 'Success: 기존 게시글 수정 완료'
             };
         }
@@ -79,9 +79,9 @@ export default async function handler(
                 where: { article_id: article_id }
             });
 
-            apiResult = {
+            payload = {
                 code: 200,
-                data: deletePost,
+                result: deletePost,
                 message: 'Success: 기존 게시글 삭제 완료'
             };
         }
@@ -89,12 +89,12 @@ export default async function handler(
     } catch (error) {
         console.error('/api/post 호출 중 에러 발생', error);
 
-        apiResult = {
+        payload = {
             code: 500,
-            data: null,
+            result: null,
             message: 'Server Error: 서버에서 처리 중 오류가 발생했습니다.'
         };
     }
 
-    res.json(apiResult);
+    res.json(payload);
 }

@@ -7,7 +7,7 @@ import db from '@/models/index';
 
 type ResponseData = {
     code: number;
-    data: string | null;
+    result: string | null;
     message: string;
 };
 
@@ -15,9 +15,9 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<ResponseData>
 ) {
-    let apiResult: ResponseData = {
+    let payload: ResponseData = {
         code: 400,
-        data: null,
+        result: null,
         message: 'Bad Request: 요청 리소스를 찾을 수 없습니다.'
     };
 
@@ -43,15 +43,15 @@ export default async function handler(
 
             newMember.member_password = '';
             
-            apiResult = {
+            payload = {
                 code: 200,
-                data: newMember,
+                result: newMember,
                 message: 'Success: 회원 가입 완료'
             };
         } else {
-            apiResult = {
+            payload = {
                 code: 409,
-                data: member,
+                result: member,
                 message: 'Conflict: 이미 가입된 이메일 주소입니다.'
             };
         }
@@ -59,12 +59,12 @@ export default async function handler(
     } catch (error) {
         console.error('/api/member/signup 호출 중 에러 발생', error);
 
-        apiResult = {
+        payload = {
             code: 500,
-            data: null,
+            result: null,
             message: 'Server Error: 서버에서 처리 중 오류가 발생했습니다.'
         };
     }
 
-    res.json(apiResult);
+    res.json(payload);
 }
