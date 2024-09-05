@@ -67,7 +67,7 @@ export default function defineMemberModel(sequelize: Sequelize) {
             comment: "이용 상태 0: 허용대기 1: 사용중 2: 탈퇴처리",
         },
         birth_date: {
-            type: DataTypes.STRING(200),
+            type: DataTypes.DATE,
             allowNull: true,
             comment: "생년월일-AES 양방향 암호화 적용",
         },

@@ -29,7 +29,7 @@ export default function defineArticleLikeModel(sequelize: Sequelize) {
                 allowNull: false,
                 comment: "좋아요한 회원 이름",
             },
-            like_date: {
+            rag_date: {
                 type: DataTypes.DATE,
                 allowNull: false,
                 comment: "좋아요를 누른 일시",
