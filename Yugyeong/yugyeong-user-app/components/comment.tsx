@@ -1,10 +1,10 @@
-import { CommentProps } from '@/interfaces/post';
+import { CommentData } from '@/interfaces/post.interface';
 import Image from 'next/image';
 
-const Comment = ( {comment}: {comment: CommentProps} ) => {
+const Comment = ( {comment}: {comment: CommentData} ) => {
     return (
         <div>
-            {comment.comment}
+            {comment.contents}
         </div>
     );
 }
