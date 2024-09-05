@@ -2,7 +2,7 @@ import path from 'path';
 import { Sequelize, DataTypes, Model, Dialect } from 'sequelize';
 
 // 개발모드 환경설정
-const env = process.env.NODE_ENV || 'development';
+const env = process.env.APP_ENV || 'development';
 
 // DB 연결 환경설정 정보 변경 처리
 const config = require(path.join(__dirname, '..', 'config', 'config.json'))[env];
@@ -28,8 +28,8 @@ db.Member = require('./member-model')(sequelize, Sequelize);
 db.Article = require('./article-model')(sequelize, Sequelize);
 db.ArticleFile = require('./articleFile-model')(sequelize, Sequelize);
 db.channel = require('./channel-model')(sequelize, Sequelize);
-db.channel_member = require('./channelMember-model')(sequelize, Sequelize);
-db.channel_message = require('./channelMessage-model')(sequelize, Sequelize);
+db.channelMember = require('./channelMember-model')(sequelize, Sequelize);
+db.channelMessage = require('./channelMessage-model')(sequelize, Sequelize);
 
 // db 객체 외부로 노출
 export default db;
