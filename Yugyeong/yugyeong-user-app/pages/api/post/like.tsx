@@ -21,44 +21,54 @@ export default async function handler(
     };
 
     try {
-        // GET - 게시글 좋아요 목록 조회
+        // GET - 게시글 좋아요 수 조회
         if(req.method == 'GET') {
-            const likeList = await db.ArticleLike.findAll();
+            const likeCount = await db.ArticleLike.count();
 
             payload = {
                 code: 200,
-                result: likeList,
-                message: 'Success: 게시글 좋아요 목록 데이터 반환'
+                result: likeCount,
+                message: 'Success: 게시글 좋아요 수 반환'
             };
         }
 
         if(req.method == 'POST') {
-            const newLike = await db.ArticleLike.create({
-                // 모두 추후 변경
-                article_id: 1,
-                nickname: 'yugyeong',
-                rag_date: new Date(),
-                rag_member_id: 1
-            });
+            const { article_id, nickname, rag_member_id } = req.body; // req.body로 프론트엔드에서 전달된 데이터 수신
 
-            payload = {
-                code: 200,
-                result: newLike,
-                message: 'Success: 새로운 게시글 좋아요 등록 완료'
-            };
-        }
+            // 좋아요한 회원 목록 조회
+            const likeMember = await db.ArticleLike.findOne({
+                where: { article_id, rag_member_id }
+            })
 
-        if(req.method == 'DELETE') {
-            const article_like_id = req.body; // 추후 변경
-            const deleteLike = await db.ArticleLike.destroy({
-                where: { article_like_id: article_like_id }
-            });
+            // 좋아요한 회원 목록에 로그인한 회원이 없을 경우 -> 좋아요 처리
+            if(!likeMember) {
+                const newLike = await db.ArticleLike.create({
+                    article_id,
+                    nickname,
+                    rag_date: new Date(),
+                    rag_member_id
+                });
 
-            payload = {
-                code: 200,
-                result: deleteLike,
-                message: 'Success: 게시글 좋아요 삭제 완료'
-            };
+                payload = {
+                    code: 200,
+                    result: newLike,
+                    message: 'Success: 새로운 게시글 좋아요 등록 완료'
+                };                
+            } 
+            // 좋아요한 회원 목록에 로그인한 회원이 있을 경우 -> 좋아요 취소
+            else {
+                const article_like_id = likeMember.article_like_id;
+
+                const deleteLike = await db.ArticleLike.destroy({
+                    where: { article_like_id: article_like_id }
+                });
+
+                payload = {
+                    code: 200,
+                    result: deleteLike,
+                    message: 'Success: 게시글 좋아요 삭제 완료'
+                };
+            }
         }
 
     } catch (error) {

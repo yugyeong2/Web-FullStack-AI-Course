@@ -9,7 +9,6 @@ const Post = () => {
     const router = useRouter();
 
     const [postList, setPostList] = useState<PostData[]>([]); // 게시글 목록
-    const [likeList, setLikeList] = useState<LikeData[]>([]); // 좋아요를 누른 회원 목록
     const [commentList, setCommentList] = useState<CommentData[]>([]); // 댓글 목록
 
     const [likeCount, setLikeCount] = useState<number>(0); // 좋아요 수
@@ -35,7 +34,7 @@ const Post = () => {
         }
 
         getPostList();
-        getLikeList();
+        getLikeCount();
         getCommentList();
     }, [])
 
@@ -53,17 +52,16 @@ const Post = () => {
     }
 
     // 좋아요 조회
-    async function getLikeList() {
+    async function getLikeCount() {
         try {
-            const response = await axios.get<{result: LikeData[]}>('/api/post/like');
+            const response = await axios.get<{result: number}>('/api/post/like');
             
             if(response.data.result) {
-                setLikeList(response.data.result);
-                setLikeCount(response.data.result.length); // 좋아요 수 갱신                
+                setLikeCount(response.data.result); // 좋아요 수 갱신      
             }
 
         } catch (error) {
-            console.error('좋아요 목록 조회 중 에러 발생:', error);
+            console.error('게시글 좋아요 수 조회 중 에러 발생:', error);
         }
     }
 
@@ -78,7 +76,7 @@ const Post = () => {
             }
 
         } catch (error) {
-            console.error('댓글 목록 조회 중 에러 발생:', error);
+            console.error('게시글 댓글 목록 조회 중 에러 발생:', error);
         }
     }
 
@@ -86,38 +84,22 @@ const Post = () => {
     // 좋아요 버튼 클릭 시 이벤트 처리
     const handleLike = async(article_id: number) => {
         try {
-            for (let like of likeList) {
-                // 좋아요한 회원 목록에 로그인한 회원이 없을 경우 -> 좋아요 처리
-                if(like.reg_member_id !== member.member_id) {
-                    // 서버로 좋아요 요청
-                    const response = await axios.post('/api/post/like', {
-                        article_id: article_id,
-                        nickname: member.nickname,
-                        rag_date: new Date(),
-                        reg_member_id: member.member_id,
-                    });
+            // 서버로 좋아요 처리 요청
+            const response = await axios.post('/api/post/like', { // 백엔드로 데이터 전송
+                article_id: article_id,
+                nickname: member.nickname,
+                reg_member_id: member.member_id,
+            });
 
-                    const newLike = response.data; // 서버에서 반환된 데이터 (like와 함께 article_like_id 포함)
-
-                    // 서버로부터 받은 데이터를 상태로 업데이트
-                    setLikeCount(likeCount + 1);
-                    setLikeList((prev) => [
-                        ...prev,
-                        newLike // 서버에서 반환된 값을 추가 (article_like_id 포함)
-                    ]);
-
-                    console.log('좋아요 처리:', likeCount);
-                }
-                // 좋아요한 회원 목록에 로그인한 회원이 있을 경우 -> 좋아요 취소 처리
-                else {
-                    setLikeCount(likeCount - 1);
-                    // 전 상태(prevLikeList)를 기반으로 상태를 업데이트
-                    // loginMember.member_id와 일치하는 reg_member_id를 가진 항목을 제거한다.
-                    setLikeList((prevLikeList) => prevLikeList.filter((like) => like.reg_member_id !== member.member_id));
-                    
-                    console.log('좋아요 취소:', likeCount);
-                }
+            if(response.data.message == 'Success: 새로운 게시글 좋아요 등록 완료') {
+                getLikeCount(); // 좋아요 수 갱신
+                setLikeCount(likeCount + 1);
             }
+            else if(response.data.message == 'Success: 게시글 좋아요 삭제 완료') {
+                getLikeCount();
+                setLikeCount(likeCount - 1);
+            }
+            console.log('좋아요 수:', likeCount);
 
         } catch (error) {
             console.error('좋아요 버튼 클릭 시 에러 발생:', error);
