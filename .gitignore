@@ -5,7 +5,6 @@ node_modules/
 
 # MaterialM template assets - restored by scripts/download-materialm-assets.sh
 Yugyeong/yugyeong-admin-app/src/public/assets/
-Yugyeong/yugyeong-admin-app//src/public/html/
 
 # Local font files - download from official Seoul Typeface source
 Yugyeong/yugyeong-user-app/public/fonts
